@@ -172,6 +172,31 @@ const ExplorePage = ({ headerHeight }) => {
       };
   }
 
+  const getIndustryRadarData = (industryKey) => {
+      if (!selectedCountry) return {};
+      const alpha3 = countryCodeMap[selectedCountry.id];
+      const countryData = civiData[alpha3];
+      if (!countryData || !countryData.industries || !countryData.industries[industryKey]) return null; // Return null if data not available
+
+      const industryData = countryData.industries[industryKey];
+
+      return {
+          labels: ['Autonomy', 'Resilience', 'Sustainability', 'Effectiveness'],
+          datasets: [{
+              label: `${countryData.name} - ${industryKey.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}`,
+              data: [
+                  industryData.scores.autonomy,
+                  industryData.scores.resilience,
+                  industryData.scores.sustainability,
+                  industryData.scores.effectiveness,
+              ],
+              backgroundColor: 'rgba(0, 150, 136, 0.2)',
+              borderColor: 'rgba(0, 150, 136, 1)',
+              borderWidth: 1,
+          }]
+      };
+  }
+
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
       <svg ref={svgRef}></svg>
@@ -219,17 +244,72 @@ const ExplorePage = ({ headerHeight }) => {
                       <Radar data={getRadarData()} />
                     </div>
                   )}
-                  {activeTab === 'Communications' && <div><h3>Communications Details</h3><p>Details about Communications sector.</p></div>}
-                  {activeTab === 'Defence' && <div><h3>Defence Details</h3><p>Details about Defence sector.</p></div>}
-                  {activeTab === 'Energy' && <div><h3>Energy Details</h3><p>Details about Energy sector.</p></div>}
-                  {activeTab === 'Finance' && <div><h3>Finance Details</h3><p>Details about Finance sector.</p></div>}
-                  {activeTab === 'Food & Agriculture' && <div><h3>Food & Agriculture Details</h3><p>Details about Food & Agriculture sector.</p></div>}
-                  {activeTab === 'Healthcare' && <div><h3>Healthcare Details</h3><p>Details about Healthcare sector.</p></div>}
-                  {activeTab === 'Transport' && <div><h3>Transport Details</h3><p>Details about Transport sector.</p></div>}
-                  {activeTab === 'Water' && <div><h3>Water Details</h3><p>Details about Water sector.</p></div>}
-                  {activeTab === 'Waste Management' && <div><h3>Waste Management Details</h3><p>Details about Waste Management sector.</p></div>}
-                  {activeTab === 'Emergency Services' && <div><h3>Emergency Services Details</h3><p>Details about Emergency Services sector.</p></div>}
-                  {activeTab === 'Information Technology' && <div><h3>Information Technology Details</h3><p>Details about Information Technology sector.</p></div>}
+                  {activeTab === 'Communications' && (
+                    <div>
+                      <h3>Communications Details</h3>
+                      {getIndustryRadarData('communications') ? <Radar data={getIndustryRadarData('communications')} /> : <p>Data not available for Communications.</p>}
+                    </div>
+                  )}
+                  {activeTab === 'Defence' && (
+                    <div>
+                      <h3>Defence Details</h3>
+                      {getIndustryRadarData('defence') ? <Radar data={getIndustryRadarData('defence')} /> : <p>Data not available for Defence.</p>}
+                    </div>
+                  )}
+                  {activeTab === 'Energy' && (
+                    <div>
+                      <h3>Energy Details</h3>
+                      {getIndustryRadarData('energy') ? <Radar data={getIndustryRadarData('energy')} /> : <p>Data not available for Energy.</p>}
+                    </div>
+                  )}
+                  {activeTab === 'Finance' && (
+                    <div>
+                      <h3>Finance Details</h3>
+                      {getIndustryRadarData('finance') ? <Radar data={getIndustryRadarData('finance')} /> : <p>Data not available for Finance.</p>}
+                    </div>
+                  )}
+                  {activeTab === 'Food & Agriculture' && (
+                    <div>
+                      <h3>Food & Agriculture Details</h3>
+                      {getIndustryRadarData('food_agriculture') ? <Radar data={getIndustryRadarData('food_agriculture')} /> : <p>Data not available for Food & Agriculture.</p>}
+                    </div>
+                  )}
+                  {activeTab === 'Healthcare' && (
+                    <div>
+                      <h3>Healthcare Details</h3>
+                      {getIndustryRadarData('healthcare') ? <Radar data={getIndustryRadarData('healthcare')} /> : <p>Data not available for Healthcare.</p>}
+                    </div>
+                  )}
+                  {activeTab === 'Transport' && (
+                    <div>
+                      <h3>Transport Details</h3>
+                      {getIndustryRadarData('transport') ? <Radar data={getIndustryRadarData('transport')} /> : <p>Data not available for Transport.</p>}
+                    </div>
+                  )}
+                  {activeTab === 'Water' && (
+                    <div>
+                      <h3>Water Details</h3>
+                      {getIndustryRadarData('water') ? <Radar data={getIndustryRadarData('water')} /> : <p>Data not available for Water.</p>}
+                    </div>
+                  )}
+                  {activeTab === 'Waste Management' && (
+                    <div>
+                      <h3>Waste Management Details</h3>
+                      {getIndustryRadarData('waste_management') ? <Radar data={getIndustryRadarData('waste_management')} /> : <p>Data not available for Waste Management.</p>}
+                    </div>
+                  )}
+                  {activeTab === 'Emergency Services' && (
+                    <div>
+                      <h3>Emergency Services Details</h3>
+                      {getIndustryRadarData('emergency_services') ? <Radar data={getIndustryRadarData('emergency_services')} /> : <p>Data not available for Emergency Services.</p>}
+                    </div>
+                  )}
+                  {activeTab === 'Information Technology' && (
+                    <div>
+                      <h3>Information Technology Details</h3>
+                      {getIndustryRadarData('information_technology') ? <Radar data={getIndustryRadarData('information_technology')} /> : <p>Data not available for Information Technology.</p>}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
