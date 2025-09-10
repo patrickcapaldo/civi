@@ -16,6 +16,7 @@ const ExplorePage = ({ headerHeight }) => {
   const [civiData, setCiviData] = useState(null);
   const [countryCodeMap, setCountryCodeMap] = useState(null);
   const [selectedCountry, setSelectedCountry] = useState(null);
+  const [activeTab, setActiveTab] = useState('Overview');
   const [windowDimensions, setWindowDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
 
   const [projection] = useState(() => 
@@ -51,6 +52,13 @@ const ExplorePage = ({ headerHeight }) => {
   }, []);
 
   // Main D3 rendering effect
+  useEffect(() => {
+    document.body.classList.add('explore-page-active');
+    return () => {
+      document.body.classList.remove('explore-page-active');
+    };
+  }, []);
+
   useEffect(() => {
     if (!worldData || !civiData || !countryCodeMap || headerHeight === 0) return; // Wait for headerHeight
 
@@ -182,12 +190,48 @@ const ExplorePage = ({ headerHeight }) => {
       }}></div>
 
       {selectedCountry && (
-        <div className='modal-overlay' onClick={handleCloseModal}>
+        <div className='modal-overlay' style={{ paddingTop: `${headerHeight + 20}px` }} onClick={handleCloseModal}>
           <div className='modal' onClick={(e) => e.stopPropagation()}>
             <button className='modal-close' onClick={handleCloseModal}>&times;</button>
-            <h2>{civiData[countryCodeMap[selectedCountry.id]].name}</h2>
-            <div className='modal-content'>
-                <Radar data={getRadarData()} />
+            <div className='modal-header'>
+              <h2>{civiData[countryCodeMap[selectedCountry.id]].name}</h2>
+            </div>
+            <div className='modal-body-content'>
+              <div className='modal-inner-content'>
+                <div className='tabs'>
+                  <button className={`tab-button ${activeTab === 'Overview' ? 'active' : ''}`} onClick={() => setActiveTab('Overview')}>Overview</button>
+                  <button className={`tab-button ${activeTab === 'Communications' ? 'active' : ''}`} onClick={() => setActiveTab('Communications')}>Communications</button>
+                  <button className={`tab-button ${activeTab === 'Defence' ? 'active' : ''}`} onClick={() => setActiveTab('Defence')}>Defence</button>
+                  <button className={`tab-button ${activeTab === 'Energy' ? 'active' : ''}`} onClick={() => setActiveTab('Energy')}>Energy</button>
+                  <button className={`tab-button ${activeTab === 'Finance' ? 'active' : ''}`} onClick={() => setActiveTab('Finance')}>Finance</button>
+                  <button className={`tab-button ${activeTab === 'Food & Agriculture' ? 'active' : ''}`} onClick={() => setActiveTab('Food & Agriculture')}>Food & Agriculture</button>
+                  <button className={`tab-button ${activeTab === 'Healthcare' ? 'active' : ''}`} onClick={() => setActiveTab('Healthcare')}>Healthcare</button>
+                  <button className={`tab-button ${activeTab === 'Transport' ? 'active' : ''}`} onClick={() => setActiveTab('Transport')}>Transport</button>
+                  <button className={`tab-button ${activeTab === 'Water' ? 'active' : ''}`} onClick={() => setActiveTab('Water')}>Water</button>
+                  <button className={`tab-button ${activeTab === 'Waste Management' ? 'active' : ''}`} onClick={() => setActiveTab('Waste Management')}>Waste Management</button>
+                  <button className={`tab-button ${activeTab === 'Emergency Services' ? 'active' : ''}`} onClick={() => setActiveTab('Emergency Services')}>Emergency Services</button>
+                  <button className={`tab-button ${activeTab === 'Information Technology' ? 'active' : ''}`} onClick={() => setActiveTab('Information Technology')}>Information Technology</button>
+                </div>
+                <div className='tab-content'>
+                  {activeTab === 'Overview' && (
+                    <div>
+                      <h3>Overview</h3>
+                      <Radar data={getRadarData()} />
+                    </div>
+                  )}
+                  {activeTab === 'Communications' && <div><h3>Communications Details</h3><p>Details about Communications sector.</p></div>}
+                  {activeTab === 'Defence' && <div><h3>Defence Details</h3><p>Details about Defence sector.</p></div>}
+                  {activeTab === 'Energy' && <div><h3>Energy Details</h3><p>Details about Energy sector.</p></div>}
+                  {activeTab === 'Finance' && <div><h3>Finance Details</h3><p>Details about Finance sector.</p></div>}
+                  {activeTab === 'Food & Agriculture' && <div><h3>Food & Agriculture Details</h3><p>Details about Food & Agriculture sector.</p></div>}
+                  {activeTab === 'Healthcare' && <div><h3>Healthcare Details</h3><p>Details about Healthcare sector.</p></div>}
+                  {activeTab === 'Transport' && <div><h3>Transport Details</h3><p>Details about Transport sector.</p></div>}
+                  {activeTab === 'Water' && <div><h3>Water Details</h3><p>Details about Water sector.</p></div>}
+                  {activeTab === 'Waste Management' && <div><h3>Waste Management Details</h3><p>Details about Waste Management sector.</p></div>}
+                  {activeTab === 'Emergency Services' && <div><h3>Emergency Services Details</h3><p>Details about Emergency Services sector.</p></div>}
+                  {activeTab === 'Information Technology' && <div><h3>Information Technology Details</h3><p>Details about Information Technology sector.</p></div>}
+                </div>
+              </div>
             </div>
           </div>
         </div>
