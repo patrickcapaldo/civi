@@ -36,15 +36,17 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
-        <AppBar ref={appBarRef} position="static">
+        <AppBar ref={appBarRef} position="fixed">
           <Toolbar>
             <NavBar /> {/* NavBar content is now inside AppBar/Toolbar */}
           </Toolbar>
         </AppBar>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/explore" element={<ExplorePage headerHeight={headerHeight} />} />
-        </Routes>
+        <div style={{ paddingTop: `${headerHeight}px` }}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/explore" element={<ExplorePage headerHeight={headerHeight} />} />
+          </Routes>
+        </div>
       </Router>
     </ThemeProvider>
   );
