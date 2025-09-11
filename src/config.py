@@ -71,7 +71,7 @@ INDICATORS = {
             },
             {
                 "key": "ag_insurance_coverage",
-                "description": "Agricultural insurance coverage (proxy via World Bank AgRisk indicators)",
+                "description": "Agricultural insurance coverage (Direct indicator not available, placeholder used)",
                 "source": "World Bank",
                 "weight": 0.4,
                 "higher_is_better": True,
@@ -131,7 +131,7 @@ INDICATORS = {
         "resilience": [
             {
                 "key": "electricity_outage_duration",
-                "description": "Average annual outage duration (SAIDI)",
+                "description": "Average annual outage duration (SAIDI - No direct WB indicator, placeholder used)",
                 "source": "World Bank",
                 "weight": 0.5,
                 "higher_is_better": False,
@@ -170,7 +170,7 @@ INDICATORS = {
             },
             {
                 "key": "electricity_cost_share_income",
-                "description": "Household electricity cost as % of income",
+                "description": "Household electricity cost as % of income (No direct WB indicator, placeholder used)",
                 "source": "OECD/World Bank",
                 "weight": 0.5,
                 "higher_is_better": False,
@@ -415,7 +415,7 @@ INDICATORS = {
         "sustainability": [
             {
                 "key": "recycling_rate",
-                "description": "Recycling rate (% of total waste)",
+                "description": "Recycling rate (No direct WB indicator, placeholder used)",
                 "source": "World Bank",
                 "weight": 0.5,
                 "higher_is_better": True,
@@ -431,14 +431,14 @@ INDICATORS = {
         "effectiveness": [
             {
                 "key": "waste_per_capita",
-                "description": "Waste generation per capita (kg/day)",
+                "description": "Waste generation per capita (kg/day) (No direct WB indicator, placeholder used)",
                 "source": "World Bank",
                 "weight": 0.5,
                 "higher_is_better": False,
             },
             {
                 "key": "waste_management_cost_gdp",
-                "description": "Waste management cost (% of GDP)",
+                "description": "Waste management cost (% of GDP) (General expense indicator used as proxy)",
                 "source": "World Bank",
                 "weight": 0.5,
                 "higher_is_better": False,
@@ -584,14 +584,14 @@ INDICATORS = {
         "autonomy": [
             {
                 "key": "foreign_debt_gdp",
-                "description": "Foreign debt as % of GDP",
+                "description": "External debt stocks (% of GNI)",
                 "source": "World Bank/IMF",
                 "weight": 0.5,
                 "higher_is_better": False,
             },
             {
                 "key": "fx_reserves_import_cover",
-                "description": "Foreign exchange reserves (months of import cover)",
+                "description": "Foreign exchange reserves (months of import cover) (IMF API connection issues, manual data required)",
                 "source": "IMF",
                 "weight": 0.5,
                 "higher_is_better": True,
@@ -600,14 +600,14 @@ INDICATORS = {
         "resilience": [
             {
                 "key": "bank_capital_adequacy",
-                "description": "Bank capital adequacy ratio (Tier 1)",
+                "description": "Bank capital adequacy ratio (Tier 1) (IMF API connection issues, manual data required)",
                 "source": "IMF/National Regulators",
                 "weight": 0.5,
                 "higher_is_better": True,
             },
             {
                 "key": "financial_sector_concentration",
-                "description": "Financial sector concentration (HHI of top 5 banks)",
+                "description": "Financial sector concentration (HHI of top 5 banks) (IMF API connection issues, manual data required)",
                 "source": "IMF",
                 "weight": 0.5,
                 "higher_is_better": False,
@@ -616,14 +616,14 @@ INDICATORS = {
         "sustainability": [
             {
                 "key": "green_finance_investment",
-                "description": "Green finance investment (% of total investment)",
+                "description": "Green finance investment (% of total investment) (UNEP API not investigated, manual data required)",
                 "source": "UNEP/Industry Data",
                 "weight": 0.5,
                 "higher_is_better": True,
             },
             {
                 "key": "financial_inclusion_rate",
-                "description": "Financial inclusion rate (% adults with bank account)",
+                "description": "Account ownership at a financial institution or with a mobile-money-service provider (% of population ages 15+)",
                 "source": "World Bank",
                 "weight": 0.5,
                 "higher_is_better": True,
@@ -651,7 +651,7 @@ INDICATORS = {
         "autonomy": [
             {
                 "key": "domestic_transport_network_density",
-                "description": "Domestic transport network density (km/sq km)",
+                "description": "Domestic transport network density (Rail lines only, km/sq km)",
                 "source": "World Bank",
                 "weight": 0.5,
                 "higher_is_better": True,
@@ -683,7 +683,7 @@ INDICATORS = {
         "sustainability": [
             {
                 "key": "public_transport_ridership",
-                "description": "Public transport ridership (trips per capita)",
+                "description": "Public transport ridership (Rail passengers only, trips per capita)",
                 "source": "World Bank",
                 "weight": 0.5,
                 "higher_is_better": True,
@@ -791,7 +791,7 @@ DATA_SOURCES = {
     "who": "https://ghoapi.azureedge.net/api",
     "iea": "https://api.iea.org", # Requires API key for most data
     "itu": "https://api.itu.int",
-    "imf": "https://dataservices.imf.org",
+    "imf": "http://dataservices.imf.org/REST/SDMX_JSON.svc",
     "oecd": "https://stats.oecd.org/sdmx-json/data",
     "un_comtrade": "https://comtrade.un.org/api/v1/",
     "un_sdg": "https://unstats.un.org/sdgapi/v1/sdg/",

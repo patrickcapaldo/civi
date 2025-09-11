@@ -215,7 +215,7 @@ const ExplorePage = ({ headerHeight }) => {
       }}></div>
 
       {selectedCountry && (
-        <div className='modal-overlay' style={{ paddingTop: `${headerHeight + 20}px` }} onClick={handleCloseModal}>
+        <div className='modal-overlay' style={{ '--header-height': `${headerHeight}px` }} onClick={handleCloseModal}>
           <div className='modal' onClick={(e) => e.stopPropagation()}>
             <button className='modal-close' onClick={handleCloseModal}>&times;</button>
             <div className='modal-header'>
