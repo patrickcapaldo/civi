@@ -22,7 +22,7 @@ body.explore-page-active {
     max-width: 1200px; /* Increased width */
     height: calc(100vh - var(--header-height) - 40px); /* Use available height below header */
     margin: 20px auto; /* Ensure a defined height for flex children */
-    overflow: hidden; /* Changed to hidden, as content will be scrollable */
+    overflow: auto; /* Changed to hidden, as content will be scrollable */
     position: relative;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     color: white; /* White text for readability */
@@ -55,13 +55,13 @@ body.explore-page-active {
     flex: 1; /* Take remaining vertical space */
     display: flex; /* Enable flexbox for inner content */
     flex-direction: column; /* Stack children vertically */
-    overflow: hidden; /* Hide overflow for this container */
+    overflow-y: auto; /* Allow children to manage their own overflow */
 }
 
 .modal-inner-content {
     display: flex;
     flex: 1; /* Take remaining vertical space */
-    overflow: hidden; /* Hide overflow for this container */
+    overflow-y: auto; /* Hide overflow for this container */
 }
 
 .tabs {
@@ -73,6 +73,7 @@ body.explore-page-active {
     margin-right: 15px;
     overflow-y: auto; /* Make tabs scrollable */
     flex-shrink: 0; /* Prevent shrinking */
+    height: 100%; /* Ensure height for scrolling */
 }
 
 .tab-button {
@@ -103,4 +104,5 @@ body.explore-page-active {
     flex: 1; /* Take remaining width */
     padding-left: 15px;
     overflow-y: auto; /* Make content scrollable */
+    height: 100%; /* Ensure height for scrolling */
 }

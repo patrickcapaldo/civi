@@ -23,23 +23,37 @@ const ExplorePage = ({ headerHeight }) => {
     geoOrthographic().clipAngle(90)
   );
 
-  // Fetch all data sources
+  // Fetch initial data sources (world map and country codes)
   useEffect(() => {
     Promise.all([
       d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json'),
-      d3.json('/data/civi.json'),
-      d3.json('/data/country-codes.json')
-    ]).then(([world, civi, codes]) => {
+      d3.json('./country-codes.json')
+    ]).then(([world, codes]) => {
       setWorldData(topojson.feature(world, world.objects.countries));
-      setCiviData(civi.countries);
       const codeMap = codes.reduce((acc, d) => {
-        const numericId = parseInt(d['country-code'], 10).toString();
+        const numericId = parseInt(d['country-code'], 10);
         acc[numericId] = d['alpha-3'];
         return acc;
       }, {});
       setCountryCodeMap(codeMap);
-    }).catch(error => console.error("Error loading data:", error));
+    }).catch(error => console.error("Error loading initial data:", error));
   }, []);
+
+  // Effect to fetch specific country data when selectedCountry changes
+  useEffect(() => {
+    if (selectedCountry) {
+      const alpha3 = countryCodeMap[selectedCountry.id];
+      if (alpha3) {
+        d3.json(`/civi_modular/${alpha3}.json`)
+          .then(data => {
+            setCiviData(data); // civiData now holds only the selected country's data
+          })
+          .catch(error => console.error(`Error loading data for ${alpha3}:`, error));
+      }
+    } else {
+      setCiviData(null); // Clear civiData when no country is selected
+    }
+  }, [selectedCountry, countryCodeMap]);
 
   // Effect for window resize
   useEffect(() => {
@@ -60,7 +74,7 @@ const ExplorePage = ({ headerHeight }) => {
   }, []);
 
   useEffect(() => {
-    if (!worldData || !civiData || !countryCodeMap || headerHeight === 0) return; // Wait for headerHeight
+    if (!worldData || !countryCodeMap || headerHeight === 0) return; // Wait for headerHeight
 
     const svgWidth = windowDimensions.width;
     const svgHeight = windowDimensions.height - headerHeight; // SVG height is remaining space
@@ -98,7 +112,7 @@ const ExplorePage = ({ headerHeight }) => {
       .attr('class', 'country')
       .attr('fill', d => {
           const alpha3 = getAlpha3(d);
-          return selectedCountry === d ? '#ff9800' : (alpha3 && civiData[alpha3] ? '#ccc' : '#666');
+          return selectedCountry === d ? '#ff9800' : (civiData ? '#ccc' : '#666');
       })
       .attr('stroke', '#1a1a1a')
       .attr('stroke-width', 0.5);
@@ -108,7 +122,7 @@ const ExplorePage = ({ headerHeight }) => {
       .on('mouseover', (event, d) => {
         if (selectedCountry !== d) d3.select(event.currentTarget).attr('fill', '#ff9800');
         const alpha3 = getAlpha3(d);
-        const countryName = (alpha3 && civiData[alpha3]?.name) || d.properties.name || 'N/A';
+        const countryName = civiData?.name || d.properties.name || 'N/A';
         tooltip
           .style('opacity', 1)
           .html(countryName);
@@ -121,13 +135,17 @@ const ExplorePage = ({ headerHeight }) => {
       .on('mouseout', (event, d) => {
         if (selectedCountry !== d) {
             const alpha3 = getAlpha3(d);
-            d3.select(event.currentTarget).attr('fill', alpha3 && civiData[alpha3] ? '#ccc' : '#666');
+            let fillColor = '#666'; // Default color
+            if (alpha3 && civiData && civiData[alpha3]) {
+                fillColor = '#ccc';
+            }
+            d3.select(event.currentTarget).attr('fill', fillColor);
         }
         tooltip.style('opacity', 0);
       })
       .on('click', (event, d) => {
         const alpha3 = getAlpha3(d);
-        if (alpha3 && civiData[alpha3]) {
+        if (alpha3) {
             setSelectedCountry(selectedCountry === d ? null : d);
         }
       });
@@ -150,10 +168,9 @@ const ExplorePage = ({ headerHeight }) => {
   const handleCloseModal = () => setSelectedCountry(null);
 
   const getRadarData = () => {
-      if (!selectedCountry) return {};
-      const alpha3 = countryCodeMap[selectedCountry.id];
-      const countryData = civiData[alpha3];
-      if (!countryData) return {};
+      if (!selectedCountry || !civiData || !civiData.scores) return null;
+
+      const countryData = civiData;
 
       return {
           labels: ['Autonomy', 'Resilience', 'Sustainability', 'Effectiveness'],
@@ -173,11 +190,9 @@ const ExplorePage = ({ headerHeight }) => {
   }
 
   const getIndustryRadarData = (industryKey) => {
-      if (!selectedCountry) return {};
-      const alpha3 = countryCodeMap[selectedCountry.id];
-      const countryData = civiData[alpha3];
-      if (!countryData || !countryData.industries || !countryData.industries[industryKey]) return null; // Return null if data not available
+      if (!selectedCountry || !civiData || !civiData.industries || !civiData.industries[industryKey] || !civiData.industries[industryKey].scores) return null;
 
+      const countryData = civiData;
       const industryData = countryData.industries[industryKey];
 
       return {
@@ -196,6 +211,16 @@ const ExplorePage = ({ headerHeight }) => {
           }]
       };
   }
+
+  const IndustryRadarChart = ({ industryKey, industryName }) => {
+    const industryData = getIndustryRadarData(industryKey);
+    return (
+        <div>
+            <h3>{industryName} Details</h3>
+            {industryData ? <Radar data={industryData} /> : <p>Data not available for {industryName}.</p>}
+        </div>
+    );
+  };
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
@@ -219,7 +244,7 @@ const ExplorePage = ({ headerHeight }) => {
           <div className='modal' onClick={(e) => e.stopPropagation()}>
             <button className='modal-close' onClick={handleCloseModal}>&times;</button>
             <div className='modal-header'>
-              <h2>{civiData[countryCodeMap[selectedCountry.id]].name}</h2>
+              <h2>{civiData?.name || selectedCountry?.properties?.name}</h2>
             </div>
             <div className='modal-body-content'>
               <div className='modal-inner-content'>
@@ -238,78 +263,26 @@ const ExplorePage = ({ headerHeight }) => {
                   <button className={`tab-button ${activeTab === 'Information Technology' ? 'active' : ''}`} onClick={() => setActiveTab('Information Technology')}>Information Technology</button>
                 </div>
                 <div className='tab-content'>
-                  {activeTab === 'Overview' && (
-                    <div>
-                      <h3>Overview</h3>
-                      <Radar data={getRadarData()} />
-                    </div>
-                  )}
-                  {activeTab === 'Communications' && (
-                    <div>
-                      <h3>Communications Details</h3>
-                      {getIndustryRadarData('communications') ? <Radar data={getIndustryRadarData('communications')} /> : <p>Data not available for Communications.</p>}
-                    </div>
-                  )}
-                  {activeTab === 'Defence' && (
-                    <div>
-                      <h3>Defence Details</h3>
-                      {getIndustryRadarData('defence') ? <Radar data={getIndustryRadarData('defence')} /> : <p>Data not available for Defence.</p>}
-                    </div>
-                  )}
-                  {activeTab === 'Energy' && (
-                    <div>
-                      <h3>Energy Details</h3>
-                      {getIndustryRadarData('energy') ? <Radar data={getIndustryRadarData('energy')} /> : <p>Data not available for Energy.</p>}
-                    </div>
-                  )}
-                  {activeTab === 'Finance' && (
-                    <div>
-                      <h3>Finance Details</h3>
-                      {getIndustryRadarData('finance') ? <Radar data={getIndustryRadarData('finance')} /> : <p>Data not available for Finance.</p>}
-                    </div>
-                  )}
-                  {activeTab === 'Food & Agriculture' && (
-                    <div>
-                      <h3>Food & Agriculture Details</h3>
-                      {getIndustryRadarData('food_agriculture') ? <Radar data={getIndustryRadarData('food_agriculture')} /> : <p>Data not available for Food & Agriculture.</p>}
-                    </div>
-                  )}
-                  {activeTab === 'Healthcare' && (
-                    <div>
-                      <h3>Healthcare Details</h3>
-                      {getIndustryRadarData('healthcare') ? <Radar data={getIndustryRadarData('healthcare')} /> : <p>Data not available for Healthcare.</p>}
-                    </div>
-                  )}
-                  {activeTab === 'Transport' && (
-                    <div>
-                      <h3>Transport Details</h3>
-                      {getIndustryRadarData('transport') ? <Radar data={getIndustryRadarData('transport')} /> : <p>Data not available for Transport.</p>}
-                    </div>
-                  )}
-                  {activeTab === 'Water' && (
-                    <div>
-                      <h3>Water Details</h3>
-                      {getIndustryRadarData('water') ? <Radar data={getIndustryRadarData('water')} /> : <p>Data not available for Water.</p>}
-                    </div>
-                  )}
-                  {activeTab === 'Waste Management' && (
-                    <div>
-                      <h3>Waste Management Details</h3>
-                      {getIndustryRadarData('waste_management') ? <Radar data={getIndustryRadarData('waste_management')} /> : <p>Data not available for Waste Management.</p>}
-                    </div>
-                  )}
-                  {activeTab === 'Emergency Services' && (
-                    <div>
-                      <h3>Emergency Services Details</h3>
-                      {getIndustryRadarData('emergency_services') ? <Radar data={getIndustryRadarData('emergency_services')} /> : <p>Data not available for Emergency Services.</p>}
-                    </div>
-                  )}
-                  {activeTab === 'Information Technology' && (
-                    <div>
-                      <h3>Information Technology Details</h3>
-                      {getIndustryRadarData('information_technology') ? <Radar data={getIndustryRadarData('information_technology')} /> : <p>Data not available for Information Technology.</p>}
-                    </div>
-                  )}
+                  {activeTab === 'Overview' && (() => {
+                    const overviewData = getRadarData();
+                    return (
+                        <div>
+                            <h3>Overview</h3>
+                            {overviewData ? <Radar data={overviewData} /> : <p>Data not available for Overview.</p>}
+                        </div>
+                    );
+                  })()}
+                  {activeTab === 'Communications' && <IndustryRadarChart industryKey="communications" industryName="Communications" />}
+                  {activeTab === 'Defence' && <IndustryRadarChart industryKey="defence" industryName="Defence" />}
+                  {activeTab === 'Energy' && <IndustryRadarChart industryKey="energy" industryName="Energy" />}
+                  {activeTab === 'Finance' && <IndustryRadarChart industryKey="finance" industryName="Finance" />}
+                  {activeTab === 'Food & Agriculture' && <IndustryRadarChart industryKey="food_agriculture" industryName="Food & Agriculture" />}
+                  {activeTab === 'Healthcare' && <IndustryRadarChart industryKey="healthcare" industryName="Healthcare" />}
+                  {activeTab === 'Transport' && <IndustryRadarChart industryKey="transport" industryName="Transport" />}
+                  {activeTab === 'Water' && <IndustryRadarChart industryKey="water" industryName="Water" />}
+                  {activeTab === 'Waste Management' && <IndustryRadarChart industryKey="waste_management" industryName="Waste Management" />}
+                  {activeTab === 'Emergency Services' && <IndustryRadarChart industryKey="emergency_services" industryName="Emergency Services" />}
+                  {activeTab === 'Information Technology' && <IndustryRadarChart industryKey="information_technology" industryName="Information Technology" />}
                 </div>
               </div>
             </div>
