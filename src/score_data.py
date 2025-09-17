@@ -68,7 +68,7 @@ def score_all():
                             total_weight += indicator_weight
                 
                 if total_weight > 0:
-                    industry_pillar_scores[pillar] = pillar_score / total_weight
+                    industry_pillar_scores[pillar] = round(pillar_score / total_weight, 2)
                 else:
                     industry_pillar_scores[pillar] = np.nan # No data for this pillar
 
@@ -82,7 +82,7 @@ def score_all():
             
             if industry_total_pillar_weight > 0:
                 country_industry_scores[industry] = {"scores": {p: industry_pillar_scores.get(p, np.nan) for p in PILLARS}}
-                country_industry_scores[industry]["scores"]["civi_index"] = overall_industry_score / industry_total_pillar_weight
+                country_industry_scores[industry]["scores"]["civi_index"] = round(overall_industry_score / industry_total_pillar_weight, 2)
             else:
                 country_industry_scores[industry] = {"scores": {p: np.nan for p in PILLARS}}
                 country_industry_scores[industry]["scores"]["civi_index"] = np.nan
@@ -92,6 +92,11 @@ def score_all():
                 for pillar, score in industry_pillar_scores.items():
                     if pd.notna(score):
                         country_overall_scores[pillar] += score * INDUSTRY_WEIGHTS.get(industry, 1.0 / len(INDUSTRIES))
+
+        # Round overall pillar scores for the country
+        for pillar in PILLARS:
+            if pd.notna(country_overall_scores[pillar]):
+                country_overall_scores[pillar] = round(country_overall_scores[pillar], 2)
 
         # Calculate overall country CIVI index
         overall_civi_index = 0
@@ -104,7 +109,7 @@ def score_all():
                 overall_civi_total_weight += 1
         
         if overall_civi_total_weight > 0:
-            country_overall_scores["civi_index"] = overall_civi_index / overall_civi_total_weight
+            country_overall_scores["civi_index"] = round(overall_civi_index / overall_civi_total_weight, 2)
         else:
             country_overall_scores["civi_index"] = np.nan
 

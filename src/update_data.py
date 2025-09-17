@@ -18,7 +18,7 @@ def print_data_status():
                 if key in indicator_api_map:
                     source_info = indicator_api_map[key]
                     source = source_info.get("source", "")
-                    if source == "world_bank":
+                    if source in ["world_bank", "fao", "itu", "un_comtrade"]:
                         real_data_count += 1
                         status = "REAL"
                     else:

@@ -79,7 +79,7 @@ indicator_api_map = {
         "strategic_reserves_days": {"source": "iea"}, # IEA
         "renewables_share_percent": {"source": "iea"}, # IEA
         "carbon_intensity": {"source": "iea"}, # IEA
-        "ict_equipment_production": {"source": "un_comtrade"}, # UN Comtrade
+        "ict_equipment_production": {"source": "un_comtrade", "type": "C", "freq": "A", "px": "HS", "rg": "all", "cc": "TOTAL"}, # Placeholder commodity code
         "e_waste_recycling_rate": {"source": "un_e_waste"}, # UN e-waste monitor
         "domestic_pharma_production": {"source": "who_unido"}, # WHO/UNIDO
         "wastewater_treatment_percent": {"source": "un_sdg"}, # UN SDG database
@@ -95,9 +95,9 @@ indicator_api_map = {
         "data_center_redundancy": {"source": "industry_data"}, # Industry Data
         "it_energy_efficiency": {"source": "industry_data"}, # Industry Data
         "fx_reserves_import_cover": {"source": "imf", "code": "FI.RES.TOTL.MO"}, # IMF
-        "bank_capital_adequacy": {"source": "imf"}, # IMF
-        "financial_sector_concentration": {"source": "imf"}, # IMF
-        "green_finance_investment": {"source": "unep"}, # UNEP
+        "bank_capital_adequacy": {"source": "imf", "code": "FSI.B.K.T1.RW.ZS"}, # Placeholder code
+        "financial_sector_concentration": {"source": "imf", "code": "FSI.B.CONC.HHI"}, # Placeholder code
+        "green_finance_investment": {"source": "unep", "code": "UNEP.FIN.GREEN.INVEST"}, # Placeholder code
         "domestic_defence_production": {"source": "sipri"}, # SIPRI
         "cyber_defence_capability": {"source": "gci"}, # GCI
         "military_environmental_impact": {"source": "national_reports"}, # National Reports
@@ -106,8 +106,9 @@ indicator_api_map = {
         "conflict_related_deaths": {"source": "ucdp"}, # UCDP
         "commute_time": {"source": "national_reports"}, # National Reports
         "e_government_index": {"source": "un"}, # UN
-        "transport_network_redundancy": {"source": "oecd"}, # OECD
+        "transport_network_redundancy": {"source": "oecd", "code": "OECD.TRANSPORT.REDUNDANCY"}, # Placeholder code
         "disruption_recovery_time": {"source": "national_reports"}, # National Reports
+        "waste_import_export_balance": {"source": "un_comtrade", "type": "C", "freq": "A", "px": "HS", "rg": "all", "cc": "TOTAL"}, # Placeholder commodity code
     }
 
 def _save_json(data, filepath):
@@ -138,27 +139,67 @@ def _fetch_world_bank_data(indicator_key, wb_indicator_code):
         print(f"  Error fetching {indicator_key} from World Bank: {e}")
         return False
 
-def _fetch_fao_data(indicator_key, fao_domain_code, fao_element_code):
+def _fetch_fao_data(indicator_key, fao_domain_code, fao_element_code, countries):
     """Fetches data from FAOSTAT API."""
     print(f"  Fetching FAO data for {indicator_key} (Domain: {fao_domain_code}, Element: {fao_element_code})...")
-    # FAOSTAT API is complex and requires specific query parameters
-    # For now, we'll use dummy data for FAO as the real API integration is complex
-    return False # Always return False to trigger dummy data generation
-
-def _fetch_itu_data(indicator_key, itu_indicator_id):
-    """Fetches data from ITU API."""
-    print(f"  Fetching ITU data for {indicator_key} ({itu_indicator_id})...")
-    # ITU API structure is not directly exposed in DATA_SOURCES, this is a placeholder
-    # You would typically need to find the specific endpoint for the indicator
-    url = f"{DATA_SOURCES['itu']}/data/{itu_indicator_id}" # Placeholder URL
-    params = {"format": "json", "time": "2015;2020"}
+    url = f"{DATA_SOURCES['fao']}/en/data/{fao_domain_code}"
+    params = {
+        "area": ",".join(countries), # Assuming 3-letter ISO codes work
+        "element": fao_element_code,
+        "year": "2015-2020", # Fetch data for a range of years
+        "format": "json"
+    }
     try:
         response = requests.get(url, params=params)
         response.raise_for_status()
         data = response.json()
-        if data:
+
+        if data and data.get("data"):
+            # FAOSTAT API response structure can be complex.
+            # This is a simplified extraction assuming 'data' key holds a list of records.
+            # Each record is expected to have 'Area', 'Year', and 'Value'.
+            extracted_data = []
+            for record in data["data"]:
+                extracted_data.append({
+                    "country": record.get("AreaCode"), # Assuming AreaCode is the country identifier
+                    "year": record.get("Year"),
+                    "value": record.get("Value")
+                })
+            filepath = os.path.join(RAW_DATA_DIR, "fao", f"{indicator_key}.json")
+            _save_json(extracted_data, filepath)
+            print(f"  Saved FAO data for {indicator_key} to {filepath}")
+            return True
+        else:
+            print(f"  No real data found for {indicator_key} from FAOSTAT.")
+            return False
+    except requests.exceptions.RequestException as e:
+        print(f"  Error fetching {indicator_key} from FAOSTAT: {e}")
+        return False
+
+def _fetch_itu_data(indicator_key, itu_indicator_id, countries):
+    """Fetches data from ITU API."""
+    print(f"  Fetching ITU data for {indicator_key} ({itu_indicator_id})...")
+    url = f"{DATA_SOURCES['itu']}/data/download/byid/{itu_indicator_id}"
+    params = {
+        "format": "json",
+        "time": "2015;2020",
+        "countries": ",".join(countries) # Assuming 3-letter ISO codes work
+    }
+    try:
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        data = response.json()
+
+        if data and data.get("data"):
+            extracted_data = []
+            for record in data["data"]:
+                extracted_data.append({
+                    "country": record.get("CountryCode"), # Assuming CountryCode is the country identifier
+                    "year": record.get("Year"),
+                    "value": record.get("Value")
+                })
             filepath = os.path.join(RAW_DATA_DIR, "itu", f"{indicator_key}.json")
-            _save_json(data, filepath)
+            _save_json(extracted_data, filepath)
             print(f"  Saved ITU data for {indicator_key} to {filepath}")
             return True
         else:
@@ -166,6 +207,314 @@ def _fetch_itu_data(indicator_key, itu_indicator_id):
             return False
     except requests.exceptions.RequestException as e:
         print(f"  Error fetching {indicator_key} from ITU: {e}")
+        return False
+
+def _fetch_un_comtrade_data(indicator_key, un_comtrade_params, countries):
+    """Fetches data from UN Comtrade API."""
+    print(f"  Fetching UN Comtrade data for {indicator_key}...")
+    url = DATA_SOURCES['un_comtrade']
+    params = {
+        "type": un_comtrade_params.get("type", "C"), # Default to goods
+        "freq": un_comtrade_params.get("freq", "A"), # Default to annual
+        "px": un_comtrade_params.get("px", "HS"),   # Default to Harmonized System
+        "ps": "2015,2016,2017,2018,2019,2020", # Years
+        "r": ",".join(countries), # Reporter countries
+        "p": "all", # Partner countries (fetch all partners for now)
+        "rg": un_comtrade_params.get("rg", "all"), # Trade flow (all for now)
+        "cc": un_comtrade_params.get("cc", "TOTAL"), # Commodity code (TOTAL for now)
+        "max": 50000, # Max records
+        "format": "json"
+    }
+    try:
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        data = response.json()
+
+        if data and data.get("dataset"):
+            extracted_data = []
+            for record in data["dataset"]:
+                extracted_data.append({
+                    "country": record.get("reporterCode"),
+                    "year": record.get("period"),
+                    "value": record.get("tradeValue")
+                })
+            filepath = os.path.join(RAW_DATA_DIR, "un_comtrade", f"{indicator_key}.json")
+            _save_json(extracted_data, filepath)
+            print(f"  Saved UN Comtrade data for {indicator_key} to {filepath}")
+            return True
+        else:
+            print(f"  No real data found for {indicator_key} from UN Comtrade.")
+            return False
+    except requests.exceptions.RequestException as e:
+        print(f"  Error fetching {indicator_key} from UN Comtrade: {e}")
+        return False
+
+def _fetch_imf_data(indicator_key, imf_indicator_code, countries):
+    """Fetches data from IMF API."""
+    print(f"  Fetching IMF data for {indicator_key} ({imf_indicator_code})...")
+    # IMF API uses SDMX. A common pattern is:
+    # {base_url}/Data/{dataflow_id}/{key}/{agency}/{version}?format=json
+    # For simplicity, we'll try a direct data query if possible,
+    # or assume a specific dataflow for now.
+    # The provided base URL is: http://dataservices.imf.org/REST/SDMX_JSON.svc
+    # A common dataflow for indicators might be 'IFS' (International Financial Statistics)
+    # or 'BOP' (Balance of Payments).
+    # Let's assume a structure like:
+    # {base_url}/Data/{dataflow_id}/{indicator_code}.{country_codes}.?startPeriod=YYYY&endPeriod=YYYY
+    # This is a simplification and might need adjustment based on actual IMF API behavior.
+
+    dataflow_id = "IFS" # Common dataflow, might need to be dynamic or looked up
+    url = f"{DATA_SOURCES['imf']}/Data/{dataflow_id}/{imf_indicator_code}.{'+'.join(countries)}.?startPeriod=2015&endPeriod=2020"
+
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        data = response.json()
+
+        if data and data.get("CompactData") and data["CompactData"].get("DataSet"):
+            extracted_data = []
+            # SDMX JSON structure is complex. This is a simplified attempt to extract data.
+            # It assumes a structure where observations are under DataSet.Series.Obs
+            series = data["CompactData"]["DataSet"]["Series"]
+            if isinstance(series, dict): # Handle single series
+                series = [series]
+
+            for s in series:
+                country_code = s["@REF_AREA"]
+                for obs in s.get("Obs", []):
+                    year = obs["@TIME_PERIOD"]
+                    value = obs["@OBS_VALUE"]
+                    extracted_data.append({
+                        "country": country_code,
+                        "year": year,
+                        "value": value
+                    })
+
+            filepath = os.path.join(RAW_DATA_DIR, "imf", f"{indicator_key}.json")
+            _save_json(extracted_data, filepath)
+            print(f"  Saved IMF data for {indicator_key} to {filepath}")
+            return True
+        else:
+            print(f"  No real data found for {indicator_key} from IMF.")
+            return False
+    except requests.exceptions.RequestException as e:
+        print(f"  Error fetching {indicator_key} from IMF: {e}")
+        return False
+
+def _fetch_unep_data(indicator_key, unep_indicator_id, countries):
+    """Fetches data from UNEP API."""
+    print(f"  Fetching UNEP data for {indicator_key} ({unep_indicator_id})...")
+    # UNEP API documentation is not readily available through simple search.
+    # This is a placeholder function.
+    # Assuming a simple REST API structure for now.
+    url = f"{DATA_SOURCES['unep']}/data/{unep_indicator_id}"
+    params = {
+        "format": "json",
+        "year": "2015-2020",
+        "countries": ",".join(countries)
+    }
+    try:
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        data = response.json()
+
+        if data and data.get("records"):
+            extracted_data = []
+            for record in data["records"]:
+                extracted_data.append({
+                    "country": record.get("country_code"), # Placeholder field name
+                    "year": record.get("year"),
+                    "value": record.get("value")
+                })
+            filepath = os.path.join(RAW_DATA_DIR, "unep", f"{indicator_key}.json")
+            _save_json(extracted_data, filepath)
+            print(f"  Saved UNEP data for {indicator_key} to {filepath}")
+            return True
+        else:
+            print(f"  No real data found for {indicator_key} from UNEP.")
+            return False
+    except requests.exceptions.RequestException as e:
+        print(f"  Error fetching {indicator_key} from UNEP: {e}")
+        return False
+
+def _fetch_oecd_data(indicator_key, oecd_indicator_code, countries):
+    """Fetches data from OECD API.""" 
+    print(f"  Fetching OECD data for {indicator_key} ({oecd_indicator_code})...")
+    # OECD API uses SDMX-JSON.
+    # The base URL is: https://stats.oecd.org/sdmx-json/data
+    # A common pattern is:
+    # {base_url}/{dataset_id}/{dimensions}/all?startTime=YYYY&endTime=YYYY
+    # We need to find the dataset_id and the specific dimensions for the indicator.
+    # For 'transport network redundancy', this will require using the OECD Data Explorer.
+
+    # Placeholder for dataset_id and dimensions.
+    # This will need to be updated once the specific OECD dataset is identified.
+    dataset_id = "TRANSPORT_NETWORK_REDUNDANCY" # Placeholder
+    dimensions = f"{oecd_indicator_code}.{'+'.join(countries)}" # Placeholder
+
+    url = f"{DATA_SOURCES['oecd']}/{dataset_id}/{dimensions}/all?startTime=2015&endTime=2020"
+
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        data = response.json()
+
+        if data and data.get("dataSets") and data["dataSets"][0].get("series"):
+            extracted_data = []
+            # SDMX-JSON structure is complex. This is a simplified attempt to extract data.
+            # It assumes a structure where observations are under dataSets[0].series
+            # and dimensions are mapped in structure.dimensions.series
+            # and attributes in structure.attributes.observation
+
+            # Simplified extraction - will need refinement based on actual OECD response
+            for series_key, series_data in data["dataSets"][0]["series"].items():
+                # Extract dimensions from series_key (e.g., ".AUS.TLI.TOT.A")
+                # This is highly dependent on the actual series key format.
+                # For now, let's assume the country code is part of the series_key or can be mapped.
+                # This part will definitely need to be refined after inspecting a real response.
+                country_code = "UNKNOWN" # Placeholder
+                if ".AUS." in series_key: country_code = "AUS"
+                elif ".USA." in series_key: country_code = "USA" # ... and so on for all countries
+
+                for obs_key, value in series_data["observations"].items():
+                    # obs_key typically maps to time period
+                    time_period_index = int(obs_key)
+                    year = data["structure"]["dimensions"]["observation"][0]["values"][time_period_index]["id"]
+                    
+                    extracted_data.append({
+                        "country": country_code,
+                        "year": year,
+                        "value": value
+                    })
+
+            filepath = os.path.join(RAW_DATA_DIR, "oecd", f"{indicator_key}.json")
+            _save_json(extracted_data, filepath)
+            print(f"  Saved OECD data for {indicator_key} to {filepath}")
+            return True
+        else:
+            print(f"  No real data found for {indicator_key} from OECD.")
+            return False
+    except requests.exceptions.RequestException as e:
+        print(f"  Error fetching {indicator_key} from OECD: {e}")
+        return False
+
+def _fetch_unodc_data(indicator_key, unodc_indicator_id, countries):
+    """Fetches data from UNODC API."""
+    print(f"  Fetching UNODC data for {indicator_key} ({unodc_indicator_id})...")
+    # UNODC API documentation is available via Swagger UI.
+    # The base URL is: https://dataunodc.un.org/
+    # The API structure will need to be derived from the Swagger UI.
+    # For now, assuming a simple endpoint for data.
+
+    url = f"{DATA_SOURCES['unodc']}/data/{unodc_indicator_id}" # Placeholder URL
+    params = {
+        "format": "json",
+        "year": "2015-2020",
+        "countries": ",".join(countries)
+    }
+    try:
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        data = response.json()
+
+        if data and data.get("records"):
+            extracted_data = []
+            for record in data["records"]:
+                extracted_data.append({
+                    "country": record.get("country_code"), # Placeholder field name
+                    "year": record.get("year"),
+                    "value": record.get("value")
+                })
+            filepath = os.path.join(RAW_DATA_DIR, "unodc", f"{indicator_key}.json")
+            _save_json(extracted_data, filepath)
+            print(f"  Saved UNODC data for {indicator_key} to {filepath}")
+            return True
+        else:
+            print(f"  No real data found for {indicator_key} from UNODC.")
+            return False
+    except requests.exceptions.RequestException as e:
+        print(f"  Error fetching {indicator_key} from UNODC: {e}")
+        return False
+
+def _fetch_un_sdg_data(indicator_key, un_sdg_indicator_id, countries):
+    """Fetches data from UN SDG API."""
+    print(f"  Fetching UN SDG data for {indicator_key} ({un_sdg_indicator_id})...")
+    # UN SDG API documentation is available via Swagger UI: https://unstats.un.org/sdgs/UNSDGAPIV5/swagger/
+    # The base URL is: https://unstats.un.org/sdgapi/v1/sdg/
+    # A common pattern is: {base_url}/Goal/{goal_id}/Target/{target_id}/Indicator/{indicator_id}/Data
+    # This is a placeholder function.
+
+    # For 'wastewater_treatment_percent', it's SDG 6 (Clean Water and Sanitation)
+    # and indicator 6.3.1 (Proportion of wastewater safely treated).
+    # The API might require specific goal, target, and indicator IDs.
+    # For now, I'll use the indicator_id directly in the URL, assuming it's sufficient.
+
+    url = f"{DATA_SOURCES['un_sdg']}/Indicator/{un_sdg_indicator_id}/Data"
+    params = {
+        "format": "json",
+        "year": "2015-2020",
+        "countries": ",".join(countries) # Assuming 3-letter ISO codes work
+    }
+    try:
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        data = response.json()
+
+        if data and data.get("data"):
+            extracted_data = []
+            for record in data["data"]:
+                extracted_data.append({
+                    "country": record.get("geoAreaCode"), # Placeholder field name
+                    "year": record.get("timePeriod"),
+                    "value": record.get("value")
+                })
+            filepath = os.path.join(RAW_DATA_DIR, "un_sdg", f"{indicator_key}.json")
+            _save_json(extracted_data, filepath)
+            print(f"  Saved UN SDG data for {indicator_key} to {filepath}")
+            return True
+        else:
+            print(f"  No real data found for {indicator_key} from UN SDG.")
+            return False
+    except requests.exceptions.RequestException as e:
+        print(f"  Error fetching {indicator_key} from UN SDG: {e}")
+        return False
+
+def _fetch_unodc_data(indicator_key, unodc_indicator_id, countries):
+    """Fetches data from UNODC API."""
+    print(f"  Fetching UNODC data for {indicator_key} ({unodc_indicator_id})...")
+    # UNODC API documentation is available via Swagger UI.
+    # The base URL is: https://dataunodc.un.org/
+    # The API structure will need to be derived from the Swagger UI.
+    # For now, assuming a simple endpoint for data.
+
+    url = f"{DATA_SOURCES['unodc']}/data/{unodc_indicator_id}" # Placeholder URL
+    params = {
+        "format": "json",
+        "year": "2015-2020",
+        "countries": ",".join(countries)
+    }
+    try:
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        data = response.json()
+
+        if data and data.get("records"):
+            extracted_data = []
+            for record in data["records"]:
+                extracted_data.append({
+                    "country": record.get("country_code"), # Placeholder field name
+                    "year": record.get("year"),
+                    "value": record.get("value")
+                })
+            filepath = os.path.join(RAW_DATA_DIR, "unodc", f"{indicator_key}.json")
+            _save_json(extracted_data, filepath)
+            print(f"  Saved UNODC data for {indicator_key} to {filepath}")
+            return True
+        else:
+            print(f"  No real data found for {indicator_key} from UNODC.")
+            return False
+    except requests.exceptions.RequestException as e:
+        print(f"  Error fetching {indicator_key} from UNODC: {e}")
         return False
 
 def _fetch_who_data(indicator_key, who_indicator_id):
@@ -225,11 +574,26 @@ def fetch_all():
                         if not _fetch_world_bank_data(indicator_key, source_info["code"]):
                             _fetch_dummy_data(indicator_key, indicator["source"], countries)
                     elif source_type == "fao":
-                        # FAO API is complex, using dummy for now
-                        _fetch_dummy_data(indicator_key, indicator["source"], countries)
+                        if not _fetch_fao_data(indicator_key, source_info["domain"], source_info["element"], countries):
+                            _fetch_dummy_data(indicator_key, indicator["source"], countries)
                     elif source_type == "itu":
-                        # ITU API is problematic, using dummy for now
-                        _fetch_dummy_data(indicator_key, indicator["source"], countries)
+                        if not _fetch_itu_data(indicator_key, source_info["code"], countries):
+                            _fetch_dummy_data(indicator_key, indicator["source"], countries)
+                    elif source_type == "un_comtrade":
+                        if not _fetch_un_comtrade_data(indicator_key, source_info, countries):
+                            _fetch_dummy_data(indicator_key, indicator["source"], countries)
+                    elif source_type == "imf":
+                        if not _fetch_imf_data(indicator_key, source_info["code"], countries):
+                            _fetch_dummy_data(indicator_key, indicator["source"], countries)
+                    elif source_type == "unep":
+                        if not _fetch_unep_data(indicator_key, source_info["code"], countries):
+                            _fetch_dummy_data(indicator_key, indicator["source"], countries)
+                    elif source_type == "oecd":
+                        if not _fetch_oecd_data(indicator_key, source_info["code"], countries):
+                            _fetch_dummy_data(indicator_key, indicator["source"], countries)
+                    elif source_type == "un_sdg":
+                        if not _fetch_un_sdg_data(indicator_key, source_info["code"], countries):
+                            _fetch_dummy_data(indicator_key, indicator["source"], countries)
                     elif source_type == "who":
                         if "code" in source_info and not _fetch_who_data(indicator_key, source_info["code"]):
                             _fetch_dummy_data(indicator_key, indicator["source"], countries)

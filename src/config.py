@@ -787,13 +787,13 @@ INDICATORS = {
 # -------------------------------------------------------------------
 DATA_SOURCES = {
     "world_bank": "http://api.worldbank.org/v2",
-    "fao": "http://fenixservices.fao.org/faostat/api/v1/en",
+    "fao": "http://fenixservices.fao.org/faostat/api/v2", # FAOSTAT API base URL
     "who": "https://ghoapi.azureedge.net/api",
     "iea": "https://api.iea.org", # Requires API key for most data
-    "itu": "https://api.itu.int",
+    "itu": "https://api.datahub.itu.int/v2", # ITU DataHub API base URL
     "imf": "http://dataservices.imf.org/REST/SDMX_JSON.svc",
     "oecd": "https://stats.oecd.org/sdmx-json/data",
-    "un_comtrade": "https://comtrade.un.org/api/v1/",
+    "un_comtrade": "http://comtrade.un.org/api/get", # UN Comtrade API base URL
     "un_sdg": "https://unstats.un.org/sdgapi/v1/sdg/",
     "who_unicef_jmp": "https://washdata.org/api", # Placeholder, actual API might differ
     "un_e_waste": "https://ewastemonitor.info/api", # Placeholder, actual API might differ
