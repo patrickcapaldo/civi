@@ -35,7 +35,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
+      <Router basename="/">
         <AppBar ref={appBarRef} position="fixed">
           <Toolbar>
             <NavBar /> {/* NavBar content is now inside AppBar/Toolbar */}
