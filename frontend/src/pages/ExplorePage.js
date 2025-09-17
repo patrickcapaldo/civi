@@ -6,6 +6,8 @@ import { Radar } from 'react-chartjs-2';
 import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend } from 'chart.js';
 import './ExplorePage.css';
 
+const PILLARS = ["autonomy", "resilience", "sustainability", "effectiveness"];
+
 // Register Chart.js components
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
@@ -194,19 +196,19 @@ const ExplorePage = ({ headerHeight }) => {
 
       const countryData = civiData;
       const industryData = countryData.industries[industryKey];
+      const scores = industryData.scores;
+
+      const data = PILLARS.map(p => scores[p]);
+      const confidence = PILLARS.map(p => scores[`${p}_confidence`]);
 
       return {
           labels: ['Autonomy', 'Resilience', 'Sustainability', 'Effectiveness'],
           datasets: [{
-              label: `${countryData.name} - ${industryKey.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}`,
-              data: [
-                  industryData.scores.autonomy,
-                  industryData.scores.resilience,
-                  industryData.scores.sustainability,
-                  industryData.scores.effectiveness,
-              ],
-              backgroundColor: 'rgba(0, 150, 136, 0.2)',
+              label: 'Score',
+              data: data,
+              confidence: confidence, // Pass confidence scores to the plugin
               borderColor: 'rgba(0, 150, 136, 1)',
+              backgroundColor: 'rgba(0, 150, 136, 0.2)',
               borderWidth: 1,
           }]
       };
@@ -214,10 +216,114 @@ const ExplorePage = ({ headerHeight }) => {
 
   const IndustryRadarChart = ({ industryKey, industryName }) => {
     const industryData = getIndustryRadarData(industryKey);
+    const industryIndicators = civiData?.industries[industryKey]?.indicators;
+
+    const pillarScores = civiData?.industries[industryKey]?.scores;
+
+    const errorBarsPlugin = {
+        id: 'errorBars',
+        afterDraw: (chart) => {
+            const ctx = chart.ctx;
+            const meta = chart.getDatasetMeta(0);
+            const scale = chart.scales.r;
+
+            meta.data.forEach((point, index) => {
+                const confidence = chart.data.datasets[0].confidence[index];
+                if (confidence === undefined || confidence === null) return;
+
+                const score = chart.data.datasets[0].data[index];
+                if (score === null || score === undefined) return;
+
+                const error = (1 - confidence) * 10; // Error bar length in pixels on each side
+
+                const angle = Math.atan2(point.y - scale.yCenter, point.x - scale.xCenter);
+
+                const x1 = point.x - error * Math.cos(angle);
+                const y1 = point.y - error * Math.sin(angle);
+                const x2 = point.x + error * Math.cos(angle);
+                const y2 = point.y + error * Math.sin(angle);
+
+                ctx.save();
+                ctx.strokeStyle = 'rgba(255, 0, 0, 0.8)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+                ctx.restore();
+            });
+        }
+    };
+
+    const calculationExplanation = () => {
+        if (!pillarScores) return null;
+
+        return (
+            <div style={{ marginTop: '20px' }}>
+                <h4>Pillar Score Calculation</h4>
+                <p>Each pillar score is a weighted average of its underlying indicators.</p>
+                <ul>
+                    {PILLARS.map(pillar => {
+                        const score = pillarScores[pillar];
+                        const confidenceScore = pillarScores[`${pillar}_confidence`];
+
+                        const indicatorsForPillar = industryIndicators.filter(i => i.pillar === pillar && i.value !== null);
+
+                        const hasScore = score !== null && score !== undefined;
+                        const hasIndicators = indicatorsForPillar.length > 0;
+
+                        let calculation = '';
+                        if (hasScore && hasIndicators) {
+                            const weightedSum = indicatorsForPillar.reduce((acc, i) => acc + (i.value * i.weight), 0);
+                            const totalWeight = indicatorsForPillar.reduce((acc, i) => acc + i.weight, 0);
+                            const formula = indicatorsForPillar.map(i => `(${i.value.toFixed(2)} * ${i.weight})`).join(' + ');
+                            calculation = `((${formula}) / ${totalWeight.toFixed(2)})`;
+                        }
+
+                        return (
+                            <li key={pillar}>
+                                <strong>{pillar.charAt(0).toUpperCase() + pillar.slice(1)}:</strong>
+                                {hasScore ? <span>{` ${score.toFixed(2)}`}</span> : <span> No data</span>}
+                                {confidenceScore !== undefined && <span style={{ marginLeft: '10px' }}>(Confidence: {(confidenceScore * 100).toFixed(0)}%)</span>}
+                                {calculation && <span> {calculation}</span>}
+                            </li>
+                        );
+                    })}
+                </ul>
+            </div>
+        );
+    };
+
     return (
         <div>
             <h3>{industryName} Details</h3>
-            {industryData ? <Radar data={industryData} /> : <p>Data not available for {industryName}.</p>}
+            {industryData ? <Radar data={industryData} plugins={[errorBarsPlugin]} /> : <p>Data not available for {industryName}.</p>}
+            {industryIndicators && (
+                <div style={{ marginTop: '20px' }}>
+                    <h4>Underlying Indicators</h4>
+                    <table className="indicators-table">
+                        <thead>
+                            <tr>
+                                <th>Indicator</th>
+                                <th>Value</th>
+                                <th>Source</th>
+                                <th>Pillar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {industryIndicators.map(indicator => (
+                                <tr key={indicator.key}>
+                                    <td>{indicator.description}</td>
+                                    <td>{indicator.value !== null ? indicator.value.toFixed(2) : 'N/A'}</td>
+                                    <td>{indicator.source}{indicator.year ? `, ${indicator.year}` : ''}</td>
+                                    <td>{indicator.pillar}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    {calculationExplanation()}
+                </div>
+            )}
         </div>
     );
   };
