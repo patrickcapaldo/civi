@@ -35,6 +35,9 @@ const PillarScores = ({ pillarScores, industryIndicators }) => {
                 <span className="symbol">🐨</span>
                 <div>
                     Each pillar score is a weighted average of its underlying indicators.
+                    <div className="formula-box">
+                        <LatexRenderer displayMode={true}>{`$Pillar Score = \\frac{\\sum_{i=1}^{N} (I_i \\times W_i)}{\\sum_{i=1}^{N} W_i}$`}</LatexRenderer>
+                    </div>
                 </div>
             </div>
 
