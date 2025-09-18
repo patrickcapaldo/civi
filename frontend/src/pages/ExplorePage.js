@@ -4,10 +4,143 @@ import * as topojson from 'topojson-client';
 import { geoOrthographic, geoPath } from 'd3-geo';
 import { Radar } from 'react-chartjs-2';
 import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend } from 'chart.js';
+import Latex from 'react-latex';
 import './ExplorePage.css';
+
+const PILLARS = ["autonomy", "resilience", "sustainability", "effectiveness"];
 
 // Register Chart.js components
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
+
+const PillarScores = ({ pillarScores, industryIndicators }) => {
+    const [expandedPillars, setExpandedPillars] = useState([]);
+
+    const togglePillar = (pillar) => {
+        setExpandedPillars(prevExpanded =>
+            prevExpanded.includes(pillar)
+                ? prevExpanded.filter(p => p !== pillar)
+                : [...prevExpanded, pillar]
+        );
+    };
+
+    if (!pillarScores) {
+        return null;
+    }
+
+    return (
+        <div className="pillar-scores-container">
+            <h4>Pillar Score Calculation</h4>
+            <div className="info-box note">
+                <span className="symbol">🐨</span>
+                <div>
+                    Each pillar score is a weighted average of its underlying indicators.
+                </div>
+            </div>
+
+            <div className="pillar-cards">
+                {PILLARS.map(pillar => {
+                    const score = pillarScores[pillar];
+                    const confidenceScore = pillarScores[`${pillar}_confidence`];
+                    const indicatorsForPillar = industryIndicators.filter(i => i.pillar === pillar && i.value !== null);
+                    const hasScore = score !== null && score !== undefined;
+
+                    return (
+                        <div key={pillar} className="pillar-card" onClick={() => togglePillar(pillar)}>
+                            <div className="pillar-card-header">
+                                <h5>{pillar.charAt(0).toUpperCase() + pillar.slice(1)}</h5>
+                                <div className="pillar-scores">
+                                    <span>Score: {hasScore ? score.toFixed(2) : 'No data'}</span>
+                                    <span>Confidence: {confidenceScore !== undefined ? `${(confidenceScore * 100).toFixed(0)}%` : 'N/A'}</span>
+                                </div>
+                            </div>
+                            {expandedPillars.includes(pillar) && hasScore && indicatorsForPillar.length > 0 && (
+                                <div className="pillar-card-body">
+                                    <table className="sub-indicators-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Variable</th>
+                                                <th>Indicator Description</th>
+                                                <th>Value</th>
+                                                <th>Weight</th>
+                                                <th>Source</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {indicatorsForPillar.map((indicator, index) => (
+                                                <tr key={indicator.key}>
+                                                    <td><Latex>{`$I_{${index + 1}}$`}</Latex></td>
+                                                    <td>{indicator.description}</td>
+                                                    <td>{indicator.value !== null ? indicator.value.toFixed(2) : 'N/A'}</td>
+                                                    <td><Latex>{`$W_{${index + 1}}$`}</Latex></td>
+                                                    <td>{indicator.source}{indicator.year ? `, ${indicator.year}` : ''}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
+    );
+};
+
+const IndustryRadarChart = ({ industryKey, industryName, civiData, getIndustryRadarData }) => {
+    const industryData = getIndustryRadarData(industryKey);
+    const industryIndicators = civiData?.industries[industryKey]?.indicators;
+    const pillarScores = civiData?.industries[industryKey]?.scores;
+
+    const errorBarsPlugin = {
+        id: 'errorBars',
+        afterDraw: (chart) => {
+            const ctx = chart.ctx;
+            const meta = chart.getDatasetMeta(0);
+            const scale = chart.scales.r;
+
+            meta.data.forEach((point, index) => {
+                const confidence = chart.data.datasets[0].confidence[index];
+                if (confidence === undefined || confidence === null) return;
+
+                const score = chart.data.datasets[0].data[index];
+                if (score === null || score === undefined) return;
+
+                const error = (1 - confidence) * score * 0.1; // 10% of the score on each side
+
+                const angle = Math.atan2(point.y - scale.yCenter, point.x - scale.xCenter);
+
+                const x1 = point.x - error * Math.cos(angle);
+                const y1 = point.y - error * Math.sin(angle);
+                const x2 = point.x + error * Math.cos(angle);
+                const y2 = point.y + error * Math.sin(angle);
+
+                ctx.save();
+                ctx.strokeStyle = 'rgba(255, 0, 0, 0.8)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+                ctx.restore();
+            });
+        }
+    };
+
+    return (
+        <div>
+            <h3>{industryName} Details</h3>
+            <div className="chart-container">
+                {industryData ? <Radar data={industryData} options={industryData.options} plugins={[errorBarsPlugin]} width={400} height={400} /> : <p>Data not available for {industryName}.</p>}
+            </div>
+            {industryIndicators && (
+                <div style={{ marginTop: '20px' }}>
+                    <PillarScores pillarScores={pillarScores} industryIndicators={industryIndicators} />
+                </div>
+            )}
+        </div>
+    );
+};
 
 const ExplorePage = ({ headerHeight }) => {
   const svgRef = useRef();
@@ -111,7 +244,6 @@ const ExplorePage = ({ headerHeight }) => {
       .attr('d', path)
       .attr('class', 'country')
       .attr('fill', d => {
-          const alpha3 = getAlpha3(d);
           return selectedCountry === d ? '#ff9800' : (civiData ? '#ccc' : '#666');
       })
       .attr('stroke', '#1a1a1a')
@@ -121,7 +253,6 @@ const ExplorePage = ({ headerHeight }) => {
     countryPaths
       .on('mouseover', (event, d) => {
         if (selectedCountry !== d) d3.select(event.currentTarget).attr('fill', '#ff9800');
-        const alpha3 = getAlpha3(d);
         const countryName = civiData?.name || d.properties.name || 'N/A';
         tooltip
           .style('opacity', 1)
@@ -136,7 +267,7 @@ const ExplorePage = ({ headerHeight }) => {
         if (selectedCountry !== d) {
             const alpha3 = getAlpha3(d);
             let fillColor = '#666'; // Default color
-            if (alpha3 && civiData && civiData[alpha3]) {
+            if (civiData && civiData[alpha3]) {
                 fillColor = '#ccc';
             }
             d3.select(event.currentTarget).attr('fill', fillColor);
@@ -163,7 +294,7 @@ const ExplorePage = ({ headerHeight }) => {
 
     svg.call(drag);
 
-  }, [worldData, civiData, countryCodeMap, selectedCountry, headerHeight, windowDimensions]); // Added windowDimensions to dependencies
+  }, [worldData, civiData, countryCodeMap, selectedCountry, headerHeight, windowDimensions, projection]);
 
   const handleCloseModal = () => setSelectedCountry(null);
 
@@ -185,7 +316,27 @@ const ExplorePage = ({ headerHeight }) => {
               backgroundColor: 'rgba(255, 152, 0, 0.2)',
               borderColor: 'rgba(255, 152, 0, 1)',
               borderWidth: 1,
-          }]
+          }],
+          options: {
+              animation: false,
+              responsive: false, // Disable responsiveness
+              responsiveAnimationDuration: 0, // Disable responsive animation
+              scales: {
+                  r: {
+                      min: 0,
+                      max: 100,
+                      ticks: {
+                          stepSize: 20,
+                          callback: function(value, index, values) {
+                              if ([20, 40, 60, 80, 100].includes(value)) {
+                                  return value;
+                              }
+                              return null;
+                          }
+                      }
+                  }
+              }
+          }
       };
   }
 
@@ -194,33 +345,43 @@ const ExplorePage = ({ headerHeight }) => {
 
       const countryData = civiData;
       const industryData = countryData.industries[industryKey];
+      const scores = industryData.scores;
+
+      const data = PILLARS.map(p => scores[p]);
+      const confidence = PILLARS.map(p => scores[`${p}_confidence`]);
 
       return {
           labels: ['Autonomy', 'Resilience', 'Sustainability', 'Effectiveness'],
           datasets: [{
-              label: `${countryData.name} - ${industryKey.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}`,
-              data: [
-                  industryData.scores.autonomy,
-                  industryData.scores.resilience,
-                  industryData.scores.sustainability,
-                  industryData.scores.effectiveness,
-              ],
-              backgroundColor: 'rgba(0, 150, 136, 0.2)',
+              label: 'Score',
+              data: data,
+              confidence: confidence, // Pass confidence scores to the plugin
               borderColor: 'rgba(0, 150, 136, 1)',
+              backgroundColor: 'rgba(0, 150, 136, 0.2)',
               borderWidth: 1,
-          }]
+          }],
+          options: {
+              animation: false,
+              responsive: false, // Disable responsiveness
+              responsiveAnimationDuration: 0, // Disable responsive animation
+              scales: {
+                  r: {
+                      min: 0,
+                      max: 100,
+                      ticks: {
+                          stepSize: 20,
+                          callback: function(value, index, values) {
+                              if ([20, 40, 60, 80, 100].includes(value)) {
+                                  return value;
+                              }
+                              return null;
+                          }
+                      }
+                  }
+              }
+          }
       };
   }
-
-  const IndustryRadarChart = ({ industryKey, industryName }) => {
-    const industryData = getIndustryRadarData(industryKey);
-    return (
-        <div>
-            <h3>{industryName} Details</h3>
-            {industryData ? <Radar data={industryData} /> : <p>Data not available for {industryName}.</p>}
-        </div>
-    );
-  };
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
@@ -268,21 +429,23 @@ const ExplorePage = ({ headerHeight }) => {
                     return (
                         <div>
                             <h3>Overview</h3>
-                            {overviewData ? <Radar data={overviewData} /> : <p>Data not available for Overview.</p>}
+                            <div className="chart-container">
+                                {overviewData ? <Radar data={overviewData} options={overviewData.options} width={400} height={400} /> : <p>Data not available for Overview.</p>}
+                            </div>
                         </div>
                     );
                   })()}
-                  {activeTab === 'Communications' && <IndustryRadarChart industryKey="communications" industryName="Communications" />}
-                  {activeTab === 'Defence' && <IndustryRadarChart industryKey="defence" industryName="Defence" />}
-                  {activeTab === 'Energy' && <IndustryRadarChart industryKey="energy" industryName="Energy" />}
-                  {activeTab === 'Finance' && <IndustryRadarChart industryKey="finance" industryName="Finance" />}
-                  {activeTab === 'Food & Agriculture' && <IndustryRadarChart industryKey="food_agriculture" industryName="Food & Agriculture" />}
-                  {activeTab === 'Healthcare' && <IndustryRadarChart industryKey="healthcare" industryName="Healthcare" />}
-                  {activeTab === 'Transport' && <IndustryRadarChart industryKey="transport" industryName="Transport" />}
-                  {activeTab === 'Water' && <IndustryRadarChart industryKey="water" industryName="Water" />}
-                  {activeTab === 'Waste Management' && <IndustryRadarChart industryKey="waste_management" industryName="Waste Management" />}
-                  {activeTab === 'Emergency Services' && <IndustryRadarChart industryKey="emergency_services" industryName="Emergency Services" />}
-                  {activeTab === 'Information Technology' && <IndustryRadarChart industryKey="information_technology" industryName="Information Technology" />}
+                  {activeTab === 'Communications' && <IndustryRadarChart industryKey="communications" industryName="Communications" civiData={civiData} getIndustryRadarData={getIndustryRadarData} />}
+                  {activeTab === 'Defence' && <IndustryRadarChart industryKey="defence" industryName="Defence" civiData={civiData} getIndustryRadarData={getIndustryRadarData} />}
+                  {activeTab === 'Energy' && <IndustryRadarChart industryKey="energy" industryName="Energy" civiData={civiData} getIndustryRadarData={getIndustryRadarData} />}
+                  {activeTab === 'Finance' && <IndustryRadarChart industryKey="finance" industryName="Finance" civiData={civiData} getIndustryRadarData={getIndustryRadarData} />}
+                  {activeTab === 'Food & Agriculture' && <IndustryRadarChart industryKey="food_agriculture" industryName="Food & Agriculture" civiData={civiData} getIndustryRadarData={getIndustryRadarData} />}
+                  {activeTab === 'Healthcare' && <IndustryRadarChart industryKey="healthcare" industryName="Healthcare" civiData={civiData} getIndustryRadarData={getIndustryRadarData} />}
+                  {activeTab === 'Transport' && <IndustryRadarChart industryKey="transport" industryName="Transport" civiData={civiData} getIndustryRadarData={getIndustryRadarData} />}
+                  {activeTab === 'Water' && <IndustryRadarChart industryKey="water" industryName="Water" civiData={civiData} getIndustryRadarData={getIndustryRadarData} />}
+                  {activeTab === 'Waste Management' && <IndustryRadarChart industryKey="waste_management" industryName="Waste Management" civiData={civiData} getIndustryRadarData={getIndustryRadarData} />}
+                  {activeTab === 'Emergency Services' && <IndustryRadarChart industryKey="emergency_services" industryName="Emergency Services" civiData={civiData} getIndustryRadarData={getIndustryRadarData} />}
+                  {activeTab === 'Information Technology' && <IndustryRadarChart industryKey="information_technology" industryName="Information Technology" civiData={civiData} getIndustryRadarData={getIndustryRadarData} />}
                 </div>
               </div>
             </div>

@@ -12,101 +12,959 @@
     "communications": {
       "scores": {
         "autonomy": null,
+        "autonomy_confidence": 0.0,
         "resilience": null,
+        "resilience_confidence": 0.0,
         "sustainability": null,
+        "sustainability_confidence": 0.0,
         "effectiveness": null,
-        "civi_index": null
-      }
+        "effectiveness_confidence": 0.0,
+        "civi_index": 0.0
+      },
+      "indicators": [
+        {
+          "key": "telecom_infra_ownership",
+          "description": "Domestic share of telecom infrastructure ownership (proxy: % state-owned vs foreign)",
+          "source": "ITU/World Bank",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "ict_equipment_production",
+          "description": "Domestic production of ICT equipment (proxy: ICT trade balance, UN Comtrade)",
+          "source": "UN Comtrade",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "internet_disruption_frequency",
+          "description": "Internet disruption frequency (downtime events per year)",
+          "source": "ITU",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "resilience"
+        },
+        {
+          "key": "mobile_network_redundancy",
+          "description": "Mobile network redundancy (3G/4G/5G coverage overlap %)",
+          "source": "ITU",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "resilience"
+        },
+        {
+          "key": "ict_energy_use_percent",
+          "description": "Energy use of ICT sector (as % national energy)",
+          "source": "ITU",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "e_waste_recycling_rate",
+          "description": "E-waste recycling rate (%)",
+          "source": "UN e-waste monitor",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "internet_penetration_percent",
+          "description": "Internet penetration (% of population)",
+          "source": "ITU",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "effectiveness"
+        },
+        {
+          "key": "broadband_affordability",
+          "description": "Broadband affordability (% of GNI per capita)",
+          "source": "ITU/World Bank",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "effectiveness"
+        }
+      ]
     },
     "defence": {
       "scores": {
         "autonomy": 13.59,
+        "autonomy_confidence": 0.3,
         "resilience": null,
+        "resilience_confidence": 0.0,
         "sustainability": null,
+        "sustainability_confidence": 0.0,
         "effectiveness": null,
-        "civi_index": 13.59
-      }
+        "effectiveness_confidence": 0.0,
+        "civi_index": 2.78
+      },
+      "indicators": [
+        {
+          "key": "domestic_defence_production",
+          "description": "Domestic defence production (% of procurement)",
+          "source": "SIPRI/National Reports",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "military_personnel_per_capita",
+          "description": "Military personnel per capita",
+          "source": "World Bank/SIPRI",
+          "value": 13.588265343355468,
+          "year": 2020,
+          "weight": 0.5,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "defence_spending_gdp",
+          "description": "Defence spending (% of GDP)",
+          "source": "SIPRI/World Bank",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "resilience"
+        },
+        {
+          "key": "cyber_defence_capability",
+          "description": "Cyber defence capability index",
+          "source": "National Reports/GCI",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "resilience"
+        },
+        {
+          "key": "military_environmental_impact",
+          "description": "Military environmental impact (proxy: energy consumption)",
+          "source": "National Reports",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "veteran_reintegration_programs",
+          "description": "Veteran reintegration programs (proxy: spending)",
+          "source": "National Reports",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "global_peace_index",
+          "description": "Global Peace Index score",
+          "source": "IEP",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "effectiveness"
+        },
+        {
+          "key": "conflict_related_deaths",
+          "description": "Conflict-related deaths (per 100,000 population)",
+          "source": "UCDP/World Bank",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "effectiveness"
+        }
+      ]
     },
     "energy": {
       "scores": {
         "autonomy": null,
+        "autonomy_confidence": 0.0,
         "resilience": null,
+        "resilience_confidence": 0.0,
         "sustainability": null,
+        "sustainability_confidence": 0.0,
         "effectiveness": 96.04,
-        "civi_index": 96.04
-      }
+        "effectiveness_confidence": 0.3,
+        "civi_index": 19.27
+      },
+      "indicators": [
+        {
+          "key": "energy_import_dependency",
+          "description": "Share of energy supply that is imported (%)",
+          "source": "IEA/World Bank",
+          "value": null,
+          "year": null,
+          "weight": 0.6,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "energy_source_diversity",
+          "description": "Diversity index (HHI) of domestic energy sources",
+          "source": "IEA",
+          "value": null,
+          "year": null,
+          "weight": 0.4,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "electricity_outage_duration",
+          "description": "Average annual outage duration (SAIDI - No direct WB indicator, placeholder used)",
+          "source": "World Bank",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "resilience"
+        },
+        {
+          "key": "strategic_reserves_days",
+          "description": "Days of strategic fuel reserves available",
+          "source": "IEA",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "resilience"
+        },
+        {
+          "key": "renewables_share_percent",
+          "description": "Share of renewables in total energy (%)",
+          "source": "IEA",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "carbon_intensity",
+          "description": "CO\u2082 emissions per kWh electricity (gCO2/kWh)",
+          "source": "IEA",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "electricity_access_percent",
+          "description": "Population with access to electricity (%)",
+          "source": "World Bank",
+          "value": 96.04110202392091,
+          "year": 2020,
+          "weight": 0.5,
+          "pillar": "effectiveness"
+        },
+        {
+          "key": "electricity_cost_share_income",
+          "description": "Household electricity cost as % of income (No direct WB indicator, placeholder used)",
+          "source": "OECD/World Bank",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "effectiveness"
+        }
+      ]
     },
     "finance": {
       "scores": {
         "autonomy": 14.35,
+        "autonomy_confidence": 0.3,
         "resilience": null,
+        "resilience_confidence": 0.0,
         "sustainability": 64.48,
+        "sustainability_confidence": 0.15,
         "effectiveness": 17.04,
-        "civi_index": 31.96
-      }
+        "effectiveness_confidence": 0.6,
+        "civi_index": 13.85
+      },
+      "indicators": [
+        {
+          "key": "foreign_debt_gdp",
+          "description": "External debt stocks (% of GNI)",
+          "source": "World Bank/IMF",
+          "value": 14.346178572033077,
+          "year": 2020,
+          "weight": 0.5,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "fx_reserves_import_cover",
+          "description": "Foreign exchange reserves (months of import cover) (IMF API connection issues, manual data required)",
+          "source": "IMF",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "bank_capital_adequacy",
+          "description": "Bank capital adequacy ratio (Tier 1) (IMF API connection issues, manual data required)",
+          "source": "IMF/National Regulators",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "resilience"
+        },
+        {
+          "key": "financial_sector_concentration",
+          "description": "Financial sector concentration (HHI of top 5 banks) (IMF API connection issues, manual data required)",
+          "source": "IMF",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "resilience"
+        },
+        {
+          "key": "green_finance_investment",
+          "description": "Green finance investment (% of total investment) (UNEP API not investigated, manual data required)",
+          "source": "UNEP/Industry Data",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "financial_inclusion_rate",
+          "description": "Account ownership at a financial institution or with a mobile-money-service provider (% of population ages 15+)",
+          "source": "World Bank",
+          "value": 64.48068060971286,
+          "year": 2017,
+          "weight": 0.5,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "gdp_per_capita",
+          "description": "GDP per capita (current US$)",
+          "source": "World Bank",
+          "value": 1.6364633792774241,
+          "year": 2020,
+          "weight": 0.5,
+          "pillar": "effectiveness"
+        },
+        {
+          "key": "inflation_rate",
+          "description": "Inflation rate (% annual)",
+          "source": "World Bank/IMF",
+          "value": 32.444778621251814,
+          "year": 2020,
+          "weight": 0.5,
+          "pillar": "effectiveness"
+        }
+      ]
     },
     "food_agriculture": {
       "scores": {
         "autonomy": null,
+        "autonomy_confidence": 0.0,
         "resilience": 4.09,
+        "resilience_confidence": 0.3,
         "sustainability": null,
+        "sustainability_confidence": 0.0,
         "effectiveness": null,
-        "civi_index": 4.09
-      }
+        "effectiveness_confidence": 0.0,
+        "civi_index": 0.88
+      },
+      "indicators": [
+        {
+          "key": "food_import_dependency",
+          "description": "Food import dependency ratio (%)",
+          "source": "FAO",
+          "value": null,
+          "year": null,
+          "weight": 0.7,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "agricultural_land_per_capita",
+          "description": "Hectares of agricultural land per capita",
+          "source": "FAO/World Bank",
+          "value": null,
+          "year": null,
+          "weight": 0.3,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "cereal_stock_to_use",
+          "description": "Cereal stock-to-use ratio (%)",
+          "source": "FAO",
+          "value": null,
+          "year": null,
+          "weight": 0.6,
+          "pillar": "resilience"
+        },
+        {
+          "key": "ag_insurance_coverage",
+          "description": "Agricultural insurance coverage (Direct indicator not available, placeholder used)",
+          "source": "World Bank",
+          "value": 4.085588578223585,
+          "year": 2020,
+          "weight": 0.4,
+          "pillar": "resilience"
+        },
+        {
+          "key": "water_use_per_ag_gdp",
+          "description": "Cubic meters of water per unit of agricultural GDP",
+          "source": "FAO AQUASTAT",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "fertilizer_use_intensity",
+          "description": "Fertilizer use (kg/ha)",
+          "source": "FAO",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "undernourishment_prevalence",
+          "description": "Share of population undernourished (%)",
+          "source": "FAO/World Bank",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "effectiveness"
+        },
+        {
+          "key": "food_price_index",
+          "description": "National food price index (normalized)",
+          "source": "FAO",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "effectiveness"
+        }
+      ]
     },
     "healthcare": {
       "scores": {
         "autonomy": null,
+        "autonomy_confidence": 0.0,
         "resilience": null,
+        "resilience_confidence": 0.0,
         "sustainability": 17.88,
+        "sustainability_confidence": 0.3,
         "effectiveness": null,
-        "civi_index": 17.88
-      }
+        "effectiveness_confidence": 0.0,
+        "civi_index": 3.64
+      },
+      "indicators": [
+        {
+          "key": "domestic_pharma_production",
+          "description": "Domestic pharmaceutical production (% of national consumption)",
+          "source": "WHO/UNIDO",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "health_worker_density",
+          "description": "Health worker density per 1,000",
+          "source": "WHO",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "hospital_beds_per_1000",
+          "description": "Surge capacity (hospital beds per 1,000)",
+          "source": "WHO",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "resilience"
+        },
+        {
+          "key": "emergency_preparedness_score",
+          "description": "Emergency preparedness score (IHR Capacity Index)",
+          "source": "WHO",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "resilience"
+        },
+        {
+          "key": "health_expenditure_gdp",
+          "description": "Health expenditure (% of GDP, public + private)",
+          "source": "WHO/World Bank",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "ageing_dependency_ratio",
+          "description": "Ageing dependency ratio (demographic pressure)",
+          "source": "World Bank",
+          "value": 17.882935946133706,
+          "year": 2020,
+          "weight": 0.5,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "uhc_service_coverage",
+          "description": "Universal Health Coverage Index (UHC Service Coverage)",
+          "source": "WHO",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "effectiveness"
+        },
+        {
+          "key": "out_of_pocket_health_spending",
+          "description": "Out-of-pocket health spending (% of total health expenditure)",
+          "source": "WHO",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "effectiveness"
+        }
+      ]
     },
     "transport": {
       "scores": {
         "autonomy": null,
+        "autonomy_confidence": 0.0,
         "resilience": null,
+        "resilience_confidence": 0.0,
         "sustainability": 100.0,
+        "sustainability_confidence": 0.1,
         "effectiveness": 31.98,
-        "civi_index": 65.99
-      }
+        "effectiveness_confidence": 0.2,
+        "civi_index": 22.05
+      },
+      "indicators": [
+        {
+          "key": "domestic_transport_network_density",
+          "description": "Domestic transport network density (Rail lines only, km/sq km)",
+          "source": "World Bank",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "reliance_on_single_transport_mode",
+          "description": "Reliance on single transport mode (e.g., % freight by road)",
+          "source": "World Bank",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "transport_network_redundancy",
+          "description": "Transport network redundancy (alternative routes index)",
+          "source": "OECD/National Reports",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "resilience"
+        },
+        {
+          "key": "disruption_recovery_time",
+          "description": "Average disruption recovery time (hours)",
+          "source": "National Reports",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "resilience"
+        },
+        {
+          "key": "public_transport_ridership",
+          "description": "Public transport ridership (Rail passengers only, trips per capita)",
+          "source": "World Bank",
+          "value": 100.0,
+          "year": 2016,
+          "weight": 0.5,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "transport_carbon_emissions",
+          "description": "Transport carbon emissions (tons CO2 per capita)",
+          "source": "IEA/World Bank",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "logistics_performance_index",
+          "description": "Logistics Performance Index (LPI) score",
+          "source": "World Bank",
+          "value": 31.977671451355512,
+          "year": 2018,
+          "weight": 0.5,
+          "pillar": "effectiveness"
+        },
+        {
+          "key": "commute_time",
+          "description": "Average commute time (minutes)",
+          "source": "National Reports",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "effectiveness"
+        }
+      ]
     },
     "water": {
       "scores": {
         "autonomy": null,
+        "autonomy_confidence": 0.0,
         "resilience": null,
+        "resilience_confidence": 0.0,
         "sustainability": null,
+        "sustainability_confidence": 0.0,
         "effectiveness": null,
-        "civi_index": null
-      }
+        "effectiveness_confidence": 0.0,
+        "civi_index": 0.0
+      },
+      "indicators": [
+        {
+          "key": "renewable_freshwater_per_capita",
+          "description": "Renewable freshwater resources per capita",
+          "source": "FAO AQUASTAT",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "water_import_dependency",
+          "description": "Water import dependency (transboundary inflow as % of resources)",
+          "source": "FAO",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "safely_managed_water_access",
+          "description": "% population with access to safely managed water supply (short-term robustness)",
+          "source": "WHO/UNICEF JMP",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "resilience"
+        },
+        {
+          "key": "water_storage_capacity",
+          "description": "Water storage capacity per capita (dams/reservoirs)",
+          "source": "FAO",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "resilience"
+        },
+        {
+          "key": "water_stress_index",
+          "description": "Water stress index (% withdrawals of available resources)",
+          "source": "FAO/World Bank",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "wastewater_treatment_percent",
+          "description": "Wastewater treatment (% safely treated)",
+          "source": "UN SDG database",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "drinking_water_access",
+          "description": "Access to safely managed drinking water (%)",
+          "source": "WHO/UNICEF JMP",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "effectiveness"
+        },
+        {
+          "key": "household_water_expenditure",
+          "description": "Average household water expenditure (% income)",
+          "source": "World Bank",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "effectiveness"
+        }
+      ]
     },
     "waste_management": {
       "scores": {
         "autonomy": null,
+        "autonomy_confidence": 0.0,
         "resilience": 24.43,
+        "resilience_confidence": 0.3,
         "sustainability": 1.01,
+        "sustainability_confidence": 0.3,
         "effectiveness": 47.24,
-        "civi_index": 24.23
-      }
+        "effectiveness_confidence": 0.5,
+        "civi_index": 10.54
+      },
+      "indicators": [
+        {
+          "key": "waste_treatment_capacity",
+          "description": "Domestic waste treatment capacity (tons/year per capita)",
+          "source": "World Bank",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "waste_import_export_balance",
+          "description": "Waste import/export balance (net tons per capita)",
+          "source": "UN Comtrade",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "landfill_lifespan",
+          "description": "Remaining landfill lifespan (years)",
+          "source": "National Reports/World Bank",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "resilience"
+        },
+        {
+          "key": "waste_collection_coverage",
+          "description": "Waste collection coverage (% of population)",
+          "source": "World Bank",
+          "value": 24.430023619797776,
+          "year": 2020,
+          "weight": 0.5,
+          "pillar": "resilience"
+        },
+        {
+          "key": "recycling_rate",
+          "description": "Recycling rate (No direct WB indicator, placeholder used)",
+          "source": "World Bank",
+          "value": 1.0066632768849482,
+          "year": 2020,
+          "weight": 0.5,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "waste_diversion_rate",
+          "description": "Waste diversion rate (from landfill/incineration)",
+          "source": "World Bank",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "waste_per_capita",
+          "description": "Waste generation per capita (kg/day) (No direct WB indicator, placeholder used)",
+          "source": "World Bank",
+          "value": 78.42364184050847,
+          "year": 2020,
+          "weight": 0.5,
+          "pillar": "effectiveness"
+        },
+        {
+          "key": "waste_management_cost_gdp",
+          "description": "Waste management cost (% of GDP) (General expense indicator used as proxy)",
+          "source": "World Bank",
+          "value": 16.060466178726593,
+          "year": 2018,
+          "weight": 0.5,
+          "pillar": "effectiveness"
+        }
+      ]
     },
     "emergency_services": {
       "scores": {
         "autonomy": null,
+        "autonomy_confidence": 0.0,
         "resilience": null,
+        "resilience_confidence": 0.0,
         "sustainability": null,
+        "sustainability_confidence": 0.0,
         "effectiveness": null,
-        "civi_index": null
-      }
+        "effectiveness_confidence": 0.0,
+        "civi_index": 0.0
+      },
+      "indicators": [
+        {
+          "key": "domestic_emergency_funding",
+          "description": "Domestic funding for emergency services (% of total)",
+          "source": "National Reports/IMF",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "emergency_personnel_density",
+          "description": "Emergency personnel density (per 1,000 population)",
+          "source": "WHO/National Reports",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "disaster_response_time",
+          "description": "Average disaster response time (hours)",
+          "source": "National Reports",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "resilience"
+        },
+        {
+          "key": "emergency_shelter_capacity",
+          "description": "Emergency shelter capacity (beds per 1,000 population)",
+          "source": "National Reports",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "resilience"
+        },
+        {
+          "key": "emergency_service_training_investment",
+          "description": "Investment in emergency service training (% of budget)",
+          "source": "National Reports",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "volunteer_emergency_personnel",
+          "description": "Volunteer emergency personnel (% of total)",
+          "source": "National Reports",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "mortality_rate_natural_disasters",
+          "description": "Mortality rate from natural disasters (per 100,000)",
+          "source": "World Bank/UNISDR",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "effectiveness"
+        },
+        {
+          "key": "crime_rate",
+          "description": "Crime rate (per 100,000 population)",
+          "source": "UNODC/National Reports",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "effectiveness"
+        }
+      ]
     },
     "information_technology": {
       "scores": {
         "autonomy": null,
+        "autonomy_confidence": 0.0,
         "resilience": null,
+        "resilience_confidence": 0.0,
         "sustainability": null,
+        "sustainability_confidence": 0.0,
         "effectiveness": null,
-        "civi_index": null
-      }
+        "effectiveness_confidence": 0.0,
+        "civi_index": 0.0
+      },
+      "indicators": [
+        {
+          "key": "domestic_software_development",
+          "description": "Domestic software development (% of market share)",
+          "source": "National Reports/Industry Data",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "semiconductor_manufacturing_capacity",
+          "description": "Semiconductor manufacturing capacity (proxy: fab output)",
+          "source": "Industry Data",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "cybersecurity_index",
+          "description": "National Cybersecurity Index score",
+          "source": "ITU/National Cybersecurity Agencies",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "resilience"
+        },
+        {
+          "key": "data_center_redundancy",
+          "description": "Data center redundancy (Tier III+ facilities as % of total)",
+          "source": "Industry Data",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "resilience"
+        },
+        {
+          "key": "it_energy_efficiency",
+          "description": "IT energy efficiency (PUE for data centers)",
+          "source": "Industry Data",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "digital_inclusion_programs",
+          "description": "Digital inclusion programs (proxy: government spending)",
+          "source": "World Bank/National Reports",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "digital_literacy_rate",
+          "description": "Digital literacy rate (% of population)",
+          "source": "ITU/World Bank",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "effectiveness"
+        },
+        {
+          "key": "e_government_index",
+          "description": "E-Government Development Index (EGDI)",
+          "source": "UN",
+          "value": null,
+          "year": null,
+          "weight": 0.5,
+          "pillar": "effectiveness"
+        }
+      ]
     }
   }
 }
