@@ -27,18 +27,13 @@ const PillarScores = ({ pillarScores, industryIndicators }) => {
         return null;
     }
 
-    const genericFormula = String.raw`$ \frac{\sum_{n=1}^{N} (I_n \times W_n)}{\sum_{n=1}^{N} W_n} $`;
-
     return (
         <div className="pillar-scores-container">
             <h4>Pillar Score Calculation</h4>
             <div className="info-box note">
                 <span className="symbol">🐨</span>
                 <div>
-                    Each pillar score is a weighted average of its underlying indicators, calculated using the following generic formula:
-                    <div className='formula-box'>
-                        <Latex>{genericFormula}</Latex>
-                    </div>
+                    Each pillar score is a weighted average of its underlying indicators.
                 </div>
             </div>
 
