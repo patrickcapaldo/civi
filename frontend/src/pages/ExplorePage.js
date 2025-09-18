@@ -4,7 +4,8 @@ import * as topojson from 'topojson-client';
 import { geoOrthographic, geoPath } from 'd3-geo';
 import { Radar } from 'react-chartjs-2';
 import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend } from 'chart.js';
-import Latex from 'react-latex';
+import LatexRenderer from '../LatexRenderer';
+import 'katex/dist/katex.min.css';
 import './ExplorePage.css';
 
 const PILLARS = ["autonomy", "resilience", "sustainability", "effectiveness"];
@@ -68,10 +69,10 @@ const PillarScores = ({ pillarScores, industryIndicators }) => {
                                         <tbody>
                                             {indicatorsForPillar.map((indicator, index) => (
                                                 <tr key={indicator.key}>
-                                                    <td><Latex>{`$I_{${index + 1}}$`}</Latex></td>
+                                                    <td><LatexRenderer>{`$I_{${index + 1}}$`}</LatexRenderer></td>
                                                     <td>{indicator.description}</td>
                                                     <td>{indicator.value !== null ? indicator.value.toFixed(2) : 'N/A'}</td>
-                                                    <td><Latex>{`$W_{${index + 1}}$`}</Latex></td>
+                                                    <td><LatexRenderer>{`$W_{${index + 1}}$`}</LatexRenderer></td>
                                                     <td>{indicator.source}{indicator.year ? `, ${indicator.year}` : ''}</td>
                                                 </tr>
                                             ))}
