@@ -19,7 +19,7 @@ function App() {
     if (appBarRef.current) {
       setHeaderHeight(appBarRef.current.offsetHeight);
     }
-  }, [appBarRef.current]); // Recalculate if ref changes (e.g., on mount)
+  }, []); // Recalculate on mount
 
   // Also listen for window resize to update header height if it's responsive
   useEffect(() => {
