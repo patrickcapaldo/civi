@@ -13,9 +13,6 @@ const PILLARS = ["autonomy", "resilience", "sustainability", "effectiveness"];
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
 const PillarScores = ({ pillarScores, industryIndicators }) => {
-    if (!pillarScores) return null;
-
-    const genericFormula = String.raw`$$ \text{Pillar Score} = \frac{\sum_{n=1}^{N} (I_n \times W_n)}{\sum_{n=1}^{N} W_n} $$`;
     const [expandedPillars, setExpandedPillars] = useState([]);
 
     const togglePillar = (pillar) => {
@@ -25,6 +22,12 @@ const PillarScores = ({ pillarScores, industryIndicators }) => {
                 : [...prevExpanded, pillar]
         );
     };
+
+    if (!pillarScores) {
+        return null;
+    }
+
+    const genericFormula = String.raw`$ \frac{\sum_{n=1}^{N} (I_n \times W_n)}{\sum_{n=1}^{N} W_n} $`;
 
     return (
         <div className="pillar-scores-container">
@@ -296,7 +299,7 @@ const ExplorePage = ({ headerHeight }) => {
 
     svg.call(drag);
 
-  }, [worldData, civiData, countryCodeMap, selectedCountry, headerHeight, windowDimensions, projection]); // Added windowDimensions to dependencies
+  }, [worldData, civiData, countryCodeMap, selectedCountry, headerHeight, windowDimensions, projection]);
 
   const handleCloseModal = () => setSelectedCountry(null);
 
