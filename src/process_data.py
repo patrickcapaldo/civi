@@ -21,8 +21,8 @@ def process_all():
                     if not df.empty:
                         # Get the latest year's data for each country
                         df_latest = df.loc[df.groupby('country_iso')['year'].idxmax()]
-                        df_latest = df_latest[['country_iso', 'value']]
-                        df_latest.rename(columns={'value': indicator_key}, inplace=True)
+                        df_latest = df_latest[['country_iso', 'value', 'year']]
+                        df_latest.rename(columns={'value': indicator_key, 'year': f'{indicator_key}_year'}, inplace=True)
                         all_processed_data.append(df_latest)
                         print(f"  Processed data for indicator: {indicator_key}")
                     else:
