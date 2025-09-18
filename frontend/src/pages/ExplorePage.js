@@ -187,7 +187,27 @@ const ExplorePage = ({ headerHeight }) => {
               backgroundColor: 'rgba(255, 152, 0, 0.2)',
               borderColor: 'rgba(255, 152, 0, 1)',
               borderWidth: 1,
-          }]
+          }],
+          options: {
+              animation: false,
+              responsive: false, // Disable responsiveness
+              responsiveAnimationDuration: 0, // Disable responsive animation
+              scales: {
+                  r: {
+                      min: 0,
+                      max: 100,
+                      ticks: {
+                          stepSize: 20,
+                          callback: function(value, index, values) {
+                              if ([20, 40, 60, 80, 100].includes(value)) {
+                                  return value;
+                              }
+                              return null;
+                          }
+                      }
+                  }
+              }
+          }
       };
   }
 
@@ -210,7 +230,27 @@ const ExplorePage = ({ headerHeight }) => {
               borderColor: 'rgba(0, 150, 136, 1)',
               backgroundColor: 'rgba(0, 150, 136, 0.2)',
               borderWidth: 1,
-          }]
+          }],
+          options: {
+              animation: false,
+              responsive: false, // Disable responsiveness
+              responsiveAnimationDuration: 0, // Disable responsive animation
+              scales: {
+                  r: {
+                      min: 0,
+                      max: 100,
+                      ticks: {
+                          stepSize: 20,
+                          callback: function(value, index, values) {
+                              if ([20, 40, 60, 80, 100].includes(value)) {
+                                  return value;
+                              }
+                              return null;
+                          }
+                      }
+                  }
+              }
+          }
       };
   }
 
@@ -234,7 +274,7 @@ const ExplorePage = ({ headerHeight }) => {
                 const score = chart.data.datasets[0].data[index];
                 if (score === null || score === undefined) return;
 
-                const error = (1 - confidence) * 10; // Error bar length in pixels on each side
+                const error = (1 - confidence) * score * 0.1; // 10% of the score on each side
 
                 const angle = Math.atan2(point.y - scale.yCenter, point.x - scale.xCenter);
 
@@ -297,7 +337,9 @@ const ExplorePage = ({ headerHeight }) => {
     return (
         <div>
             <h3>{industryName} Details</h3>
-            {industryData ? <Radar data={industryData} plugins={[errorBarsPlugin]} /> : <p>Data not available for {industryName}.</p>}
+            <div className="chart-container">
+                {industryData ? <Radar data={industryData} options={industryData.options} plugins={[errorBarsPlugin]} width={400} height={400} /> : <p>Data not available for {industryName}.</p>}
+            </div>
             {industryIndicators && (
                 <div style={{ marginTop: '20px' }}>
                     <h4>Underlying Indicators</h4>
@@ -374,7 +416,9 @@ const ExplorePage = ({ headerHeight }) => {
                     return (
                         <div>
                             <h3>Overview</h3>
-                            {overviewData ? <Radar data={overviewData} /> : <p>Data not available for Overview.</p>}
+                            <div className="chart-container">
+                                {overviewData ? <Radar data={overviewData} options={overviewData.options} width={400} height={400} /> : <p>Data not available for Overview.</p>}
+                            </div>
                         </div>
                     );
                   })()}

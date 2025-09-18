@@ -5,6 +5,15 @@ from config import PILLARS, INDUSTRIES, INDICATORS, PILLAR_WEIGHTS, INDUSTRY_WEI
 
 PROCESSED_DATA_DIR = "../data/processed"
 
+def _calculate_confidence(year, current_year=2024):
+    if year is None or pd.isna(year):
+        return 0
+    age = current_year - year
+    if age < 0:
+        return 1.0 # Data from the future?
+    # Simple linear decay over 10 years
+    return max(0, 1 - age / 10.0)
+
 def _normalize_indicator(series, indicator_key):
     """Normalizes an indicator series to a 0-100 scale.
     Assumes higher values are better. Needs to be extended for 'lower is better' indicators.
@@ -56,12 +65,17 @@ def score_all():
             for pillar in PILLARS:
                 pillar_score = 0
                 total_weight = 0
+                confidence_scores = []
                 
                 # Check if industry and pillar exist in INDICATORS config
                 if industry in INDICATORS and pillar in INDICATORS[industry]:
                     for indicator in INDICATORS[industry][pillar]:
                         indicator_key = indicator["key"]
                         indicator_weight = indicator["weight"]
+                        indicator_year = country_data.get(f'{indicator_key}_year')
+                        
+                        confidence = _calculate_confidence(indicator_year)
+                        confidence_scores.append(confidence)
                         
                         if pd.notna(country_data.get(indicator_key)):
                             pillar_score += country_data[indicator_key] * indicator_weight
@@ -72,6 +86,29 @@ def score_all():
                 else:
                     industry_pillar_scores[pillar] = np.nan # No data for this pillar
 
+                if confidence_scores:
+                    industry_pillar_scores[f'{pillar}_confidence'] = round(np.mean(confidence_scores), 2)
+                else:
+                    industry_pillar_scores[f'{pillar}_confidence'] = 0
+
+            # Get indicators for the industry
+            industry_indicators = []
+            for pillar in PILLARS:
+                if industry in INDICATORS and pillar in INDICATORS[industry]:
+                    for indicator in INDICATORS[industry][pillar]:
+                        indicator_key = indicator["key"]
+                        indicator_value = country_data.get(indicator_key)
+                        indicator_year = country_data.get(f'{indicator_key}_year')
+                        industry_indicators.append({
+                            "key": indicator_key,
+                            "description": indicator["description"],
+                            "source": indicator["source"],
+                            "value": indicator_value if pd.notna(indicator_value) else None,
+                            "year": int(indicator_year) if pd.notna(indicator_year) else None,
+                            "weight": indicator["weight"],
+                            "pillar": pillar
+                        })
+
             # Calculate overall industry score for the country
             overall_industry_score = 0
             industry_total_pillar_weight = 0
@@ -81,15 +118,22 @@ def score_all():
                     industry_total_pillar_weight += PILLAR_WEIGHTS.get(pillar, 0.25)
             
             if industry_total_pillar_weight > 0:
-                country_industry_scores[industry] = {"scores": {p: industry_pillar_scores.get(p, np.nan) for p in PILLARS}}
+                country_industry_scores[industry] = {
+                    "scores": industry_pillar_scores,
+                    "indicators": industry_indicators
+                }
                 country_industry_scores[industry]["scores"]["civi_index"] = round(overall_industry_score / industry_total_pillar_weight, 2)
             else:
-                country_industry_scores[industry] = {"scores": {p: np.nan for p in PILLARS}}
+                country_industry_scores[industry] = {
+                    "scores": industry_pillar_scores,
+                    "indicators": industry_indicators
+                }
                 country_industry_scores[industry]["scores"]["civi_index"] = np.nan
 
             # Aggregate industry scores to country overall scores (for main CIVI index)
             if pd.notna(country_industry_scores[industry]["scores"]["civi_index"]):
-                for pillar, score in industry_pillar_scores.items():
+                for pillar in PILLARS:
+                    score = industry_pillar_scores.get(pillar)
                     if pd.notna(score):
                         country_overall_scores[pillar] += score * INDUSTRY_WEIGHTS.get(industry, 1.0 / len(INDUSTRIES))
 
@@ -119,6 +163,29 @@ def score_all():
             "scores": country_overall_scores,
             "industries": country_industry_scores
         }
+
+    all_pillar_scores = {p: [] for p in PILLARS}
+    for country_iso in final_scores:
+        for industry in INDUSTRIES:
+            for pillar in PILLARS:
+                score = final_scores[country_iso]['industries'][industry]['scores'][pillar]
+                if pd.notna(score):
+                    all_pillar_scores[pillar].append(score)
+
+    pillar_min_max = {p: (min(all_pillar_scores[p]), max(all_pillar_scores[p])) for p in PILLARS if all_pillar_scores[p]}
+
+    for country_iso in final_scores:
+        for industry in INDUSTRIES:
+            for pillar in PILLARS:
+                score = final_scores[country_iso]['industries'][industry]['scores'][pillar]
+                if pd.notna(score) and pillar in pillar_min_max:
+                    min_val, max_val = pillar_min_max[pillar]
+                    if max_val == min_val:
+                        normalized_score = 50
+                    else:
+                        normalized_score = ((score - min_val) / (max_val - min_val)) * 100
+                    final_scores[country_iso]['industries'][industry]['scores'][pillar] = round(normalized_score, 2)
+
 
     print("CIVI score calculation complete.")
     print(f"Sample of calculated scores (first 2 countries): {list(final_scores.items())[:2]}")
