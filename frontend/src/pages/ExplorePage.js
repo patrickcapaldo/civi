@@ -432,10 +432,12 @@ const ExplorePage = ({ headerHeight }) => {
                     const overviewData = getRadarData();
                     return (
                         <div>
-                            <h3>Overview</h3>
-                            <div className="chart-container">
-                                {overviewData ? <Radar data={overviewData} options={overviewData.options} width={400} height={400} /> : <p>Data not available for Overview.</p>}
-                            </div>
+            <h3>Overview</h3>
+            <p className="radar-chart-explainer">The radar chart visually represents a country's performance across various indicators. Each spoke of the web represents a different indicator, and the distance from the center indicates the country's score for that indicator. A larger area covered by the chart suggests stronger overall performance.</p>
+            {/* Radar Chart */}
+            <div className="modal-radar-chart">
+              {overviewData ? <Radar data={{ labels: overviewData.labels, datasets: overviewData.datasets }} options={overviewData.options} width={400} height={400} /> : <p>No radar chart data available for this country.</p>}
+            </div>
                         </div>
                     );
                   })()}
