@@ -106,6 +106,95 @@ body.explore-page-active {
     overflow-y: auto; /* Make content scrollable */
 }
 
+.modal-radar-chart {
+    min-width: 400px;
+    min-height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chart-container {
+    min-width: 400px;
+    min-height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.filters-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1001;
+    padding: 10px 15px;
+    background-color: #87CEEB; /* SkyBlue */
+    color: #282c34; /* Dark background color of the main page */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.filter-menu {
+    position: absolute;
+    top: 60px; /* Below the button */
+    right: 20px;
+    z-index: 1001;
+    background-color: #333;
+    border: 1px solid #555;
+    border-radius: 5px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+.filter-menu-close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.filter-menu-close-button:hover {
+    color: #fff;
+}
+
+.filter-section {
+    margin-bottom: 15px;
+}
+
+.filter-section h5 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #87CEEB; /* SkyBlue */
+}
+
+.filter-section label {
+    display: block;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.filter-section input[type="radio"] {
+    margin-right: 8px;
+}
+
+.filter-section select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #555;
+    background-color: #444;
+    color: white;
+    margin-top: 5px;
+}
+
 .indicators-table {
     width: 100%;
     border-collapse: collapse;
