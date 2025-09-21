@@ -10,6 +10,20 @@ import './ExplorePage.css';
 
 const PILLARS = ["autonomy", "resilience", "sustainability", "effectiveness"];
 
+const INDUSTRIES = [
+    "communications",
+    "defence",
+    "energy",
+    "finance",
+    "food_agriculture",
+    "healthcare",
+    "transport",
+    "water",
+    "waste_management",
+    "emergency_services",
+    "information_technology",
+];
+
 // Register Chart.js components
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
@@ -200,6 +214,7 @@ const ExplorePage = ({ headerHeight }) => {
   const [showFilters, setShowFilters] = useState(false);
   const [selectedFilterType, setSelectedFilterType] = useState('Overall Score'); // 'Overall Score' or 'Industry Score'
   const [selectedIndustryFilter, setSelectedIndustryFilter] = useState(null); // e.g., 'energy', 'communications'
+  const [selectedPillarFilter, setSelectedPillarFilter] = useState(null); // e.g., 'autonomy', 'resilience'
   const [colorScheme, setColorScheme] = useState('Green-Yellow-Red'); // e.g., 'Green-Yellow-Red'
   const [allCiviData, setAllCiviData] = useState({}); // Stores all civi data by alpha3 code
 
@@ -219,9 +234,13 @@ const ExplorePage = ({ headerHeight }) => {
       const scoresForIndustry = PILLARS.map(pillar => industryPillarScores[pillar]).filter(score => score !== null && score !== undefined);
       if (scoresForIndustry.length === 0) return null;
       return scoresForIndustry.reduce((sum, score) => sum + score, 0) / scoresForIndustry.length;
+    } else if (filterType === 'Pillar Score' && selectedPillarFilter) {
+      const scores = countryData.scores;
+      if (!scores) return null;
+      return scores[selectedPillarFilter];
     }
     return null;
-  }, [allCiviData, selectedFilterType, selectedIndustryFilter]);
+  }, [allCiviData, selectedFilterType, selectedIndustryFilter, selectedPillarFilter]);
 
   const getColorScale = useMemo(() => {
     // Define the color scale based on the selected colorScheme
@@ -499,42 +518,68 @@ const ExplorePage = ({ headerHeight }) => {
                                       />
                                       No Filters
                                     </label>
-                                    <label>
-                                      <input
-                                        type="radio"
-                                        value="Overall Score"
-                                        checked={selectedFilterType === 'Overall Score'}
-                                        onChange={() => setSelectedFilterType('Overall Score')}
-                                      />
-                                      Overall Score
-                                    </label>
-                                    <label>
-                                      <input
-                                        type="radio"
-                                        value="Industry Score"
-                                        checked={selectedFilterType === 'Industry Score'}
-                                        onChange={() => setSelectedFilterType('Industry Score')}
-                                      />
-                                      Industry Score
-                                    </label>
-                                  </div>      
-                    {/* Industry Selection (conditionally rendered) */}
-                    {selectedFilterType === 'Industry Score' && (
-                      <div className="filter-section">
-                        <h5>Select Industry</h5>
-                        <select
-                          value={selectedIndustryFilter || ''}
-                          onChange={(e) => setSelectedIndustryFilter(e.target.value)}
-                        >
-                          <option value="">-- Select an Industry --</option>
-                          {PILLARS.map(pillar => (
-                            <option key={pillar} value={pillar}>
-                              {pillar.charAt(0).toUpperCase() + pillar.slice(1)}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    )}
+                                                    <label>
+                                                      <input
+                                                        type="radio"
+                                                        value="Overall Score"
+                                                        checked={selectedFilterType === 'Overall Score'}
+                                                        onChange={() => setSelectedFilterType('Overall Score')}
+                                                      />
+                                                      Overall Score
+                                                    </label>
+                                                    <label>
+                                                      <input
+                                                        type="radio"
+                                                        value="Industry Score"
+                                                        checked={selectedFilterType === 'Industry Score'}
+                                                        onChange={() => setSelectedFilterType('Industry Score')}
+                                                      />
+                                                      Industry Score
+                                                    </label>
+                                                    <label>
+                                                      <input
+                                                        type="radio"
+                                                        value="Pillar Score"
+                                                        checked={selectedFilterType === 'Pillar Score'}
+                                                        onChange={() => setSelectedFilterType('Pillar Score')}
+                                                      />
+                                                      Pillar Score
+                                                    </label>                                  </div>      
+              {/* Industry Selection (conditionally rendered) */}
+              {selectedFilterType === 'Industry Score' && (
+                <div className="filter-section">
+                  <h5>Select Industry</h5>
+                  <select
+                    value={selectedIndustryFilter || ''}
+                    onChange={(e) => setSelectedIndustryFilter(e.target.value)}
+                  >
+                    <option value="">-- Select an Industry --</option>
+                    {INDUSTRIES.map(industry => (
+                      <option key={industry} value={industry}>
+                        {industry.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
+              {/* Pillar Selection (conditionally rendered) */}
+              {selectedFilterType === 'Pillar Score' && (
+                <div className="filter-section">
+                  <h5>Select Pillar</h5>
+                  <select
+                    value={selectedPillarFilter || ''}
+                    onChange={(e) => setSelectedPillarFilter(e.target.value)}
+                  >
+                    <option value="">-- Select a Pillar --</option>
+                    {PILLARS.map(pillar => (
+                      <option key={pillar} value={pillar}>
+                        {pillar.charAt(0).toUpperCase() + pillar.slice(1)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
       
                     {/* Color Scheme */}
                     <div className="filter-section">
