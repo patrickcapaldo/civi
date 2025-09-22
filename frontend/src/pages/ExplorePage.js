@@ -500,7 +500,6 @@ const ExplorePage = ({ headerHeight }) => {
       {/* Filter Menu Placeholder */}
                 {showFilters && (
                   <div className="filter-menu">
-                    <h4>Apply Filters</h4>
                     {/* Close button for the menu */}
                     <button className="filter-menu-close-button" onClick={() => setShowFilters(false)}>
                       &times;

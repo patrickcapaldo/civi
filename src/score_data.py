@@ -84,7 +84,7 @@ def score_all():
                 if total_weight > 0:
                     industry_pillar_scores[pillar] = round(pillar_score / total_weight, 2)
                 else:
-                    industry_pillar_scores[pillar] = np.nan # No data for this pillar
+                    industry_pillar_scores[pillar] = 50.0 # Assign a neutral score
 
                 if confidence_scores:
                     industry_pillar_scores[f'{pillar}_confidence'] = round(np.mean(confidence_scores), 2)

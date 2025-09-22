@@ -2,7 +2,7 @@ import json
 import os
 import numpy as np
 import shutil
-from config import LAST_UPDATED, VERSION, DATA_SOURCES
+from config import LAST_UPDATED, VERSION, DATA_SOURCES, INDUSTRIES
 from score_data import score_all
 
 DATA_DIR = "./data"
@@ -52,6 +52,12 @@ def build_all():
             "scores": data['scores'],
             "industries": data['industries']
         }
+
+    # Verification step
+    for iso3, data in final_countries_data.items():
+        for industry in INDUSTRIES:
+            if industry not in data['industries']:
+                print(f"Warning: Industry '{industry}' missing for country {iso3}")
 
     # Create output directory if it doesn't exist
     output_dir = os.path.abspath(os.path.join(DATA_DIR, "processed", "civi_modular"))
