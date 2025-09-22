@@ -138,21 +138,24 @@ const IndustryRadarChart = ({ industryKey, industryName, civiData, selectedCount
                 const score = chart.data.datasets[0].data[index];
                 if (score === null || score === undefined) return;
 
-                const error = (1 - confidence) * score * 0.1; // 10% of the score on each side
+                const errorMargin = (1 - confidence) * 50; // Error margin based on confidence (0-50)
 
-                const angle = Math.atan2(point.y - scale.yCenter, point.x - scale.xCenter);
+                // Calculate the start and end points of the error bar in terms of score values
+                let errorStartScore = Math.max(0, score - errorMargin);
+                let errorEndScore = Math.min(100, score + errorMargin);
 
-                const x1 = point.x - error * Math.cos(angle);
-                const y1 = point.y - error * Math.sin(angle);
-                const x2 = point.x + error * Math.cos(angle);
-                const y2 = point.y + error * Math.sin(angle);
+                // Convert score values to pixel coordinates on the radar chart
+                // The scale.getPointPositionForValue(value) method is useful here
+                const startPoint = scale.getPointPositionForValue(index, errorStartScore);
+                const endPoint = scale.getPointPositionForValue(index, errorEndScore);
 
+                // Draw the error bar
                 ctx.save();
                 ctx.strokeStyle = 'rgba(255, 0, 0, 0.8)';
                 ctx.lineWidth = 2;
                 ctx.beginPath();
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
+                ctx.moveTo(startPoint.x, startPoint.y);
+                ctx.lineTo(endPoint.x, endPoint.y);
                 ctx.stroke();
                 ctx.restore();
             });
