@@ -24,6 +24,20 @@ const INDUSTRIES = [
     "information_technology",
 ];
 
+const INDUSTRY_DESCRIPTIONS = {
+    "communications": "The Communications industry encompasses the infrastructure and services that enable the transmission of information, including telecommunications, internet, broadcasting, and postal services. Its resilience is vital for economic activity, public safety, and social connectivity.",
+    "defence": "The Defence industry involves the production and maintenance of military weapons, equipment, and services. It is crucial for national security, protecting against external threats, and maintaining geopolitical stability.",
+    "energy": "The Energy industry covers the production, distribution, and sale of energy resources, including electricity, oil, gas, and renewable sources. It is fundamental for powering homes, businesses, and transportation, directly impacting economic stability and quality of life.",
+    "finance": "The Finance industry provides monetary services, including banking, investment, insurance, and real estate. It is the backbone of modern economies, facilitating transactions, capital allocation, and risk management.",
+    "food_agriculture": "The Food & Agriculture industry involves the cultivation, harvesting, processing, and distribution of food products. It is essential for sustaining human life, ensuring food security, and supporting rural economies.",
+    "healthcare": "The Healthcare industry provides medical services, including hospitals, clinics, pharmaceuticals, and medical research. It is critical for public health, disease prevention, and treatment, directly impacting societal well-being and productivity.",
+    "transport": "The Transport industry includes infrastructure and services for moving people and goods, suchs as roads, railways, aviation, and maritime shipping. It is vital for trade, tourism, and daily commutes, enabling economic growth and social interaction.",
+    "water": "The Water industry manages the supply, treatment, and distribution of potable water, as well as wastewater collection and treatment. It is indispensable for public health, sanitation, and various industrial processes.",
+    "waste_management": "The Waste Management industry involves the collection, transport, processing, recycling, and disposal of waste materials. It is crucial for environmental protection, public health, and resource recovery.",
+    "emergency_services": "Emergency Services include police, fire, and medical first responders. They are essential for public safety, responding to crises, and providing immediate assistance during emergencies.",
+    "information_technology": "The Information Technology (IT) industry encompasses software, hardware, and services related to computing and digital data. It underpins almost all modern critical infrastructures, enabling communication, data processing, and automation across sectors."
+};
+
 // Register Chart.js components
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
@@ -124,21 +138,24 @@ const IndustryRadarChart = ({ industryKey, industryName, civiData, selectedCount
                 const score = chart.data.datasets[0].data[index];
                 if (score === null || score === undefined) return;
 
-                const error = (1 - confidence) * score * 0.1; // 10% of the score on each side
+                const errorMargin = (1 - confidence) * 50; // Error margin based on confidence (0-50)
 
-                const angle = Math.atan2(point.y - scale.yCenter, point.x - scale.xCenter);
+                // Calculate the start and end points of the error bar in terms of score values
+                let errorStartScore = Math.max(0, score - errorMargin);
+                let errorEndScore = Math.min(100, score + errorMargin);
 
-                const x1 = point.x - error * Math.cos(angle);
-                const y1 = point.y - error * Math.sin(angle);
-                const x2 = point.x + error * Math.cos(angle);
-                const y2 = point.y + error * Math.sin(angle);
+                // Convert score values to pixel coordinates on the radar chart
+                // The scale.getPointPositionForValue(value) method is useful here
+                const startPoint = scale.getPointPositionForValue(index, errorStartScore);
+                const endPoint = scale.getPointPositionForValue(index, errorEndScore);
 
+                // Draw the error bar
                 ctx.save();
                 ctx.strokeStyle = 'rgba(255, 0, 0, 0.8)';
                 ctx.lineWidth = 2;
                 ctx.beginPath();
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
+                ctx.moveTo(startPoint.x, startPoint.y);
+                ctx.lineTo(endPoint.x, endPoint.y);
                 ctx.stroke();
                 ctx.restore();
             });
@@ -147,6 +164,12 @@ const IndustryRadarChart = ({ industryKey, industryName, civiData, selectedCount
     
     return (        <div>
             <h3>{industryName} Details</h3>
+            {INDUSTRY_DESCRIPTIONS[industryKey] && (
+                <p className="industry-description">{INDUSTRY_DESCRIPTIONS[industryKey]}</p>
+            )}
+            {industryData?.industryConfidence !== null && industryData?.industryConfidence !== undefined && (
+                <p className="industry-confidence">Confidence: {(industryData.industryConfidence * 100).toFixed(0)}%</p>
+            )}
             <div className="chart-container">
                 {industryData ? <Radar data={{ labels: industryData.labels, datasets: industryData.datasets }} options={industryData.options} plugins={[errorBarsPlugin]} width={400} height={400} /> : <p>Data not available for {industryName}.</p>}
             </div>
@@ -168,6 +191,9 @@ const getIndustryRadarData = (selectedCountry, civiData, industryKey) => {
 
       const data = PILLARS.map(p => scores[p]);
       const confidence = PILLARS.map(p => scores[`${p}_confidence`]);
+
+      const pillarConfidences = PILLARS.map(p => scores[`${p}_confidence`]).filter(c => c !== null && c !== undefined);
+      const industryConfidence = pillarConfidences.length > 0 ? pillarConfidences.reduce((sum, c) => sum + c, 0) / pillarConfidences.length : null;
 
       return {
           labels: ['Autonomy', 'Resilience', 'Sustainability', 'Effectiveness'],
@@ -198,7 +224,8 @@ const getIndustryRadarData = (selectedCountry, civiData, industryKey) => {
                       }
                   }
               }
-          }
+          },
+          industryConfidence: industryConfidence // Add industry confidence to the returned object
       };
   }; // Closing brace for getIndustryRadarData
 
@@ -241,6 +268,22 @@ const ExplorePage = ({ headerHeight }) => {
     }
     return null;
   }, [allCiviData, selectedFilterType, selectedIndustryFilter, selectedPillarFilter]);
+
+  const getCountryConfidence = useCallback((countryAlpha3) => {
+    const countryData = allCiviData[countryAlpha3];
+    if (!countryData || !countryData.industries) return null;
+
+    const industryConfidences = INDUSTRIES.map(industry => {
+      const industryPillarScores = countryData.industries?.[industry]?.scores;
+      if (!industryPillarScores) return null;
+      const pillarConfidences = PILLARS.map(pillar => industryPillarScores[`${pillar}_confidence`]).filter(c => c !== null && c !== undefined);
+      if (pillarConfidences.length === 0) return null;
+      return pillarConfidences.reduce((sum, c) => sum + c, 0) / pillarConfidences.length;
+    }).filter(c => c !== null && c !== undefined);
+
+    if (industryConfidences.length === 0) return null;
+    return industryConfidences.reduce((sum, c) => sum + c, 0) / industryConfidences.length;
+  }, [allCiviData]);
 
   const getColorScale = useMemo(() => {
     // Define the color scale based on the selected colorScheme
@@ -639,6 +682,9 @@ const ExplorePage = ({ headerHeight }) => {
                         <div>
             <h3>Overview</h3>
             <p className="radar-chart-explainer">The radar chart visually represents a country's performance across various indicators. Each spoke of the web represents a different indicator, and the distance from the center indicates the country's score for that indicator. A larger area covered by the chart suggests stronger overall performance.</p>
+            {selectedCountry && allCiviData[countryCodeMap[selectedCountry.id]] && (
+                <p className="country-confidence">Overall Confidence: {(getCountryConfidence(countryCodeMap[selectedCountry.id]) * 100).toFixed(0)}%</p>
+            )}
             {/* Radar Chart */}
             <div className="modal-radar-chart">
               {overviewData ? <Radar data={{ labels: overviewData.labels, datasets: overviewData.datasets }} options={overviewData.options} width={400} height={400} /> : <p>No radar chart data available for this country.</p>}
