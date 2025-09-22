@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import HomePage from './pages/HomePage';
 import ExplorePage from './pages/ExplorePage';
+import AnalysePage from './pages/AnalysePage'; // New import
 import { CssBaseline, ThemeProvider, createTheme, AppBar, Toolbar } from '@mui/material';
 
 const theme = createTheme({
@@ -45,6 +46,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/explore" element={<ExplorePage headerHeight={headerHeight} />} />
+            <Route path="/analyse" element={<AnalysePage headerHeight={headerHeight} />} /> {/* New route */}
           </Routes>
         </div>
       </Router>
