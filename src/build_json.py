@@ -50,7 +50,8 @@ def build_all():
             "name": info['name'],
             "region": info['region'],
             "scores": data['scores'],
-            "industries": data['industries']
+            "industries": data['industries'],
+            "historical_scores": data['historical_scores']
         }
 
     # Verification step

@@ -1,203 +1,68 @@
-import os
 import pandas as pd
-import numpy as np
-from config import PILLARS, INDUSTRIES, INDICATORS, PILLAR_WEIGHTS, INDUSTRY_WEIGHTS
+from sqlalchemy.orm import Session
+from .database import engine
+from .models import MetricCatalog, MetricNormalized, PillarScore, IndustryScore, CountryScore
 
-PROCESSED_DATA_DIR = "../data/processed"
+def aggregate_scores():
+    """Aggregates normalized metrics into pillar, industry, and country scores."""
+    with Session(engine) as session:
+        # Fetch all normalized data
+        normalized_metrics = session.query(MetricNormalized).all()
+        if not normalized_metrics:
+            print("No normalized metrics to aggregate.")
+            return
 
-def _calculate_confidence(year, current_year=2024):
-    if year is None or pd.isna(year):
-        return 0
-    age = current_year - year
-    if age < 0:
-        return 1.0 # Data from the future?
-    # Simple linear decay over 10 years
-    return max(0, 1 - age / 10.0)
+        df_normalized = pd.DataFrame([n.__dict__ for n in normalized_metrics])
+        df_normalized = df_normalized.drop(columns=['_sa_instance_state'], errors='ignore')
 
-def _normalize_indicator(series, indicator_key):
-    """Normalizes an indicator series to a 0-100 scale.
-    Assumes higher values are better. Needs to be extended for 'lower is better' indicators.
-    """
-    min_val = series.min()
-    max_val = series.max()
+        # Fetch metric catalog for industry and pillar information
+        metric_catalog = session.query(MetricCatalog).all()
+        df_catalog = pd.DataFrame([m.__dict__ for m in metric_catalog])
+        df_catalog = df_catalog.drop(columns=['_sa_instance_state'], errors='ignore')
+        df_catalog = df_catalog[['metric_id', 'industry', 'pillar']]
 
-    if max_val == min_val:
-        return pd.Series([50] * len(series), index=series.index) # Handle cases with no variation
+        df_merged = pd.merge(df_normalized, df_catalog, on='metric_id', how='left')
 
-    # Simple min-max normalization
-    normalized_series = ((series - min_val) / (max_val - min_val)) * 100
-    return normalized_series
+        # 1. Aggregate to Pillar Scores
+        print("Aggregating to Pillar Scores...")
+        pillar_scores = df_merged.groupby(['country_code', 'year', 'industry', 'pillar'])['normalized_value'].mean().reset_index()
+        pillar_scores.rename(columns={'normalized_value': 'pillar_score'}, inplace=True)
 
-def score_all():
-    print("Starting CIVI score calculation...")
-    filepath = os.path.join(PROCESSED_DATA_DIR, "all_indicators_processed.csv")
-    if not os.path.exists(filepath):
-        print(f"Error: Processed data file not found at {filepath}")
-        return {}
+        # 2. Aggregate to Industry Scores
+        print("Aggregating to Industry Scores...")
+        industry_scores = pillar_scores.groupby(['country_code', 'year', 'industry'])['pillar_score'].mean().reset_index()
+        industry_scores.rename(columns={'pillar_score': 'industry_score'}, inplace=True)
 
-    df_processed = pd.read_csv(filepath)
-    if df_processed.empty:
-        print("Processed data is empty. No scores to calculate.")
-        return {}
+        # 3. Aggregate to Country Scores
+        print("Aggregating to Country Scores...")
+        country_scores = industry_scores.groupby(['country_code', 'year'])['industry_score'].mean().reset_index()
+        country_scores.rename(columns={'industry_score': 'country_score'}, inplace=True)
 
-    final_scores = {}
+        # Clear existing scores before inserting new ones
+        session.query(PillarScore).delete()
+        session.query(IndustryScore).delete()
+        session.query(CountryScore).delete()
 
-    # Normalize all indicator columns
-    df_normalized = df_processed.copy()
-    for industry, pillars_data in INDICATORS.items():
-        for pillar, indicators_list in pillars_data.items():
-            for indicator in indicators_list:
-                indicator_key = indicator["key"]
-                if indicator_key in df_normalized.columns:
-                    df_normalized[indicator_key] = _normalize_indicator(df_normalized[indicator_key], indicator_key)
-                else:
-                    df_normalized[indicator_key] = np.nan # Ensure column exists, fill with NaN if not present
-
-    # Iterate through each country to calculate scores
-    for country_iso in df_normalized['country_iso'].unique():
-        country_data = df_normalized[df_normalized['country_iso'] == country_iso].iloc[0] # Get the row for the current country
-        
-        country_industry_scores = {}
-        country_overall_scores = {pillar: 0 for pillar in PILLARS}
-
-        for industry in INDUSTRIES:
-            industry_pillar_scores = {}
-            for pillar in PILLARS:
-                pillar_score = 0
-                total_weight = 0
-                confidence_scores = []
-                
-                # Check if industry and pillar exist in INDICATORS config
-                if industry in INDICATORS and pillar in INDICATORS[industry]:
-                    for indicator in INDICATORS[industry][pillar]:
-                        indicator_key = indicator["key"]
-                        indicator_weight = indicator["weight"]
-                        indicator_year = country_data.get(f'{indicator_key}_year')
-                        
-                        confidence = _calculate_confidence(indicator_year)
-                        confidence_scores.append(confidence)
-                        
-                        if pd.notna(country_data.get(indicator_key)):
-                            pillar_score += country_data[indicator_key] * indicator_weight
-                            total_weight += indicator_weight
-                
-                if total_weight > 0:
-                    industry_pillar_scores[pillar] = round(pillar_score / total_weight, 2)
-                else:
-                    industry_pillar_scores[pillar] = 50.0 # Assign a neutral score
-
-                if confidence_scores:
-                    industry_pillar_scores[f'{pillar}_confidence'] = round(np.mean(confidence_scores), 2)
-                else:
-                    industry_pillar_scores[f'{pillar}_confidence'] = 0
-
-            # Get indicators for the industry
-            industry_indicators = []
-            for pillar in PILLARS:
-                if industry in INDICATORS and pillar in INDICATORS[industry]:
-                    for indicator in INDICATORS[industry][pillar]:
-                        indicator_key = indicator["key"]
-                        indicator_value = country_data.get(indicator_key)
-                        indicator_year = country_data.get(f'{indicator_key}_year')
-                        industry_indicators.append({
-                            "key": indicator_key,
-                            "description": indicator["description"],
-                            "source": indicator["source"],
-                            "value": indicator_value if pd.notna(indicator_value) else None,
-                            "year": int(indicator_year) if pd.notna(indicator_year) else None,
-                            "weight": indicator["weight"],
-                            "pillar": pillar
-                        })
-
-            # Calculate overall industry score for the country
-            overall_industry_score = 0
-            industry_total_pillar_weight = 0
-            for pillar, score in industry_pillar_scores.items():
-                if pd.notna(score):
-                    overall_industry_score += score * PILLAR_WEIGHTS.get(pillar, 0.25) # Use default if not in config
-                    industry_total_pillar_weight += PILLAR_WEIGHTS.get(pillar, 0.25)
-            
-            if industry_total_pillar_weight > 0:
-                country_industry_scores[industry] = {
-                    "scores": industry_pillar_scores,
-                    "indicators": industry_indicators
-                }
-                country_industry_scores[industry]["scores"]["civi_index"] = round(overall_industry_score / industry_total_pillar_weight, 2)
-            else:
-                country_industry_scores[industry] = {
-                    "scores": industry_pillar_scores,
-                    "indicators": industry_indicators
-                }
-                country_industry_scores[industry]["scores"]["civi_index"] = np.nan
-
-            # Aggregate industry scores to country overall scores (for main CIVI index)
-            if pd.notna(country_industry_scores[industry]["scores"]["civi_index"]):
-                for pillar in PILLARS:
-                    score = industry_pillar_scores.get(pillar)
-                    if pd.notna(score):
-                        country_overall_scores[pillar] += score * INDUSTRY_WEIGHTS.get(industry, 1.0 / len(INDUSTRIES))
-
-        # Round overall pillar scores for the country
-        for pillar in PILLARS:
-            if pd.notna(country_overall_scores[pillar]):
-                country_overall_scores[pillar] = round(country_overall_scores[pillar], 2)
-
-        # Calculate overall country CIVI index
-        overall_civi_index = 0
-        overall_civi_total_weight = 0
-        for pillar, score in country_overall_scores.items():
-            # This aggregation needs to be re-thought if we want a true overall CIVI from industry pillars
-            # For now, let's just average the pillar scores that have data
-            if pd.notna(score):
-                overall_civi_index += score
-                overall_civi_total_weight += 1
-        
-        if overall_civi_total_weight > 0:
-            country_overall_scores["civi_index"] = round(overall_civi_index / overall_civi_total_weight, 2)
+        # Bulk insert into respective tables
+        if not pillar_scores.empty:
+            session.bulk_insert_mappings(PillarScore, pillar_scores.to_dict(orient="records"))
+            print(f"Successfully inserted {len(pillar_scores)} pillar scores.")
         else:
-            country_overall_scores["civi_index"] = np.nan
+            print("No pillar scores to insert.")
 
-        final_scores[country_iso] = {
-            "name": country_iso, # Placeholder, will be updated by build_json
-            "region": "Unknown", # Placeholder, will be updated by build_json
-            "scores": country_overall_scores,
-            "industries": country_industry_scores
-        }
+        if not industry_scores.empty:
+            session.bulk_insert_mappings(IndustryScore, industry_scores.to_dict(orient="records"))
+            print(f"Successfully inserted {len(industry_scores)} industry scores.")
+        else:
+            print("No industry scores to insert.")
 
-    all_pillar_scores = {p: [] for p in PILLARS}
-    for country_iso in final_scores:
-        for industry in INDUSTRIES:
-            for pillar in PILLARS:
-                score = final_scores[country_iso]['industries'][industry]['scores'][pillar]
-                if pd.notna(score):
-                    all_pillar_scores[pillar].append(score)
+        if not country_scores.empty:
+            session.bulk_insert_mappings(CountryScore, country_scores.to_dict(orient="records"))
+            print(f"Successfully inserted {len(country_scores)} country scores.")
+        else:
+            print("No country scores to insert.")
 
-    pillar_min_max = {p: (min(all_pillar_scores[p]), max(all_pillar_scores[p])) for p in PILLARS if all_pillar_scores[p]}
-
-    for country_iso in final_scores:
-        for industry in INDUSTRIES:
-            for pillar in PILLARS:
-                score = final_scores[country_iso]['industries'][industry]['scores'][pillar]
-                if pd.notna(score) and pillar in pillar_min_max:
-                    min_val, max_val = pillar_min_max[pillar]
-                    if max_val == min_val:
-                        normalized_score = 50
-                    else:
-                        normalized_score = ((score - min_val) / (max_val - min_val)) * 100
-                    final_scores[country_iso]['industries'][industry]['scores'][pillar] = round(normalized_score, 2)
-
-
-    print("CIVI score calculation complete.")
-    print(f"Sample of calculated scores (first 2 countries): {list(final_scores.items())[:2]}")
-    return final_scores
+        session.commit()
 
 if __name__ == "__main__":
-    scores = score_all()
-    # For testing, print a sample
-    if scores:
-        print("\nSample Scores (from direct execution):")
-        for iso, data in list(scores.items())[:2]: # Print first 2 countries
-            print(f"Country: {iso}")
-            print(f"  Overall Scores: {data['scores']}")
-            for industry, ind_data in data['industries'].items():
-                print(f"    Industry {industry}: {ind_data['scores']}")
+    aggregate_scores()
