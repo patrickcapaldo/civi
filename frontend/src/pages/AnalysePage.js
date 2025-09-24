@@ -155,32 +155,31 @@ const AnalysePage = ({ headerHeight }) => {
   const getFilteredHistoricalData = useCallback(() => {
     const datasets = selections.map(selection => {
       const countryData = allHistoricalData[selection.country];
-      if (!countryData || !countryData.historical_scores) return null;
+      if (!countryData) return null;
 
-      const historicalScores = countryData.historical_scores.filter(record =>
-        record.year >= timeframe.startYear && record.year <= timeframe.endYear
-      );
+      // Since historical_scores doesn't exist, we use the main scores object.
+      const record = countryData;
 
-      const data = historicalScores.map(record => {
-        let score = null;
-        if (selection.industry && selection.pillar) {
-          score = record.industries?.[selection.industry]?.scores?.[selection.pillar];
-        } else if (selection.industry) {
-          const industryScores = record.industries?.[selection.industry]?.scores;
-          if (industryScores) {
-            const validScores = PILLARS.map(p => industryScores[p]).filter(s => s != null);
-            if (validScores.length > 0) {
-              score = validScores.reduce((a, b) => a + b, 0) / validScores.length;
-            }
+      let score = null;
+      if (selection.industry && selection.pillar) {
+        score = record.industries?.[selection.industry]?.scores?.[selection.pillar];
+      } else if (selection.industry) {
+        const industryScores = record.industries?.[selection.industry]?.scores;
+        if (industryScores) {
+          const validScores = PILLARS.map(p => industryScores[p]).filter(s => s != null);
+          if (validScores.length > 0) {
+            score = validScores.reduce((a, b) => a + b, 0) / validScores.length;
           }
-        } else {
-            const overallScores = PILLARS.map(p => record.scores[p]).filter(s => s != null);
-            if (overallScores.length > 0) {
-                score = overallScores.reduce((a, b) => a + b, 0) / overallScores.length;
-            }
         }
-        return { x: record.year, y: score };
-      });
+      } else { // This is the case for "Overall" country score
+        const overallScores = PILLARS.map(p => record.scores[p]).filter(s => s != null);
+        if (overallScores.length > 0) {
+            score = overallScores.reduce((a, b) => a + b, 0) / overallScores.length;
+        }
+      }
+
+      // We'll use a single data point. The chart will show this point.
+      const data = [{ x: "Latest", y: score }];
 
       let label = getCountryDisplayName(selection.country);
       if (selection.industry) label += ` > ${selection.industry.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}`;
@@ -196,14 +195,13 @@ const AnalysePage = ({ headerHeight }) => {
       };
     }).filter(Boolean);
 
-    const labels = Array.from(new Set(datasets.flatMap(ds => ds.data.map(d => d.x)))).sort();
+    const labels = ["Latest"];
 
     return {
         labels,
         datasets,
     };
-
-  }, [allHistoricalData, selections, timeframe, getCountryDisplayName]);
+  }, [allHistoricalData, selections, getCountryDisplayName]);
 
   useEffect(() => {
     const countriesToFetch = selections.map(s => s.country).filter(c => !allHistoricalData[c]);
@@ -211,7 +209,7 @@ const AnalysePage = ({ headerHeight }) => {
 
     const fetchHistoricalData = async () => {
       const promises = countriesToFetch.map(code =>
-        d3.json(`/civi_modular_historical/${code}.json`) // Assuming historical data is in the same files
+        d3.json(`/civi_modular/${code}.json`)
           .then(data => ({ [code]: data }))
           .catch(error => {
             console.error(`Error fetching historical data for ${code}:`, error);
