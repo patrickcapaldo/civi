@@ -1,6 +1,6 @@
 import requests
 import pandas as pd
-import xml.etree.ElementTree as ET
+import io
 from sqlalchemy.orm import Session
 from .database import engine
 from .models import MetricCatalog, MetricRaw
@@ -58,74 +58,54 @@ def fetch_world_bank_data(start_year: int = 2000, end_year: int = 2023):
             print("No raw data from World Bank to insert.")
 
 
-FAOSTAT_SDMX_API_URL = "https://nsi-release-ro-statsuite.fao.org/rest/data/FAO,{dataset_id},1.0/A.{indicator_id}..........?startPeriod={start_year}&endPeriod={end_year}&dimensionAtObservation=AllDimensions"
+FAOSTAT_API_URL = "http://nsi-release-ro-statsuite.fao.org/rest/v2"
 
-def fetch_faostat_sdmx_data(start_year: int = 2000, end_year: int = 2023):
-    """Fetches data from the FAOSTAT SDMX API for relevant metrics and stores it in metrics_raw."""
+def fetch_faostat_v2_data(start_year: int = 2000, end_year: int = 2023):
+    """Fetches data from the FAOSTAT V1 REST API for relevant metrics and stores it in metrics_raw."""
     with Session(engine) as session:
-        faostat_metrics = session.query(MetricCatalog).filter(MetricCatalog.source == "FAOSTAT (SDMX)").all()
+        faostat_metrics = session.query(MetricCatalog).filter(MetricCatalog.source == "FAOSTAT (V1)").all()
 
         if not faostat_metrics:
-            print("No FAOSTAT (SDMX) metrics found in the catalog.")
+            print("No FAOSTAT (V1) metrics found in the catalog.")
             return
 
         all_raw_data = []
 
         for metric in faostat_metrics:
             print(f"Fetching data for {metric.metric_id} ({metric.name})...")
-            # metric_id is like FAOSTAT_SDG_2_1_1_SN_ITK_DEFC
-            dataset_id = "DF_SDG_2_1_1" # Hardcode for now
-            indicator_id = "SN_ITK_DEFC" # Hardcode for now
-            url = FAOSTAT_SDMX_API_URL.format(
-                dataset_id=dataset_id,
-                indicator_id=indicator_id,
-                start_year=start_year,
-                end_year=end_year
+            # metric_id is like FAOSTAT_FS_21004_6120 (Dataset_Item_Element)
+            parts = metric.metric_id.split('_')
+            database_name = parts[1] # FS
+            item_code = parts[2] # 21004
+            element_code = parts[3] # 6120
+
+            url = FAOSTAT_API_URL.format(
+                database_name=database_name,
+                elements=element_code,
+                items=item_code,
+                years=f"{start_year}:{end_year}"
             )
             response = requests.get(url)
 
             if response.status_code == 200 and response.text:
                 try:
-                    root = ET.fromstring(response.text)
-                    # Define namespaces for easier parsing
-                    namespaces = {
-                        'message': 'http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message',
-                        'generic': 'http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic',
-                        'common': 'http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common'
-                    }
+                    # Read CSV directly into a pandas DataFrame
+                    df_faostat = pd.read_csv(io.StringIO(response.text))
 
-                    # Find all Series elements
-                    for series in root.findall('.//generic:Series', namespaces):
-                        # Extract dimensions from SeriesKey
-                        series_key_values = {kv.get('id'): kv.get('value') for kv in series.findall('.//generic:SeriesKey/generic:Value', namespaces)}
-                        
-                        # Extract observations within each series
-                        for obs in series.findall('.//generic:Obs', namespaces):
-                            # Extract attributes from generic:Attributes
-                            attributes = {attr.get('id'): attr.get('value') for attr in obs.findall('.//generic:Attributes/generic:Value', namespaces)}
-
-                            country_code = attributes.get('REF_AREA_ISO3')
-                            time_detail = attributes.get('TIME_DETAIL')
-                            value_element = obs.find('.//generic:ObsValue', namespaces)
-                            value = value_element.get('value') if value_element is not None else None
-
-                            if country_code and time_detail and value is not None:
-                                # Extract the start year from the TIME_DETAIL range (e.g., "2022-2024" -> 2022)
-                                year = int(time_detail.split('-')[0])
-
-                                all_raw_data.append({
-                                    'country_code': country_code,
-                                    'year': year,
-                                    'metric_id': metric.metric_id,
-                                    'metric_value': float(value),
-                                    'units': metric.units,
-                                    'source': metric.source
-                                })
-                except ET.ParseError as e:
-                    print(f"Error parsing FAOSTAT SDMX XML for {metric.metric_id}: {e}")
-                    print(f"Response text: {response.text[:500]}...")
+                    # Map FAOSTAT column names to our schema
+                    # This mapping might need adjustment based on actual CSV columns
+                    for _, row in df_faostat.iterrows():
+                        if pd.notna(row['Value']):
+                            all_raw_data.append({
+                                'country_code': row['Area Code'], # FAOSTAT numerical code
+                                'year': int(row['Year']),
+                                'metric_id': metric.metric_id,
+                                'metric_value': float(row['Value']),
+                                'units': row['Unit'],
+                                'source': metric.source
+                            })
                 except Exception as e:
-                    print(f"Error processing FAOSTAT SDMX data for {metric.metric_id}: {e}")
+                    print(f"Error parsing FAOSTAT CSV data for {metric.metric_id}: {e}")
                     print(f"Response text: {response.text[:500]}...")
             else:
                 print(f"No data or error for {metric.metric_id}: {response.status_code} - {response.text[:100]}...")
@@ -136,10 +116,9 @@ def fetch_faostat_sdmx_data(start_year: int = 2000, end_year: int = 2023):
             raw_data_to_insert = df_raw.to_dict(orient="records")
             session.bulk_insert_mappings(MetricRaw, raw_data_to_insert)
             session.commit()
-            print(f"Successfully inserted {len(raw_data_to_insert)} raw data points from FAOSTAT (SDMX) into metrics_raw.")
+            print(f"Successfully inserted {len(raw_data_to_insert)} raw data points from FAOSTAT (V1) into metrics_raw.")
         else:
-            print("No raw data from FAOSTAT (SDMX) to insert.")
-
+            print("No raw data from FAOSTAT (V1) to insert.")
 
 
 def fetch_data(start_year: int = 2000, end_year: int = 2023):
@@ -151,9 +130,68 @@ def fetch_data(start_year: int = 2000, end_year: int = 2023):
 
     print("--- Fetching World Bank Data ---")
     fetch_world_bank_data(start_year, end_year)
-    # print("\n--- Fetching FAOSTAT (SDMX) Data ---")
-    # fetch_faostat_sdmx_data(start_year, end_year)
+    print("\n--- Fetching FAOSTAT (V2) Data ---")
+    fetch_faostat_v2_data(start_year, end_year)
+    print("\n--- Fetching WHO GHO Data ---")
+    fetch_who_gho_data(start_year, end_year)
+
+WHO_GHO_API_URL = "https://ghoapi.azureedge.net/api/{indicator_code}"
+
+def fetch_who_gho_data(start_year: int = 2000, end_year: int = 2023):
+    """Fetches data from the WHO GHO OData API for relevant metrics and stores it in metrics_raw."""
+    with Session(engine) as session:
+        who_gho_metrics = session.query(MetricCatalog).filter(MetricCatalog.source == "WHO GHO").all()
+
+        if not who_gho_metrics:
+            print("No WHO GHO metrics found in the catalog.")
+            return
+
+        all_raw_data = []
+
+        for metric in who_gho_metrics:
+            print(f"Fetching data for {metric.metric_id} ({metric.name})...")
+            url = WHO_GHO_API_URL.format(indicator_code=metric.metric_id)
+            response = requests.get(url)
+            data = response.json()
+
+            if response.status_code == 200 and data and 'value' in data:
+                for entry in data['value']:
+                    # Filter by year range
+                    if 'TimeDim' in entry and int(entry['TimeDim']) >= start_year and int(entry['TimeDim']) <= end_year:
+                        if 'NumericValue' in entry and entry['NumericValue'] is not None:
+                            all_raw_data.append({
+                                'country_code': entry['SpatialDim'], # ISO3 code
+                                'year': int(entry['TimeDim']),
+                                'metric_id': metric.metric_id,
+                                'metric_value': float(entry['NumericValue']),
+                                'units': metric.units, # Use units from catalog
+                                'source': metric.source
+                            })
+            else:
+                print(f"No data or error for {metric.metric_id}: {data}")
+        
+        if all_raw_data:
+            df_raw = pd.DataFrame(all_raw_data)
+            df_raw.drop_duplicates(subset=['country_code', 'year', 'metric_id'], inplace=True)
+            raw_data_to_insert = df_raw.to_dict(orient="records")
+            session.bulk_insert_mappings(MetricRaw, raw_data_to_insert)
+            session.commit()
+            print(f"Successfully inserted {len(raw_data_to_insert)} raw data points from WHO GHO into metrics_raw.")
+        else:
+            print("No raw data from WHO GHO to insert.")
+
+
+def fetch_who_gho_indicator_list():
+    url = "https://ghoapi.azureedge.net/api/Indicator"
+    response = requests.get(url)
+    if response.status_code == 200:
+        indicators = response.json()['value']
+        for indicator in indicators:
+            print(f"ID: {indicator['IndicatorCode']}, Title: {indicator['IndicatorName']}")
+    else:
+        print(f"Error fetching WHO GHO indicator list: {response.status_code}")
 
 
 if __name__ == "__main__":
-    fetch_data()
+    # fetch_data()
+    fetch_who_gho_indicator_list()

@@ -18,9 +18,11 @@ METRICS = [
     {'metric_id': 'AG.PRD.FOOD.XD', 'name': 'Food production index (2014-2016 = 100)', 'industry': 'Food & Agriculture', 'pillar': 'Effectiveness', 'directionality': 'POS', 'source': 'World Bank', 'units': 'index'},
 
     # Healthcare
-    {'metric_id': 'SH.XPD.CHEX.GD.ZS', 'name': 'Current health expenditure (% of GDP)', 'industry': 'Healthcare', 'pillar': 'Autonomy', 'directionality': 'POS', 'source': 'World Bank', 'units': '%'},
-    {'metric_id': 'FAOSTAT_SDG_2_1_1_SN_ITK_DEFC', 'name': 'Prevalence of undernourishment (% of population) (SDG 2.1.1)', 'industry': 'Food & Agriculture', 'pillar': 'Resilience', 'directionality': 'NEG', 'source': 'FAOSTAT (SDMX)', 'units': '%'},
-    {'metric_id': 'SH.DYN.MORT', 'name': 'Mortality rate, under-5 (per 1,000 live births)', 'industry': 'Healthcare', 'pillar': 'Effectiveness', 'directionality': 'NEG', 'source': 'World Bank', 'units': 'per 1000 live births'},
+    {'metric_id': 'HRH_26', 'name': 'Physicians per 1,000 population (health workforce density)', 'industry': 'Healthcare', 'pillar': 'Autonomy', 'directionality': 'POS', 'source': 'WHO GHO', 'units': 'per 1,000 population'},
+    {'metric_id': 'UHC_INDEX_REPORTED', 'name': 'UHC Service Coverage Index (0-100)', 'industry': 'Healthcare', 'pillar': 'Resilience', 'directionality': 'POS', 'source': 'WHO GHO', 'units': '0-100'},
+    {'metric_id': 'WHS4_100', 'name': 'DPT3 immunization coverage (%)', 'industry': 'Healthcare', 'pillar': 'Effectiveness', 'directionality': 'POS', 'source': 'WHO GHO', 'units': '%'},
+    {'metric_id': 'WB_SH_XPD_CHEX_GD_ZS', 'name': 'Current health expenditure (% of GDP)', 'industry': 'Healthcare', 'pillar': 'Autonomy', 'directionality': 'POS', 'source': 'World Bank', 'units': '%'},
+    {'metric_id': 'SH.DYN.MORT', 'name': 'Mortality rate, under-5 (per 1,000 live births)', 'industry': 'Healthcare', 'pillar': 'Effectiveness', 'directionality': 'NEG', 'source': 'World Bank', 'units': 'per 1,000 live births'},
 ]
 
 def populate_metrics_catalog():
