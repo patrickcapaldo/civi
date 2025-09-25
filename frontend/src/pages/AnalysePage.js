@@ -211,7 +211,7 @@ const AnalysePage = ({ headerHeight }) => {
 
     const fetchHistoricalData = async () => {
       const promises = countriesToFetch.map(code =>
-        d3.json(`/civi_modular_historical/${code}.json`) // Assuming historical data is in the same files
+        d3.json(`/civi_modular/${code}.json`)
           .then(data => ({ [code]: data }))
           .catch(error => {
             console.error(`Error fetching historical data for ${code}:`, error);
