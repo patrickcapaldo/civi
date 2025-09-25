@@ -152,11 +152,15 @@ def build_all():
         latest_industries_data = {}
         for ind_name in INDUSTRIES:
             ind_key = ind_name.lower().replace(" ", "_").replace("&", "and")
-            latest_industries_data[ind_key] = latest_data["industries"].get(ind_key, {"scores": {}, "pillars": {}, "indicators": []})
-            current_latest_pillars = {}
-            for p_name in PILLARS:
-                current_latest_pillars[p_name] = latest_industries_data[ind_key]["pillars"].get(p_name, {"scores": {}})
-            latest_industries_data[ind_key]["pillars"] = current_latest_pillars
+            # Get the industry data for the latest year, or an empty structure if not available
+            industry_data_for_latest_year = latest_data["industries"].get(ind_key, {"scores": {}, "pillars": {}, "indicators": []})
+            
+            # Directly assign the scores and pillars from the latest_data
+            latest_industries_data[ind_key] = {
+                "scores": industry_data_for_latest_year["scores"],
+                "pillars": industry_data_for_latest_year["pillars"],
+                "indicators": industry_data_for_latest_year["indicators"]
+            }
 
 
         final_countries_data[iso3] = {

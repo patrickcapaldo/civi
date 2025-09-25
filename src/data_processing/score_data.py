@@ -21,6 +21,10 @@ def score_all():
         df_catalog = df_catalog.drop(columns=['_sa_instance_state'], errors='ignore')
         df_catalog = df_catalog[['metric_id', 'industry', 'pillar']]
 
+        # Standardize industry and pillar names to lowercase snake_case
+        df_catalog['industry'] = df_catalog['industry'].apply(lambda x: x.lower().replace(" ", "_").replace("&", "and"))
+        df_catalog['pillar'] = df_catalog['pillar'].apply(lambda x: x.lower())
+
         df_merged = pd.merge(df_normalized, df_catalog, on='metric_id', how='left')
 
         # 1. Aggregate to Pillar Scores
