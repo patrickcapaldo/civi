@@ -54,47 +54,50 @@ def build_all():
         # Convert catalog to a dict for easy lookup
         metric_catalog_map = {m.metric_id: m for m in all_metric_catalog}
 
-        # Organize data by country and year
+        # Initialize structure for all countries and years that have any data
+        for score_obj in all_country_scores + all_industry_scores + all_pillar_scores + all_metric_normalized:
+            if score_obj.country_code not in all_civi_data_by_country_year:
+                all_civi_data_by_country_year[score_obj.country_code] = {}
+            if score_obj.year not in all_civi_data_by_country_year[score_obj.country_code]:
+                all_civi_data_by_country_year[score_obj.country_code][score_obj.year] = {"scores": {}, "industries": {}}
+            latest_year = max(latest_year, score_obj.year)
+
+        # Populate overall country scores
         for cs in all_country_scores:
-            if cs.country_code not in all_civi_data_by_country_year:
-                all_civi_data_by_country_year[cs.country_code] = {}
-            if cs.year not in all_civi_data_by_country_year[cs.country_code]:
-                all_civi_data_by_country_year[cs.country_code][cs.year] = {"scores": {}, "industries": {}}
             all_civi_data_by_country_year[cs.country_code][cs.year]["scores"]["overall"] = cs.country_score
-            latest_year = max(latest_year, cs.year)
 
+        # Populate industry scores and initialize industry structure
         for ind_s in all_industry_scores:
-            if ind_s.country_code not in all_civi_data_by_country_year:
-                all_civi_data_by_country_year[ind_s.country_code] = {}
-            if ind_s.year not in all_civi_data_by_country_year[ind_s.country_code]:
-                all_civi_data_by_country_year[ind_s.country_code][ind_s.year] = {"scores": {}, "industries": {}}
-            if ind_s.industry not in all_civi_data_by_country_year[ind_s.country_code][ind_s.year]["industries"]:
-                all_civi_data_by_country_year[ind_s.country_code][ind_s.year]["industries"][ind_s.industry] = {"scores": {}, "pillars": {}, "indicators": []}
-            all_civi_data_by_country_year[ind_s.country_code][ind_s.year]["industries"][ind_s.industry]["scores"]["overall"] = ind_s.industry_score
-            latest_year = max(latest_year, ind_s.year)
+            industry_key = ind_s.industry.lower().replace(" ", "_").replace("&", "and")
+            if industry_key not in all_civi_data_by_country_year[ind_s.country_code][ind_s.year]["industries"]:
+                all_civi_data_by_country_year[ind_s.country_code][ind_s.year]["industries"][industry_key] = {"scores": {}, "pillars": {}, "indicators": []}
+            all_civi_data_by_country_year[ind_s.country_code][ind_s.year]["industries"][industry_key]["scores"]["overall"] = ind_s.industry_score
 
+        # Populate pillar scores (both overall country and within industry)
         for p_s in all_pillar_scores:
-            if p_s.country_code not in all_civi_data_by_country_year:
-                all_civi_data_by_country_year[p_s.country_code] = {}
-            if p_s.year not in all_civi_data_by_country_year[p_s.country_code]:
-                all_civi_data_by_country_year[p_s.country_code][p_s.year] = {"scores": {}, "industries": {}}
-            if p_s.industry not in all_civi_data_by_country_year[p_s.country_code][p_s.year]["industries"]:
-                all_civi_data_by_country_year[p_s.country_code][p_s.year]["industries"][p_s.industry] = {"scores": {}, "pillars": {}, "indicators": []}
-            if p_s.pillar not in all_civi_data_by_country_year[p_s.country_code][p_s.year]["industries"][p_s.industry]["pillars"]:
-                all_civi_data_by_country_year[p_s.country_code][p_s.year]["industries"][p_s.industry]["pillars"][p_s.pillar] = {"scores": {}}
-            all_civi_data_by_country_year[p_s.country_code][p_s.year]["industries"][p_s.industry]["pillars"][p_s.pillar]["scores"]["overall"] = p_s.pillar_score
-            all_civi_data_by_country_year[p_s.country_code][p_s.year]["industries"][p_s.industry]["scores"][p_s.pillar] = p_s.pillar_score # For direct access
-            latest_year = max(latest_year, p_s.year)
+            industry_key = p_s.industry.lower().replace(" ", "_").replace("&", "and")
+            pillar_key = p_s.pillar.lower()
 
+            # Ensure industry structure exists
+            if industry_key not in all_civi_data_by_country_year[p_s.country_code][p_s.year]["industries"]:
+                all_civi_data_by_country_year[p_s.country_code][p_s.year]["industries"][industry_key] = {"scores": {}, "pillars": {}, "indicators": []}
+            
+            # Store pillar score within the industry's pillar structure
+            if pillar_key not in all_civi_data_by_country_year[p_s.country_code][p_s.year]["industries"][industry_key]["pillars"]:
+                all_civi_data_by_country_year[p_s.country_code][p_s.year]["industries"][industry_key]["pillars"][pillar_key] = {"scores": {}}
+            all_civi_data_by_country_year[p_s.country_code][p_s.year]["industries"][industry_key]["pillars"][pillar_key]["scores"]["overall"] = p_s.pillar_score
+            
+            # Also store pillar score directly under industry's scores for radar chart
+            all_civi_data_by_country_year[p_s.country_code][p_s.year]["industries"][industry_key]["scores"][pillar_key] = p_s.pillar_score
+            
+            # Aggregate pillar scores to overall country scores for the year
+            all_civi_data_by_country_year[p_s.country_code][p_s.year]["scores"][pillar_key] = p_s.pillar_score
+
+        # Populate normalized metrics (indicators)
         for mn in all_metric_normalized:
             metric_info = metric_catalog_map.get(mn.metric_id)
             if not metric_info: # Skip if metric not in catalog
                 continue 
-
-            if mn.country_code not in all_civi_data_by_country_year:
-                all_civi_data_by_country_year[mn.country_code] = {}
-            if mn.year not in all_civi_data_by_country_year[mn.country_code]:
-                all_civi_data_by_country_year[mn.country_code][mn.year] = {"scores": {}, "industries": {}}
             
             industry_key = metric_info.industry.lower().replace(" ", "_").replace("&", "and") # Standardize industry key
             if industry_key not in all_civi_data_by_country_year[mn.country_code][mn.year]["industries"]:
@@ -109,38 +112,40 @@ def build_all():
                 "year": mn.year,
                 "pillar": metric_info.pillar.lower()
             })
-            latest_year = max(latest_year, mn.year)
 
 
     final_countries_data = {}
-    for iso3, years_data in all_civi_data_by_country_year.items():
-        info = country_info_map.get(iso3, {"name": iso3, "region": "Unknown"})
+    for iso3, info in country_info_map.items(): # Iterate through all countries from country-codes.json
+        years_data_for_country = all_civi_data_by_country_year.get(iso3, {}) # Get data if available, else empty dict
+
+        # Determine the latest year for this specific country, or use the global latest_year if no data for this country
+        country_latest_year = max(years_data_for_country.keys()) if years_data_for_country else latest_year # Use global latest_year as fallback
 
         # Get data for the latest year for top-level scores and industries
-        latest_data = years_data.get(latest_year, {"scores": {}, "industries": {}})
+        latest_data = years_data_for_country.get(country_latest_year, {"scores": {}, "industries": {}})
         
         # Prepare historical scores array
         historical_scores_list = []
-        for year in sorted(years_data.keys()):
-            year_data = years_data[year]
-            # Ensure all industries and pillars are present for consistency
-            # This part needs to be careful not to overwrite actual data with empty dicts
-            # It's more about ensuring the structure is consistent for the frontend
-            current_year_industries = {}
-            for ind_name in INDUSTRIES:
-                ind_key = ind_name.lower().replace(" ", "_").replace("&", "and")
-                current_year_industries[ind_key] = year_data["industries"].get(ind_key, {"scores": {}, "pillars": {}, "indicators": []})
-                # Ensure pillars are also consistent
-                current_year_pillars = {}
-                for p_name in PILLARS:
-                    current_year_pillars[p_name] = current_year_industries[ind_key]["pillars"].get(p_name, {"scores": {}})
-                current_year_industries[ind_key]["pillars"] = current_year_pillars
+        if years_data_for_country: # Only build historical data if there is data for the country
+            for year in sorted(years_data_for_country.keys()):
+                year_data = years_data_for_country[year]
+                # Ensure all industries and pillars are present for consistency
+                # This part needs to be careful not to overwrite actual data with empty dicts
+                # It's more about ensuring the structure is consistent for the frontend
+                current_year_industries = {}
+                for ind_name in INDUSTRIES:
+                    ind_key = ind_name.lower().replace(" ", "_").replace("&", "and")
+                    current_year_industries[ind_key] = year_data["industries"].get(ind_key, {"scores": {}, "pillars": {}, "indicators": []})
+                    current_year_pillars = {}
+                    for p_name in PILLARS:
+                        current_year_pillars[p_name] = current_year_industries[ind_key]["pillars"].get(p_name, {"scores": {}})
+                    current_year_industries[ind_key]["pillars"] = current_year_pillars
 
-            historical_scores_list.append({
-                "year": year,
-                "scores": year_data["scores"], # Overall scores for the year
-                "industries": current_year_industries # Industry data for the year
-            })
+                historical_scores_list.append({
+                    "year": year,
+                    "scores": year_data["scores"], # Overall scores for the year
+                    "industries": current_year_industries # Industry data for the year
+                })
 
         # Prepare latest year scores for direct access
         latest_overall_scores = latest_data["scores"]
@@ -148,7 +153,6 @@ def build_all():
         for ind_name in INDUSTRIES:
             ind_key = ind_name.lower().replace(" ", "_").replace("&", "and")
             latest_industries_data[ind_key] = latest_data["industries"].get(ind_key, {"scores": {}, "pillars": {}, "indicators": []})
-            # Ensure pillars are also consistent for the latest data
             current_latest_pillars = {}
             for p_name in PILLARS:
                 current_latest_pillars[p_name] = latest_industries_data[ind_key]["pillars"].get(p_name, {"scores": {}})
