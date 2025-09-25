@@ -5,7 +5,14 @@ from .models import MetricCatalog, MetricRaw, MetricNormalized, PillarScore, Ind
 
 # Predefined list of metrics for the catalog
 METRICS = [
+    # Communications
+    {'metric_id': 'ITU_242', 'name': 'International bandwidth usage', 'industry': 'Communications', 'pillar': 'Autonomy', 'directionality': 'POS', 'source': 'ITU DataHub', 'units': 'Mbit/s, per Internet user'},
+    {'metric_id': 'ITU_100095', 'name': 'Mobile-broadband network coverage (% population)', 'industry': 'Communications', 'pillar': 'Resilience', 'directionality': 'POS', 'source': 'ITU DataHub', 'units': '%'},
+    {'metric_id': 'ITU_19303', 'name': 'Fixed-broadband subscriptions (per 100 inhabitants)', 'industry': 'Communications', 'pillar': 'Sustainability', 'directionality': 'POS', 'source': 'ITU DataHub', 'units': 'per 100 inhabitants'},
+    {'metric_id': 'ITU_11624', 'name': 'Individuals using the Internet (% of population)', 'industry': 'Communications', 'pillar': 'Effectiveness', 'directionality': 'POS', 'source': 'ITU DataHub', 'units': '%'},
+
     # Information Technology
+    {'metric_id': 'ITU_90014', 'name': 'Global Cybersecurity Index - Overall Score', 'industry': 'Information Technology', 'pillar': 'Resilience', 'directionality': 'POS', 'source': 'ITU DataHub', 'units': 'score'},
     {'metric_id': 'IT.NET.USER.ZS', 'name': 'Individuals using the Internet (% of population)', 'industry': 'Information Technology', 'pillar': 'Effectiveness', 'directionality': 'POS', 'source': 'World Bank', 'units': '%'},
     {'metric_id': 'IT.CEL.SETS.P2', 'name': 'Mobile cellular subscriptions (per 100 people)', 'industry': 'Information Technology', 'pillar': 'Autonomy', 'directionality': 'POS', 'source': 'World Bank', 'units': 'per 100 people'},
 

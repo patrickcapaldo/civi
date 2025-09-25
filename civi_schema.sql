@@ -33,7 +33,7 @@ COMMENT ON COLUMN metrics_catalog.directionality IS 'POS = higher is better, NEG
 -- =============================================
 CREATE TABLE metrics_raw (
     id BIGSERIAL PRIMARY KEY,
-    country_code VARCHAR(3) NOT NULL,
+    country_code VARCHAR(10) NOT NULL,
     year INT NOT NULL,
     metric_id VARCHAR(100) NOT NULL REFERENCES metrics_catalog(metric_id),
     metric_value DOUBLE PRECISION,
@@ -52,7 +52,7 @@ COMMENT ON TABLE metrics_raw IS 'Raw source values for each metric, country, and
 -- =============================================
 CREATE TABLE metrics_normalized (
     id BIGSERIAL PRIMARY KEY,
-    country_code VARCHAR(3) NOT NULL,
+    country_code VARCHAR(10) NOT NULL,
     year INT NOT NULL,
     metric_id VARCHAR(100) NOT NULL REFERENCES metrics_catalog(metric_id),
     normalized_value DOUBLE PRECISION,
@@ -71,7 +71,7 @@ COMMENT ON TABLE metrics_normalized IS 'Normalized metric values on a 0-100 scal
 -- =============================================
 CREATE TABLE pillar_scores (
     id BIGSERIAL PRIMARY KEY,
-    country_code VARCHAR(3) NOT NULL,
+    country_code VARCHAR(10) NOT NULL,
     year INT NOT NULL,
     industry VARCHAR(50) NOT NULL,
     pillar VARCHAR(50) NOT NULL,
@@ -88,7 +88,7 @@ COMMENT ON TABLE pillar_scores IS 'Aggregated scores for each pillar within an i
 -- =============================================
 CREATE TABLE industry_scores (
     id BIGSERIAL PRIMARY KEY,
-    country_code VARCHAR(3) NOT NULL,
+    country_code VARCHAR(10) NOT NULL,
     year INT NOT NULL,
     industry VARCHAR(50) NOT NULL,
     industry_score DOUBLE PRECISION,
@@ -104,7 +104,7 @@ COMMENT ON TABLE industry_scores IS 'Aggregated scores for each industry.';
 -- =============================================
 CREATE TABLE country_scores (
     id BIGSERIAL PRIMARY KEY,
-    country_code VARCHAR(3) NOT NULL,
+    country_code VARCHAR(10) NOT NULL,
     year INT NOT NULL,
     country_score DOUBLE PRECISION,
     UNIQUE(country_code, year)
