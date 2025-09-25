@@ -33,3 +33,5 @@ INDUSTRIES = [
     "Emergency Services",
     "Information Technology",
 ]
+
+PILLARS = ["autonomy", "resilience", "sustainability", "effectiveness"]
