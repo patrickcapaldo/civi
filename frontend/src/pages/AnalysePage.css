@@ -88,3 +88,44 @@
     font-size: 0.9em;
     color: #ccc;
 }
+
+.selection-card {
+    position: relative; /* To contain absolutely positioned color picker */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #333;
+    color: white;
+}
+
+.selection-card button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1em;
+    margin-left: 10px;
+}
+
+.selection-card button:hover {
+    color: #87CEEB;
+}
+
+.analyse-button {
+    background-color: #87CEEB; /* SkyBlue */
+    color: #282c34; /* Dark text */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.analyse-button:hover {
+    background-color: #6cb7e0; /* Slightly darker SkyBlue on hover */
+}
