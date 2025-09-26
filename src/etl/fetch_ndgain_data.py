@@ -59,7 +59,7 @@ def get_db_connection():
             port=os.environ.get("CIVI_DB_PORT", "5432"),
             dbname=os.environ.get("CIVI_DB_NAME", "civi"),
             user=os.environ.get("CIVI_DB_USER", "postgres"),
-            password=os.environ.get("CIVI_DB_PASSWORD", "postgres")
+            <password>=os.environ.get("CIVI_DB_PASSWORD", "postgres")
         )
         return conn
     except psycopg2.OperationalError as e:

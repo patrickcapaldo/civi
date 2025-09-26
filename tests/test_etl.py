@@ -11,7 +11,7 @@ import os
 # Use a test database URL (e.g., an in-memory SQLite for unit tests, or a dedicated PostgreSQL test DB)
 # For simplicity, we'll use the main DATABASE_URL for now, assuming it's a test instance or can be reset.
 # In a real-world scenario, you'd use a separate test database.
-TEST_DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://patrick:password@localhost/civi")
+TEST_DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://<user>:<password>@localhost/civi")
 
 @pytest.fixture(scope="module")
 def test_db_engine():
