@@ -1,8 +1,11 @@
+![Build](https://img.shields.io/badge/build-passing-brightgreen)
+![License](https://img.shields.io/badge/license-Dual_License-blue)
+
 # Critical Infrastructure Vitals Index (CIVI)
 
-The Critical Infrastructure Vitals Index (CIVI) is a composite index that scores and ranks countries based on the health of their essential infrastructure. It provides a comprehensive snapshot of national capabilities across four critical pillars: Autonomy, Resilience, Sustainability, and Effectiveness.
-
-![CIVI Explore page global view](assets/img/civi_explore_03.png)
+<p align="center">
+  <img src="assets/img/civi_explore_03.png" width="600" />
+</p>
 
 ## Why CIVI Matters
 
@@ -21,31 +24,6 @@ CIVI evaluates infrastructure across four distinct dimensions:
 3.  **Sustainability**: The environmental, social, and economic viability of infrastructure. This pillar measures the long-term impact and efficiency of resource use.
 4.  **Effectiveness**: The quality, accessibility, and performance of infrastructure services delivered to citizens and businesses.
 
-## Key Features
-
-### Explore Page
-
-The Explore page serves as the primary entry point for visualizing the CIVI data. It features an interactive world map where users can:
-
-- **Visualize Country Scores:** Hover over any country to see its overall CIVI score and a breakdown across the four pillars (Autonomy, Resilience, Sustainability, Effectiveness).
-- **Filter by Industry and Pillar:** Use dropdown menus to filter the map display, showing how countries perform in specific industries (e.g., Energy, Healthcare) or within particular pillars.
-- **Dynamic Data Display:** The map dynamically updates to reflect the selected filters, providing a quick and intuitive way to understand global critical infrastructure landscapes.
-
-![CIVI Explore page global view](assets/img/civi_explore_03.png)
-![CIVI Explore page modal for the Energy industry of the United States of America](assets/img/civi_explore_02.png)
-
-### Analyse Page
-
-The Analyse page offers a deeper dive into historical trends and comparative analysis. On this page, users can:
-
-- **Historical Data & Comparison:** Select multiple countries, industries, and pillars to compare their historical CIVI scores over time.
-- **Customizable Line Colors:** For each selected data series, users can choose a custom line color using an integrated color picker, both before adding to the comparison and after. This allows for personalized and clear visualization of comparative data.
-- **Dynamic Charting:** The page features a dynamic line chart that visualizes the selected historical data, making it easy to identify trends and compare performance across different selections.
-- **Flexible Timeframe:** Adjust the start and end years to focus on specific periods of interest for historical analysis.
-
-![CIVI Analyse page country, industry, and pillar selection](assets/img/civi_analyse_02.png)
-![CIVI Analyse page country, industry, and pillar comparison between the Energy industries of the United States of America and Mexico](assets/img/civi_analyse_01.png)
-
 ## Industries Covered
 
 CIVI spans the following 11 critical industries:
@@ -61,6 +39,36 @@ CIVI spans the following 11 critical industries:
 - Waste Management
 - Emergency Services
 - Information Technology
+
+## Key Features
+
+### Explore Page
+
+The Explore page serves as the primary entry point for visualizing the CIVI data. It features an interactive world map where users can:
+
+- **Visualize Country Scores:** Hover over any country to see its overall CIVI score and a breakdown across the four pillars (Autonomy, Resilience, Sustainability, Effectiveness).
+- **Filter by Industry and Pillar:** Use dropdown menus to filter the map display, showing how countries perform in specific industries (e.g., Energy, Healthcare) or within particular pillars.
+- **Dynamic Data Display:** The map dynamically updates to reflect the selected filters, providing a quick and intuitive way to understand global critical infrastructure landscapes.
+
+<p align="center">
+  <img src="assets/img/civi_explore_02.png" width="600" />
+</p>
+
+### Analyse Page
+
+The Analyse page offers a deeper dive into historical trends and comparative analysis. On this page, users can:
+
+- **Historical Data & Comparison:** Select multiple countries, industries, and pillars to compare their historical CIVI scores over time.
+- **Customizable Line Colors:** For each selected data series, users can choose a custom line color using an integrated color picker, both before adding to the comparison and after. This allows for personalized and clear visualization of comparative data.
+- **Dynamic Charting:** The page features a dynamic line chart that visualizes the selected historical data, making it easy to identify trends and compare performance across different selections.
+- **Flexible Timeframe:** Adjust the start and end years to focus on specific periods of interest for historical analysis.
+
+<p align="center">
+  <img src="assets/img/civi_analyse_02.png" width="600" />
+</p>
+<p align="center">
+  <img src="assets/img/civi_analyse_01.png" width="600" />
+</p>
 
 ## Methodology
 
@@ -85,7 +93,56 @@ CIVI is built on public data from trusted global organizations, including:
 - Organisation for Economic Co-operation and Development (OECD)
 - United Nations (UN)
 
-## Usage
+## Tech Stack
+
+The CIVI project is built using the following technologies:
+
+-   **Database**: PostgreSQL
+-   **Backend**: Python, FastAPI
+-   **Frontend**: React (JavaScript)
+-   **Data Visualization**: Chart.js, D3.js
+
+## Quick Start
+
+The fastest way to get the CIVI application up and running is by using Docker Compose.
+
+1.  **Build and Run with Docker Compose:**
+    ```bash
+    docker-compose up --build
+    ```
+    This command will:
+    -   Build the Docker images for the backend (FastAPI) and frontend (React).
+    -   Start the PostgreSQL database, backend API, and frontend application.
+    -   The frontend will be accessible at `http://localhost:3000`.
+    -   The backend API will be accessible at `http://localhost:8000`.
+
+2.  **Manual Quick Start (without Docker Compose):**
+
+    If you prefer to run components manually:
+
+    **Backend (API):**
+    ```bash
+    # From the project root
+    uvicorn src.api.main:app --reload
+    ```
+    The API will be accessible at `http://127.0.0.1:8000`.
+
+    **Frontend:**
+    ```bash
+    # From the project root
+    cd frontend
+    npm install
+    npm start
+    ```
+    The frontend will be accessible at `http://localhost:3000`.
+
+## Detailed Usage
+
+Before running the following commands, ensure your Python virtual environment is activated:
+
+```bash
+source .venv/bin/activate
+```
 
 This project utilizes a PostgreSQL database for data storage, a Python-based ETL pipeline for data ingestion and processing, and a FastAPI application to expose the data.
 
@@ -113,7 +170,6 @@ Ensure you have a PostgreSQL server running and accessible. You will need to cre
     (Replace `patrick` and `password` with your credentials, and `localhost/civi` with your database host/name if different).
 3.  **Apply Database Schema:**
     ```bash
-    source .venv/bin/activate
     psql -h localhost -U patrick -d civi -f civi_schema.sql
     ```
     (Enter your password when prompted).
@@ -124,31 +180,26 @@ This pipeline fetches raw data, normalizes it, and aggregates scores into the Po
 
 1.  **Install Dependencies:**
     ```bash
-    source .venv/bin/activate
     pip install -r requirements.txt
     ```
 2.  **Populate Metric Catalog:**
     This script initializes the `metrics_catalog` table with definitions of the metrics to be fetched.
     ```bash
-    source .venv/bin/activate
     python -m src.populate_catalog
     ```
 3.  **Fetch Raw Data:**
     This fetches data from configured external APIs (e.g., World Bank, FAOSTAT) and stores it in `metrics_raw`.
     ```bash
-    source .venv/bin/activate
     python -m src.fetch_data
     ```
 4.  **Normalize Data:**
     Normalizes raw data to a 0-100 scale and stores it in `metrics_normalized`.
     ```bash
-    source .venv/bin/activate
     python -m src.process_data
     ```
 5.  **Aggregate Scores:**
     Aggregates normalized data into pillar, industry, and country scores.
     ```bash
-    source .venv/bin/activate
     python -m src.score_data
     ```
 
@@ -158,8 +209,7 @@ The FastAPI application exposes the processed CIVI data via REST endpoints.
 
 1.  **Start the API Server:**
     ```bash
-    source .venv/bin/activate
-    uvicorn src.api:app --reload
+    uvicorn src.api.main:app --reload
     ```
     The API will be accessible at `http://127.0.0.1:8000`.
 2.  **Explore API Documentation:**
@@ -171,16 +221,14 @@ To ensure the correctness of the ETL pipeline and API endpoints:
 
 1.  **Run ETL Tests:**
     ```bash
-    source .venv/bin/activate
     pytest tests/test_etl.py
     ```
-    **WARNING:** These tests will drop and recreate all tables in your configured database, deleting all existing data.
+    > ⚠️ **Warning**: These tests will drop and recreate all tables in your configured database, deleting all existing data.
 2.  **Run API Tests:**
     ```bash
-    source .venv/bin/activate
     pytest tests/test_api.py
     ```
-    **WARNING:** These tests will also drop and recreate all tables and run the entire ETL pipeline to populate data before testing the API.
+    > ⚠️ **Warning**: These tests will also drop and recreate all tables and run the entire ETL pipeline to populate data before testing the API.
 
 ### 5. Serving the Frontend
 
@@ -216,3 +264,22 @@ To ensure data consistency and prevent visualization issues on the frontend, a d
     *   **Frontend Data Validation:** Performs basic checks (e.g., verifies the existence of key JSON files) to ensure the generated static files are present. (Note: More comprehensive frontend data validation tests can be added to `frontend/package.json` and executed here if needed).
 
     **Important:** This script ensures that only valid and correctly formatted data is propagated to the static JSON files, preventing potential visualization issues on the frontend.
+
+## Contributing
+
+We welcome contributions to the CIVI project! To contribute:
+
+1.  Fork the repository.
+2.  Create a new branch for your feature or bug fix.
+3.  Make your changes, adhering to the existing code style and conventions.
+4.  Write and run tests to ensure your changes work as expected.
+5.  Submit a pull request with a clear description of your changes.
+
+## License
+
+This project is dual-licensed:
+
+-   **Software (codebase)**: Licensed under the [Polyform Noncommercial License 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0/).
+-   **Data, documentation, and other non-code content**: Licensed under the [Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/).
+
+Please see the [LICENSE](LICENSE) file for full details on both licenses.
