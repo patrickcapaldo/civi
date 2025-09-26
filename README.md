@@ -301,7 +301,9 @@ We welcome contributions to the CIVI project! To contribute:
 
 This project is dual-licensed:
 
--   **Software (codebase)**: Licensed under the [Polyform Noncommercial License 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0/).
--   **Data, documentation, and other non-code content**: Licensed under the [Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/).
+- The **software code** is free for non-commercial use, requires attribution, and cannot be used commercially without explicit permission.  
+- The **underlying third-party datasets** (e.g., World Bank, FAO) retain their original licenses.  
+- The **project’s own contributions** (documentation, transformations, added data layers) are licensed under CC BY-NC 4.0.  
+- Commercial use of the code or of the project’s original content requires a separate license from the copyright holder.  
 
 Please see the [LICENSE](LICENSE) file for full details on both licenses.
