@@ -175,6 +175,7 @@ Ensure you have a PostgreSQL server running and accessible. You will need to cre
     (Enter your <password> when prompted).
 
 4.  **(Optional) View the Postgres Database:**
+
     Start the FastAPI server:
 
     Use this if the .venv is deactivated
