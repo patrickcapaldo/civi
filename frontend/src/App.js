@@ -1,3 +1,7 @@
+// This file is part of the CIVI project.
+// It is subject to the Polyform Noncommercial License 1.0.0.
+// See the LICENSE file in the root of this project for the full license text.
+
 import React, { useState, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar';

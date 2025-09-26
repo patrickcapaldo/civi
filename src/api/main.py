@@ -1,3 +1,7 @@
+# This file is part of the CIVI project.
+# It is subject to the Polyform Noncommercial License 1.0.0.
+# See the LICENSE file in the root of this project for the full license text.
+
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List, Optional
