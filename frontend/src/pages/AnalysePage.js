@@ -98,7 +98,7 @@ const AnalysePage = ({ headerHeight }) => {
   const [countryInfoMap, setCountryInfoMap] = useState({});
   const [selections, setSelections] = useState([]);
   const [currentSelection, setCurrentSelection] = useState({ country: '', industry: '', pillar: '' });
-  const [timeframe, setTimeframe] = useState({ startYear: 2010, endYear: 2020 });
+  const [timeframe, setTimeframe] = useState({ startYear: 2019, endYear: 2024 });
   const [allHistoricalData, setAllHistoricalData] = useState({});
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredCountries, setFilteredCountries] = useState([]);
@@ -154,18 +154,27 @@ const AnalysePage = ({ headerHeight }) => {
 
   const getFilteredHistoricalData = useCallback(() => {
     const datasets = selections.map(selection => {
+      console.log('selection', selection);
       const countryData = allHistoricalData[selection.country];
-      if (!countryData || !countryData.historical_scores) return null;
+      console.log('countryData', countryData);
+      if (!countryData) return null;
 
-      const historicalScores = countryData.historical_scores.filter(record =>
+      const historicalScores = countryData.historical_scores?.map((record, index) => ({
+        ...record,
+        year: timeframe.startYear + index // Assign year based on index
+      }))?.filter(record =>
         record.year >= timeframe.startYear && record.year <= timeframe.endYear
-      );
+      ) || [];
+      console.log('historicalScores', historicalScores);
 
       const data = historicalScores.map(record => {
         let score = null;
+
         if (selection.industry && selection.pillar) {
+          // Industry and Pillar selected
           score = record.industries?.[selection.industry]?.scores?.[selection.pillar];
         } else if (selection.industry) {
+          // Only Industry selected
           const industryScores = record.industries?.[selection.industry]?.scores;
           if (industryScores) {
             const validScores = PILLARS.map(p => industryScores[p]).filter(s => s != null);
@@ -173,11 +182,21 @@ const AnalysePage = ({ headerHeight }) => {
               score = validScores.reduce((a, b) => a + b, 0) / validScores.length;
             }
           }
-        } else {
-            const overallScores = PILLARS.map(p => record.scores[p]).filter(s => s != null);
-            if (overallScores.length > 0) {
-                score = overallScores.reduce((a, b) => a + b, 0) / overallScores.length;
+        } else if (selection.pillar) {
+            // Only Pillar selected
+            const pillarScore = record.scores?.[selection.pillar];
+            if (pillarScore) {
+                score = pillarScore;
             }
+        }else {
+          // Only Country selected
+          const overallScores = record.scores;
+          if (overallScores) {
+            const validScores = PILLARS.map(p => overallScores[p]).filter(s => s != null);
+            if (validScores.length > 0) {
+              score = validScores.reduce((a, b) => a + b, 0) / validScores.length;
+            }
+          }
         }
         return { x: record.year, y: score };
       });
@@ -206,25 +225,23 @@ const AnalysePage = ({ headerHeight }) => {
   }, [allHistoricalData, selections, timeframe, getCountryDisplayName]);
 
   useEffect(() => {
-    const countriesToFetch = selections.map(s => s.country).filter(c => !allHistoricalData[c]);
-    if (countriesToFetch.length === 0) return;
-
-    const fetchHistoricalData = async () => {
-      const promises = countriesToFetch.map(code =>
-        d3.json(`/civi_modular/${code}.json`)
-          .then(data => ({ [code]: data }))
+    if (countryInfoMap && Object.keys(countryInfoMap).length > 0) {
+      const fetchPromises = Object.values(countryInfoMap).map(info =>
+        d3.json(`/civi_modular/${info['alpha-3']}.json`)
+          .then(data => ({ [info['alpha-3']]: data }))
           .catch(error => {
-            console.error(`Error fetching historical data for ${code}:`, error);
-            return { [code]: null };
+            console.error(`Error loading data for ${info['alpha-3']}:`, error);
+            return { [info['alpha-3']]: null }; // Return null for failed fetches
           })
       );
-      const results = await Promise.all(promises);
-      const newData = results.reduce((acc, curr) => ({ ...acc, ...curr }), {});
-      setAllHistoricalData(prevData => ({ ...prevData, ...newData }));
-    };
 
-    fetchHistoricalData();
-  }, [selections, allHistoricalData]);
+      Promise.all(fetchPromises)
+        .then(results => {
+          const combinedData = results.reduce((acc, curr) => ({ ...acc, ...curr }), {});
+          setAllHistoricalData(combinedData);
+        });
+    }
+  }, [countryInfoMap]);
 
   return (
     <div style={{ paddingTop: `${headerHeight}px`, color: 'white', padding: '20px' }}>

@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIVI Data Viewer</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        .filters { margin-bottom: 1em; }
+        #loading { display: none; }
+    </style>
+</head>
+<body>
+
+    <h1>CIVI Data Viewer</h1>
+
+    <div class="filters">
+        <label for="countryFilter">Country:</label>
+        <input type="text" id="countryFilter" placeholder="e.g., United States of America">
+        <label for="industryFilter">Industry:</label>
+        <input type="text" id="industryFilter" placeholder="e.g., Water">
+        <button id="filterBtn">Filter</button>
+    </div>
+
+    <div id="loading">Loading...</div>
+
+    <table id="dataTable" class="display" width="100%"></table>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            let table = $('#dataTable').DataTable({
+                columns: [
+                    { data: 'country_code', title: 'Country Code' },
+                    { data: 'year', title: 'Year' },
+                    { data: 'industry', title: 'Industry' },
+                    { data: 'pillar', title: 'Pillar' },
+                    { data: 'name', title: 'Metric' },
+                    { data: 'metric_value', title: 'Value' },
+                    { data: 'units', title: 'Units' },
+                    { data: 'source', title: 'Source' },
+                ]
+            });
+
+            function fetchData() {
+                let country = $('#countryFilter').val();
+                let industry = $('#industryFilter').val();
+
+                let url = '/api/data';
+                let params = {};
+                if (country) params.country_name = country;
+                if (industry) params.industry = industry;
+
+                $('#loading').show();
+
+                $.ajax({
+                    url: url,
+                    data: params,
+                    success: function(data) {
+                        table.clear();
+                        table.rows.add(data);
+                        table.draw();
+                        $('#loading').hide();
+                    },
+                    error: function(err) {
+                        console.error("Error fetching data:", err);
+                        alert("Could not fetch data. Check console for details.");
+                        $('#loading').hide();
+                    }
+                });
+            }
+
+            $('#filterBtn').on('click', fetchData);
+
+            // Initial data load (optional)
+            // fetchData();
+        });
+    </script>
+
+</body>
+</html>

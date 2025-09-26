@@ -38,14 +38,16 @@ def fetch_world_bank_data(session: Session, start_year: int, end_year: int):
                         "source": metric.source,
                     })
 
-from src.etl import fetch_world_bank_data, fetch_itu_data, fetch_faostat_data
+from src.etl import fetch_world_bank_data, fetch_itu_data, fetch_faostat_data, fetch_who_data, fetch_ndgain_data
 
 def fetch_all():
-    """Orchestrates fetching data from all sources."""
+    """Orchestrates fetching data from all sources.""" 
     print("--- Starting all data fetching ---")
     fetch_world_bank_data.main()
     fetch_itu_data.main()
     fetch_faostat_data.main()
+    fetch_who_data.main()
+    fetch_ndgain_data.main()
     print("--- Finished all data fetching ---")
 
 # This is a placeholder. The `update_data.py` script needs this variable.

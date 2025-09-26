@@ -48,6 +48,20 @@ ITU_METRICS = [
             "isCollection": "true",
         }
     },
+    # Information Technology - Resilience: Global Cybersecurity Index
+    {
+        "metric_id": "ITU_GCI",
+        "name": "Global Cybersecurity Index",
+        "industry": "Information Technology",
+        "pillar": "Resilience",
+        "directionality": "POS",
+        "units": "Score",
+        "source_url": "https://www.itu.int/en/ITU-D/Cybersecurity/Pages/gci.aspx",
+        "itu_params": {
+            "codeID": "100103",
+            "isCollection": "false",
+        }
+    },
 ]
 
 # ==============================================================================
@@ -134,23 +148,11 @@ def insert_raw_data(conn, data, metric_id):
                 # --- Handle Value Parsing ---
                 parsed_value = None
                 if isinstance(value_str, str):
-                    if value_str.startswith('<'):
-                        try:
-                            num = float(value_str[1:])
-                            parsed_value = num - 0.1 
-                        except ValueError:
-                            pass
-                    elif value_str.startswith('>'):
-                        try:
-                            num = float(value_str[1:])
-                            parsed_value = num + 0.1 
-                        except ValueError:
-                            pass
-                    else:
-                        try:
-                            parsed_value = float(value_str)
-                        except ValueError:
-                            pass
+                    try:
+                        parsed_value = float(value_str)
+                    except ValueError:
+                        print(f"    - Skipping record due to non-numeric value: {record}")
+                        continue # Skip to the next record
                 elif isinstance(value_str, (int, float)):
                     parsed_value = float(value_str)
 

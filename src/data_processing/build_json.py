@@ -115,60 +115,68 @@ def build_all():
 
 
     final_countries_data = {}
-    for iso3, info in country_info_map.items(): # Iterate through all countries from country-codes.json
-        years_data_for_country = all_civi_data_by_country_year.get(iso3, {}) # Get data if available, else empty dict
+    for iso3, info in country_info_map.items():
+        years_data_for_country = all_civi_data_by_country_year.get(iso3, {})
+        country_latest_year = max(years_data_for_country.keys()) if years_data_for_country else latest_year
 
-        # Determine the latest year for this specific country, or use the global latest_year if no data for this country
-        country_latest_year = max(years_data_for_country.keys()) if years_data_for_country else latest_year # Use global latest_year as fallback
+        latest_overall_scores = {}
+        latest_industries_data = {}
 
-        # Get data for the latest year for top-level scores and industries
-        latest_data = years_data_for_country.get(country_latest_year, {"scores": {}, "industries": {}})
-        
-        # Prepare historical scores array
+        # Calculate latest overall scores with confidence
+        for pillar_key in PILLARS:
+            latest_pillar_year = 0
+            latest_pillar_score = None
+            for year in sorted(years_data_for_country.keys(), reverse=True):
+                if pillar_key in years_data_for_country[year]["scores"]:
+                    latest_pillar_score = years_data_for_country[year]["scores"][pillar_key]
+                    latest_pillar_year = year
+                    break
+            latest_overall_scores[pillar_key] = latest_pillar_score
+            confidence = max(0, 1 - (country_latest_year - latest_pillar_year) * 0.1) if latest_pillar_year > 0 else 0
+            latest_overall_scores[f"{pillar_key}_confidence"] = confidence
+
+        # Calculate latest industry scores with confidence
+        for ind_name in INDUSTRIES:
+            ind_key = ind_name.lower().replace(" ", "_").replace("&", "and")
+            latest_industries_data[ind_key] = {"scores": {}, "pillars": {}, "indicators": []}
+            for pillar_key in PILLARS:
+                latest_pillar_year = 0
+                latest_pillar_score = None
+                latest_indicators = []
+                for year in sorted(years_data_for_country.keys(), reverse=True):
+                    if ind_key in years_data_for_country[year]["industries"] and pillar_key in years_data_for_country[year]["industries"][ind_key]["scores"]:
+                        latest_pillar_score = years_data_for_country[year]["industries"][ind_key]["scores"][pillar_key]
+                        latest_pillar_year = year
+                        latest_indicators = [i for i in years_data_for_country[year]["industries"][ind_key]["indicators"] if i['pillar'] == pillar_key]
+                        break
+                latest_industries_data[ind_key]["scores"][pillar_key] = latest_pillar_score
+                confidence = max(0, 1 - (country_latest_year - latest_pillar_year) * 0.1) if latest_pillar_year > 0 else 0
+                latest_industries_data[ind_key]["scores"][f"{pillar_key}_confidence"] = confidence
+                if latest_indicators:
+                    latest_industries_data[ind_key]["indicators"].extend(latest_indicators)
+
         historical_scores_list = []
-        if years_data_for_country: # Only build historical data if there is data for the country
+        if years_data_for_country:
             for year in sorted(years_data_for_country.keys()):
                 year_data = years_data_for_country[year]
-                # Ensure all industries and pillars are present for consistency
-                # This part needs to be careful not to overwrite actual data with empty dicts
-                # It's more about ensuring the structure is consistent for the frontend
                 current_year_industries = {}
                 for ind_name in INDUSTRIES:
                     ind_key = ind_name.lower().replace(" ", "_").replace("&", "and")
-                    current_year_industries[ind_key] = year_data["industries"].get(ind_key, {"scores": {}, "pillars": {}, "indicators": []})
-                    current_year_pillars = {}
-                    for p_name in PILLARS:
-                        current_year_pillars[p_name] = current_year_industries[ind_key]["pillars"].get(p_name, {"scores": {}})
-                    current_year_industries[ind_key]["pillars"] = current_year_pillars
+                    industry_data = year_data["industries"].get(ind_key, {"scores": {}, "pillars": {}, "indicators": []})
+                    current_year_industries[ind_key] = industry_data
 
                 historical_scores_list.append({
                     "year": year,
-                    "scores": year_data["scores"], # Overall scores for the year
-                    "industries": current_year_industries # Industry data for the year
+                    "scores": year_data.get("scores", {}),
+                    "industries": current_year_industries
                 })
-
-        # Prepare latest year scores for direct access
-        latest_overall_scores = latest_data["scores"]
-        latest_industries_data = {}
-        for ind_name in INDUSTRIES:
-            ind_key = ind_name.lower().replace(" ", "_").replace("&", "and")
-            # Get the industry data for the latest year, or an empty structure if not available
-            industry_data_for_latest_year = latest_data["industries"].get(ind_key, {"scores": {}, "pillars": {}, "indicators": []})
-            
-            # Directly assign the scores and pillars from the latest_data
-            latest_industries_data[ind_key] = {
-                "scores": industry_data_for_latest_year["scores"],
-                "pillars": industry_data_for_latest_year["pillars"],
-                "indicators": industry_data_for_latest_year["indicators"]
-            }
-
 
         final_countries_data[iso3] = {
             "name": info['name'],
             "region": info['region'],
-            "scores": latest_overall_scores, # Latest year's overall scores
-            "industries": latest_industries_data, # Latest year's industry data
-            "historical_scores": historical_scores_list # All historical data
+            "scores": latest_overall_scores,
+            "industries": latest_industries_data,
+            "historical_scores": historical_scores_list
         }
 
     # Verification step (simplified as INDUSTRIES is now from config)
