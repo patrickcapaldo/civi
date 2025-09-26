@@ -174,6 +174,25 @@ Ensure you have a PostgreSQL server running and accessible. You will need to cre
     ```
     (Enter your <password> when prompted).
 
+4.  **(Optional) View the Postgres Database:**
+    Start the FastAPI server:
+
+    Use this if the .venv is deactivated
+    ```bash
+    source .venv/bin/activate && uvicorn src.api:app --reload
+    ```
+
+    Use this is .venv is activated
+    ```bash
+    uvicorn src.api:app --reload
+    ```
+
+    And then navigate to `http://localhost:8000/viewer.html` in your web browser.
+
+<p align="center">
+  <img src="assets/img/civi_data_viewer.png" width="600" />
+</p>
+
 ### 2. ETL Pipeline (Data Ingestion and Processing)
 
 This pipeline fetches raw data, normalizes it, and aggregates scores into the PostgreSQL database.
