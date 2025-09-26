@@ -3,6 +3,7 @@ import * as d3 from 'd3'; // Assuming d3 will be used for data fetching
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import './AnalysePage.css';
+import { SketchPicker } from 'react-color'; // Import SketchPicker
 
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
@@ -97,11 +98,13 @@ const HistoricalChart = ({ chartData }) => {
 const AnalysePage = ({ headerHeight }) => {
   const [countryInfoMap, setCountryInfoMap] = useState({});
   const [selections, setSelections] = useState([]);
-  const [currentSelection, setCurrentSelection] = useState({ country: '', industry: '', pillar: '' });
+  const [currentSelection, setCurrentSelection] = useState({ country: '', industry: '', pillar: '', color: '#FF0000' }); // Default to red
   const [timeframe, setTimeframe] = useState({ startYear: 2019, endYear: 2024 });
   const [allHistoricalData, setAllHistoricalData] = useState({});
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredCountries, setFilteredCountries] = useState([]);
+  const [displayColorPicker, setDisplayColorPicker] = useState(false); // State for color picker visibility
+  const [editingSelectionId, setEditingSelectionId] = useState(null); // State to track which selection's color is being edited
 
   useEffect(() => {
     d3.json('/country-codes.json')
@@ -140,12 +143,12 @@ const AnalysePage = ({ headerHeight }) => {
     const newSelection = {
       id: Date.now(),
       ...currentSelection,
-      color: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 1)`,
     };
 
     setSelections([...selections, newSelection]);
-    setCurrentSelection({ country: '', industry: '', pillar: '' });
+    setCurrentSelection({ country: '', industry: '', pillar: '', color: '#FF0000' }); // Reset color to default
     setSearchTerm('');
+    setDisplayColorPicker(false);
   };
 
   const handleDeleteSelection = (id) => {
@@ -308,7 +311,44 @@ const AnalysePage = ({ headerHeight }) => {
             ))}
           </select>
         </div>
-        <button onClick={handleAddSelection}>Add to Comparison</button>
+        <div>
+          <label>Line Colour:</label>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div
+              onClick={() => setDisplayColorPicker(!displayColorPicker)}
+              style={{
+                width: '36px',
+                height: '14px',
+                borderRadius: '2px',
+                background: currentSelection.color,
+                cursor: 'pointer',
+                border: '1px solid #fff',
+              }}
+            />
+            <span style={{ marginLeft: '10px' }}>{currentSelection.color}</span>
+          </div>
+          {displayColorPicker ? (
+            <div style={{ position: 'absolute', zIndex: '2' }}>
+              <div
+                style={{
+                  position: 'fixed',
+                  top: '0px',
+                  right: '0px',
+                  bottom: '0px',
+                  left: '0px',
+                }}
+                onClick={() => setDisplayColorPicker(false)}
+              />
+              <SketchPicker
+                color={currentSelection.color}
+                onChangeComplete={(color) =>
+                  setCurrentSelection({ ...currentSelection, color: color.hex })
+                }
+              />
+            </div>
+          ) : null}
+        </div>
+        <button onClick={handleAddSelection} className="analyse-button">Add to Comparison</button>
       </div>
 
         <div className="analyse-section">
@@ -316,12 +356,50 @@ const AnalysePage = ({ headerHeight }) => {
             <div className="selections-container">
                 {selections.map(selection => (
                     <div key={selection.id} className="selection-card" style={{ borderLeft: `5px solid ${selection.color}` }}>
-                        <span>
-                            {getCountryDisplayName(selection.country)}
-                            {selection.industry && ` > ${selection.industry.charAt(0).toUpperCase() + selection.industry.slice(1)}`}
-                            {selection.pillar && ` > ${selection.pillar.charAt(0).toUpperCase() + selection.pillar.slice(1)}`}
-                        </span>
+                        <div style={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
+                            <div
+                                style={{
+                                    width: '20px',
+                                    height: '20px',
+                                    borderRadius: '3px',
+                                    background: selection.color,
+                                    cursor: 'pointer',
+                                    border: '1px solid #fff',
+                                    marginRight: '10px',
+                                }}
+                                onClick={() => setEditingSelectionId(selection.id)}
+                            />
+                            <span>
+                                {getCountryDisplayName(selection.country)}
+                                {selection.industry && ` > ${selection.industry.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}`}
+                                {selection.pillar && ` > ${selection.pillar.charAt(0).toUpperCase() + selection.pillar.slice(1)}`}
+                            </span>
+                        </div>
                         <button onClick={() => handleDeleteSelection(selection.id)}>X</button>
+                        {editingSelectionId === selection.id && (
+                            <div style={{ position: 'absolute', zIndex: '2', top: '100%', left: '0' }}>
+                                <div
+                                    style={{
+                                        position: 'fixed',
+                                        top: '0px',
+                                        right: '0px',
+                                        bottom: '0px',
+                                        left: '0px',
+                                    }}
+                                    onClick={() => setEditingSelectionId(null)}
+                                />
+                                <SketchPicker
+                                    color={selection.color}
+                                    onChangeComplete={(color) => {
+                                        setSelections(selections.map(sel =>
+                                            sel.id === selection.id ? { ...sel, color: color.hex } : sel
+                                        ));
+                                    }}
+                                />
+                                <button onClick={() => setEditingSelectionId(null)} style={{ marginTop: '5px' }}>Save</button>
+                                <button onClick={() => setEditingSelectionId(null)} style={{ marginTop: '5px', marginLeft: '5px' }}>X</button>
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>
