@@ -127,10 +127,18 @@ const AnalysePage = ({ headerHeight }) => {
       setFilteredCountries([]);
     } else {
       const lowerCaseSearchTerm = searchTerm.toLowerCase();
-      const results = Object.keys(countryInfoMap).filter(alpha3 =>
-        getCountryDisplayName(alpha3).toLowerCase().includes(lowerCaseSearchTerm)
+      const exactMatch = Object.keys(countryInfoMap).some(alpha3 =>
+        getCountryDisplayName(alpha3).toLowerCase() === lowerCaseSearchTerm
       );
-      setFilteredCountries(results);
+
+      if (exactMatch) {
+        setFilteredCountries([]);
+      } else {
+        const results = Object.keys(countryInfoMap).filter(alpha3 =>
+          getCountryDisplayName(alpha3).toLowerCase().includes(lowerCaseSearchTerm)
+        );
+        setFilteredCountries(results);
+      }
     }
   }, [searchTerm, countryInfoMap, getCountryDisplayName]);
 
