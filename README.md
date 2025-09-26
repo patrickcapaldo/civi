@@ -7,6 +7,8 @@
   <img src="assets/img/civi_explore_03.png" width="600" />
 </p>
 
+[Click to watch a demo!](https://www.youtube.com/watch?v=nSHK4oUn4E4)
+
 ## Why CIVI Matters
 
 In an interconnected world, the strength of a nation's critical infrastructure is a primary determinant of its economic stability, national security, and quality of life. CIVI provides a standardized framework for policymakers, researchers, and investors to:
