@@ -29,47 +29,46 @@ def process_all():
         normalized_data = []
         normalization_logs = []
 
-        # Process each metric_id for normalization
-        for metric_id in df_merged['metric_id'].unique():
-            metric_df = df_merged[df_merged['metric_id'] == metric_id].copy()
-            directionality = metric_df['directionality'].iloc[0]
+        # Process each metric_id for normalization across all years
+        for metric_id, group in df_merged.groupby('metric_id'):
+            directionality = group['directionality'].iloc[0]
 
-            min_val = metric_df['metric_value'].min()
-            max_val = metric_df['metric_value'].max()
+            min_val = group['metric_value'].min()
+            max_val = group['metric_value'].max()
 
             if pd.isna(min_val) or pd.isna(max_val) or min_val == max_val:
                 print(f"Skipping normalization for {metric_id}: insufficient data or min/max are equal.")
                 continue
 
             # Min-Max Scaling to 0-100
-            metric_df['normalized_value'] = (
-                (metric_df['metric_value'] - min_val) / (max_val - min_val)
+            group['normalized_value'] = (
+                (group['metric_value'] - min_val) / (max_val - min_val)
             ) * 100
 
             # Handle directionality
             if directionality == 'NEG':
-                metric_df['normalized_value'] = 100 - metric_df['normalized_value']
+                group['normalized_value'] = 100 - group['normalized_value']
             
             # Prepare data for insertion
-            for _, row in metric_df.iterrows():
+            for _, row in group.iterrows():
                 normalized_data.append({
                     'country_code': row['country_code'],
                     'year': row['year'],
                     'metric_id': row['metric_id'],
                     'normalized_value': row['normalized_value'],
                     'normalization_method': 'min-max',
-                    'normalization_window': f'{df_raw['year'].min()}-{df_raw['year'].max()}' # Global window for now
+                    'normalization_window': f'{group['year'].min()}-{group['year'].max()}'
                 })
             
             # Log normalization parameters
             normalization_logs.append({
                 'metric_id': metric_id,
                 'normalization_method': 'min-max',
-                'window_start_year': df_raw['year'].min(),
-                'window_end_year': df_raw['year'].max(),
+                'window_start_year': group['year'].min(),
+                'window_end_year': group['year'].max(),
                 'min_value': min_val,
                 'max_value': max_val,
-                'run_id': str(uuid.uuid4()) # Use Python's UUID for portability
+                'run_id': str(uuid.uuid4())
             })
         
         if normalized_data:

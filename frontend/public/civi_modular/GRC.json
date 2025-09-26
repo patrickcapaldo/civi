@@ -2,47 +2,181 @@
   "name": "Greece",
   "region": "Unknown",
   "scores": {
-    "overall": 8.680145096891021,
-    "autonomy": 16.879625282393963,
-    "effectiveness": 0.48066491138807715
+    "autonomy": 10.300003784777113,
+    "autonomy_confidence": 1.0,
+    "resilience": 90.44058341322352,
+    "resilience_confidence": 0.9,
+    "sustainability": 89.44405137595989,
+    "sustainability_confidence": 0.9,
+    "effectiveness": 0.48066491138807715,
+    "effectiveness_confidence": 1.0
   },
   "industries": {
     "communications": {
-      "scores": {},
+      "scores": {
+        "autonomy": 1.0016298816895586,
+        "autonomy_confidence": 0.9,
+        "resilience": 99.0,
+        "resilience_confidence": 0.9,
+        "sustainability": 57.89329858732113,
+        "sustainability_confidence": 0.9,
+        "effectiveness": null,
+        "effectiveness_confidence": 0
+      },
       "pillars": {},
-      "indicators": []
+      "indicators": [
+        {
+          "key": "ITU_INT_BANDWIDTH_USAGE",
+          "description": "International bandwidth usage",
+          "value": 1.0016298816895586,
+          "weight": 1,
+          "source": "ITU",
+          "year": 2023,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "ITU_MOB_BB_COVERAGE",
+          "description": "Population coverage, by mobile network technology",
+          "value": 99.0,
+          "weight": 1,
+          "source": "ITU",
+          "year": 2023,
+          "pillar": "resilience"
+        },
+        {
+          "key": "IT.NET.BBND.P2",
+          "description": "Fixed-broadband subscriptions (per 100 people)",
+          "value": 57.89329858732113,
+          "weight": 1,
+          "source": "World Bank",
+          "year": 2023,
+          "pillar": "sustainability"
+        }
+      ]
     },
     "defence": {
-      "scores": {},
+      "scores": {
+        "autonomy": 91.31038218517145,
+        "autonomy_confidence": 0.9,
+        "resilience": 0.5312420946116874,
+        "resilience_confidence": 0.6,
+        "sustainability": 89.44405137595989,
+        "sustainability_confidence": 0.9,
+        "effectiveness": 43.757898829918545,
+        "effectiveness_confidence": 0.9
+      },
       "pillars": {},
-      "indicators": []
+      "indicators": [
+        {
+          "key": "MS.MIL.XPND.GD.ZS",
+          "description": "Military expenditure (% of GDP)",
+          "value": 91.31038218517145,
+          "weight": 1,
+          "source": "World Bank",
+          "year": 2023,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "MS.MIL.TOTL.P1",
+          "description": "Armed forces personnel, total",
+          "value": 0.5312420946116874,
+          "weight": 1,
+          "source": "World Bank",
+          "year": 2020,
+          "pillar": "resilience"
+        },
+        {
+          "key": "MS.MIL.XPND.ZS",
+          "description": "Military expenditure (% of central government expenditure)",
+          "value": 89.44405137595989,
+          "weight": 1,
+          "source": "World Bank",
+          "year": 2023,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "MS.MIL.XPND.CD",
+          "description": "Military expenditure (current USD)",
+          "value": 0.32387915886777624,
+          "weight": 1,
+          "source": "World Bank",
+          "year": 2023,
+          "pillar": "effectiveness"
+        },
+        {
+          "key": "MS.MIL.XPND.PC.CD",
+          "description": "Military expenditure per capita (current USD)",
+          "value": 87.19191850096931,
+          "weight": 1,
+          "source": "Derived from World Bank",
+          "year": 2023,
+          "pillar": "effectiveness"
+        }
+      ]
     },
     "energy": {
-      "scores": {},
+      "scores": {
+        "autonomy": 23.0564077834496,
+        "autonomy_confidence": 0.9,
+        "resilience": 84.03133128681188,
+        "resilience_confidence": 0.9,
+        "sustainability": 22.326064382139148,
+        "sustainability_confidence": 0.7,
+        "effectiveness": 100.0,
+        "effectiveness_confidence": 0.9
+      },
       "pillars": {},
-      "indicators": []
+      "indicators": [
+        {
+          "key": "EG.IMP.CONS.ZS",
+          "description": "Energy imports, net (% of energy use)",
+          "value": 23.0564077834496,
+          "weight": 1,
+          "source": "World Bank",
+          "year": 2023,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "EG.ELC.LOSS.ZS",
+          "description": "Electric power transmission and distribution losses (% of output)",
+          "value": 84.03133128681188,
+          "weight": 1,
+          "source": "World Bank",
+          "year": 2023,
+          "pillar": "resilience"
+        },
+        {
+          "key": "EG.FEC.RNEW.ZS",
+          "description": "Renewable energy consumption (% of total final energy consumption)",
+          "value": 22.326064382139148,
+          "weight": 1,
+          "source": "World Bank",
+          "year": 2021,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "EG.ELC.ACCS.ZS",
+          "description": "Access to electricity (% of population)",
+          "value": 100.0,
+          "weight": 1,
+          "source": "World Bank",
+          "year": 2023,
+          "pillar": "effectiveness"
+        }
+      ]
     },
     "finance": {
       "scores": {
-        "overall": 16.879625282393963,
-        "autonomy": 16.879625282393963
+        "autonomy": 16.879625282393963,
+        "autonomy_confidence": 1.0,
+        "resilience": 90.44058341322352,
+        "resilience_confidence": 0.9,
+        "sustainability": 94.56302431772326,
+        "sustainability_confidence": 0.7,
+        "effectiveness": 11.06459536535666,
+        "effectiveness_confidence": 0.9
       },
-      "pillars": {
-        "autonomy": {
-          "scores": {
-            "overall": 16.879625282393963
-          }
-        },
-        "resilience": {
-          "scores": {}
-        },
-        "sustainability": {
-          "scores": {}
-        },
-        "effectiveness": {
-          "scores": {}
-        }
-      },
+      "pillars": {},
       "indicators": [
         {
           "key": "FS.AST.PRVT.GD.ZS",
@@ -52,61 +186,262 @@
           "source": "World Bank",
           "year": 2024,
           "pillar": "autonomy"
+        },
+        {
+          "key": "FB.AST.NPER.ZS",
+          "description": "Bank nonperforming loans to total gross loans (%)",
+          "value": 90.44058341322352,
+          "weight": 1,
+          "source": "World Bank",
+          "year": 2023,
+          "pillar": "resilience"
+        },
+        {
+          "key": "FX.OWN.TOTL.ZS",
+          "description": "Account ownership at a financial institution or with a mobile-money-service provider (% of population ages 15+)",
+          "value": 94.56302431772326,
+          "weight": 1,
+          "source": "World Bank",
+          "year": 2021,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "FB.CBK.BRCH.P5",
+          "description": "Commercial bank branches (per 100,000 adults)",
+          "value": 11.06459536535666,
+          "weight": 1,
+          "source": "World Bank",
+          "year": 2023,
+          "pillar": "effectiveness"
         }
       ]
     },
     "food_and_agriculture": {
-      "scores": {},
+      "scores": {
+        "autonomy": null,
+        "autonomy_confidence": 0,
+        "resilience": null,
+        "resilience_confidence": 0,
+        "sustainability": null,
+        "sustainability_confidence": 0,
+        "effectiveness": null,
+        "effectiveness_confidence": 0
+      },
       "pillars": {},
       "indicators": []
     },
     "healthcare": {
-      "scores": {},
+      "scores": {
+        "autonomy": 68.84453781512605,
+        "autonomy_confidence": 0.8,
+        "resilience": 87.06517874957841,
+        "resilience_confidence": 0.7,
+        "sustainability": 14.133683039695175,
+        "sustainability_confidence": 0.8,
+        "effectiveness": 100.0,
+        "effectiveness_confidence": 0.9
+      },
       "pillars": {},
-      "indicators": []
+      "indicators": [
+        {
+          "key": "HWF_0001",
+          "description": "Physicians per 1,000 population",
+          "value": 68.84453781512605,
+          "weight": 1,
+          "source": "WHO",
+          "year": 2022,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "UHC_INDEX_REPORTED",
+          "description": "UHC Service Coverage Index (0-100)",
+          "value": 87.06517874957841,
+          "weight": 1,
+          "source": "WHO GHO",
+          "year": 2021,
+          "pillar": "resilience"
+        },
+        {
+          "key": "SH.XPD.CHEX.PC.CD",
+          "description": "Current health expenditure per capita (current US$)",
+          "value": 14.133683039695175,
+          "weight": 1,
+          "source": "World Bank",
+          "year": 2022,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "SH.IMM.IDPT",
+          "description": "Immunization, DPT (% of children ages 12-23 months)",
+          "value": 100.0,
+          "weight": 1,
+          "source": "World Bank",
+          "year": 2023,
+          "pillar": "effectiveness"
+        }
+      ]
     },
     "transport": {
-      "scores": {},
+      "scores": {
+        "autonomy": 89.07208744352397,
+        "autonomy_confidence": 0.9,
+        "resilience": 75.00000000000001,
+        "resilience_confidence": 0.8,
+        "sustainability": null,
+        "sustainability_confidence": 0,
+        "effectiveness": 81.81818181818183,
+        "effectiveness_confidence": 0.8
+      },
       "pillars": {},
-      "indicators": []
+      "indicators": [
+        {
+          "key": "EG.USE.PCAP.KG.OE",
+          "description": "Energy use (kg of oil equivalent per capita)",
+          "value": 89.07208744352397,
+          "weight": 1,
+          "source": "World Bank",
+          "year": 2023,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "LP.LPI.OVRL.XQ",
+          "description": "Logistics performance index: Overall",
+          "value": 75.00000000000001,
+          "weight": 1,
+          "source": "World Bank",
+          "year": 2022,
+          "pillar": "resilience"
+        },
+        {
+          "key": "LP.LPI.TIME.XQ",
+          "description": "Logistics performance index: Timeliness of shipments",
+          "value": 81.81818181818183,
+          "weight": 1,
+          "source": "World Bank",
+          "year": 2022,
+          "pillar": "effectiveness"
+        }
+      ]
     },
     "water": {
-      "scores": {},
+      "scores": {
+        "autonomy": 1.1639057855968375,
+        "autonomy_confidence": 0.7,
+        "resilience": 98.87385272917523,
+        "resilience_confidence": 0.8,
+        "sustainability": 99.46353730153317,
+        "sustainability_confidence": 0.7,
+        "effectiveness": 97.35089,
+        "effectiveness_confidence": 0.8
+      },
       "pillars": {},
-      "indicators": []
+      "indicators": [
+        {
+          "key": "ER.H2O.INTR.PC",
+          "description": "Renewable internal freshwater resources per capita (cubic meters)",
+          "value": 1.1639057855968375,
+          "weight": 1,
+          "source": "World Bank",
+          "year": 2021,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "WSH_WATER_SAFELY_MANAGED",
+          "description": "Population with access to safely managed drinking water (%)",
+          "value": 98.87385272917523,
+          "weight": 1,
+          "source": "WHO",
+          "year": 2022,
+          "pillar": "resilience"
+        },
+        {
+          "key": "ER.H2O.FWST.ZS",
+          "description": "Level of water stress: freshwater withdrawal as a proportion of available freshwater resources (%)",
+          "value": 99.46353730153317,
+          "weight": 1,
+          "source": "World Bank",
+          "year": 2021,
+          "pillar": "sustainability"
+        },
+        {
+          "key": "WSH_SANITATION_SAFELY_MANAGED",
+          "description": "Population with access to safely managed sanitation services (%)",
+          "value": 97.35089,
+          "weight": 1,
+          "source": "WHO",
+          "year": 2022,
+          "pillar": "effectiveness"
+        }
+      ]
     },
     "waste_management": {
-      "scores": {},
+      "scores": {
+        "autonomy": null,
+        "autonomy_confidence": 0,
+        "resilience": null,
+        "resilience_confidence": 0,
+        "sustainability": null,
+        "sustainability_confidence": 0,
+        "effectiveness": null,
+        "effectiveness_confidence": 0
+      },
       "pillars": {},
       "indicators": []
     },
     "emergency_services": {
-      "scores": {},
+      "scores": {
+        "autonomy": null,
+        "autonomy_confidence": 0,
+        "resilience": null,
+        "resilience_confidence": 0,
+        "sustainability": null,
+        "sustainability_confidence": 0,
+        "effectiveness": null,
+        "effectiveness_confidence": 0
+      },
       "pillars": {},
       "indicators": []
     },
     "information_technology": {
       "scores": {
-        "overall": 0.48066491138807715,
-        "effectiveness": 0.48066491138807715
+        "autonomy": 10.300003784777113,
+        "autonomy_confidence": 1.0,
+        "resilience": null,
+        "resilience_confidence": 0,
+        "sustainability": 24.388373079538223,
+        "sustainability_confidence": 0.8,
+        "effectiveness": 0.48066491138807715,
+        "effectiveness_confidence": 1.0
       },
-      "pillars": {
-        "autonomy": {
-          "scores": {}
-        },
-        "resilience": {
-          "scores": {}
-        },
-        "sustainability": {
-          "scores": {}
-        },
-        "effectiveness": {
-          "scores": {
-            "overall": 0.48066491138807715
-          }
-        }
-      },
+      "pillars": {},
       "indicators": [
+        {
+          "key": "BX.GSR.CCIS.ZS",
+          "description": "ICT service exports (% of service exports, BoP)",
+          "value": 4.900552393080424,
+          "weight": 1,
+          "source": "World Bank",
+          "year": 2024,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "TX.VAL.TECH.MF.ZS",
+          "description": "High-technology exports (% of manufactured exports)",
+          "value": 15.699455176473803,
+          "weight": 1,
+          "source": "World Bank",
+          "year": 2024,
+          "pillar": "autonomy"
+        },
+        {
+          "key": "GB.XPD.RSDV.GD.ZS",
+          "description": "Research and development expenditure (% of GDP)",
+          "value": 24.388373079538223,
+          "weight": 1,
+          "source": "World Bank",
+          "year": 2022,
+          "pillar": "sustainability"
+        },
         {
           "key": "IT.NET.SECR.P6",
           "description": "Secure Internet servers (per 1 million people)",
@@ -121,13 +456,13 @@
   },
   "historical_scores": [
     {
-      "year": 2019,
       "scores": {
-        "overall": 46.88313351757112,
-        "autonomy": 27.99165880309853,
-        "resilience": 37.7838593854391,
-        "sustainability": 20.869554776823428,
-        "effectiveness": 37.16257154331548
+        "overall": 48.176161317929385,
+        "autonomy": 1.147364369966166,
+        "resilience": 98.97597754862237,
+        "sustainability": 99.46926423127555,
+        "effectiveness": 96.14837,
+        "context": 0.13156318384217588
       },
       "industries": {
         "communications": {
@@ -152,9 +487,6 @@
               "scores": {
                 "overall": 50.63597611607702
               }
-            },
-            "effectiveness": {
-              "scores": {}
             }
           },
           "indicators": [
@@ -189,8 +521,9 @@
         },
         "defence": {
           "scores": {
-            "overall": 61.626966770517406,
+            "overall": 57.666314206292725,
             "autonomy": 92.98243387326329,
+            "effectiveness": 45.784356513618704,
             "resilience": 0.5312420946116874,
             "sustainability": 91.36722434367724
           },
@@ -198,6 +531,11 @@
             "autonomy": {
               "scores": {
                 "overall": 92.98243387326329
+              }
+            },
+            "effectiveness": {
+              "scores": {
+                "overall": 45.784356513618704
               }
             },
             "resilience": {
@@ -209,12 +547,27 @@
               "scores": {
                 "overall": 91.36722434367724
               }
-            },
-            "effectiveness": {
-              "scores": {}
             }
           },
           "indicators": [
+            {
+              "key": "MS.MIL.TOTL.P1",
+              "description": "Armed forces personnel, total",
+              "value": 0.5312420946116874,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2019,
+              "pillar": "resilience"
+            },
+            {
+              "key": "MS.MIL.XPND.CD",
+              "description": "Military expenditure (current USD)",
+              "value": 0.22555403820074849,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2019,
+              "pillar": "effectiveness"
+            },
             {
               "key": "MS.MIL.XPND.GD.ZS",
               "description": "Military expenditure (% of GDP)",
@@ -225,13 +578,13 @@
               "pillar": "autonomy"
             },
             {
-              "key": "MS.MIL.TOTL.P1",
-              "description": "Armed forces personnel, total",
-              "value": 0.5312420946116874,
+              "key": "MS.MIL.XPND.PC.CD",
+              "description": "Military expenditure per capita (current USD)",
+              "value": 91.34315898903665,
               "weight": 1,
-              "source": "World Bank",
+              "source": "Derived from World Bank",
               "year": 2019,
-              "pillar": "resilience"
+              "pillar": "effectiveness"
             },
             {
               "key": "MS.MIL.XPND.ZS",
@@ -258,6 +611,11 @@
                 "overall": 23.25174170366091
               }
             },
+            "effectiveness": {
+              "scores": {
+                "overall": 100.0
+              }
+            },
             "resilience": {
               "scores": {
                 "overall": 89.34136619922268
@@ -267,22 +625,17 @@
               "scores": {
                 "overall": 19.21079958463136
               }
-            },
-            "effectiveness": {
-              "scores": {
-                "overall": 100.0
-              }
             }
           },
           "indicators": [
             {
-              "key": "EG.IMP.CONS.ZS",
-              "description": "Energy imports, net (% of energy use)",
-              "value": 23.25174170366091,
+              "key": "EG.ELC.ACCS.ZS",
+              "description": "Access to electricity (% of population)",
+              "value": 100.0,
               "weight": 1,
               "source": "World Bank",
               "year": 2019,
-              "pillar": "autonomy"
+              "pillar": "effectiveness"
             },
             {
               "key": "EG.ELC.LOSS.ZS",
@@ -303,13 +656,13 @@
               "pillar": "sustainability"
             },
             {
-              "key": "EG.ELC.ACCS.ZS",
-              "description": "Access to electricity (% of population)",
-              "value": 100.0,
+              "key": "EG.IMP.CONS.ZS",
+              "description": "Energy imports, net (% of energy use)",
+              "value": 23.25174170366091,
               "weight": 1,
               "source": "World Bank",
               "year": 2019,
-              "pillar": "effectiveness"
+              "pillar": "autonomy"
             }
           ]
         },
@@ -326,30 +679,18 @@
                 "overall": 27.99165880309853
               }
             },
-            "resilience": {
-              "scores": {
-                "overall": 37.7838593854391
-              }
-            },
-            "sustainability": {
-              "scores": {}
-            },
             "effectiveness": {
               "scores": {
                 "overall": 13.666209723824288
               }
+            },
+            "resilience": {
+              "scores": {
+                "overall": 37.7838593854391
+              }
             }
           },
           "indicators": [
-            {
-              "key": "FS.AST.PRVT.GD.ZS",
-              "description": "Domestic credit to private sector (% of GDP)",
-              "value": 27.99165880309853,
-              "weight": 1,
-              "source": "World Bank",
-              "year": 2019,
-              "pillar": "autonomy"
-            },
             {
               "key": "FB.AST.NPER.ZS",
               "description": "Bank nonperforming loans to total gross loans (%)",
@@ -367,52 +708,100 @@
               "source": "World Bank",
               "year": 2019,
               "pillar": "effectiveness"
+            },
+            {
+              "key": "FS.AST.PRVT.GD.ZS",
+              "description": "Domestic credit to private sector (% of GDP)",
+              "value": 27.99165880309853,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2019,
+              "pillar": "autonomy"
             }
           ]
         },
-        "food_and_agriculture": {
-          "scores": {},
+        "general": {
+          "scores": {
+            "overall": 0.13156318384217588,
+            "context": 0.13156318384217588
+          },
           "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
+            "context": {
+              "scores": {
+                "overall": 0.13156318384217588
+              }
             }
           },
-          "indicators": []
+          "indicators": [
+            {
+              "key": "SP.POP.TOTL",
+              "description": "Population, total",
+              "value": 0.13156318384217588,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2019,
+              "pillar": "context"
+            }
+          ]
         },
         "healthcare": {
           "scores": {
-            "overall": 56.265515254457405,
-            "effectiveness": 100.0,
+            "overall": 57.273686110119144,
+            "autonomy": 64.50630252100841,
+            "effectiveness": 90.59755509036079,
+            "resilience": 61.459856320192586,
             "sustainability": 12.531030508914807
           },
           "pillars": {
             "autonomy": {
-              "scores": {}
+              "scores": {
+                "overall": 64.50630252100841
+              }
+            },
+            "effectiveness": {
+              "scores": {
+                "overall": 90.59755509036079
+              }
             },
             "resilience": {
-              "scores": {}
+              "scores": {
+                "overall": 61.459856320192586
+              }
             },
             "sustainability": {
               "scores": {
                 "overall": 12.531030508914807
               }
-            },
-            "effectiveness": {
-              "scores": {
-                "overall": 100.0
-              }
             }
           },
           "indicators": [
+            {
+              "key": "HWF_0001",
+              "description": "Physicians per 1,000 population",
+              "value": 64.50630252100841,
+              "weight": 1,
+              "source": "WHO",
+              "year": 2019,
+              "pillar": "autonomy"
+            },
+            {
+              "key": "SH.IMM.IDPT",
+              "description": "Immunization, DPT (% of children ages 12-23 months)",
+              "value": 100.0,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2019,
+              "pillar": "effectiveness"
+            },
+            {
+              "key": "SH.MED.BEDS.ZS",
+              "description": "Hospital beds (per 1,000 people)",
+              "value": 32.02202989771833,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2019,
+              "pillar": "resilience"
+            },
             {
               "key": "SH.XPD.CHEX.PC.CD",
               "description": "Current health expenditure per capita (current US$)",
@@ -423,121 +812,67 @@
               "pillar": "sustainability"
             },
             {
-              "key": "SH.IMM.IDPT",
-              "description": "Immunization, DPT (% of children ages 12-23 months)",
-              "value": 100.0,
+              "key": "UHC_INDEX_REPORTED",
+              "description": "UHC Service Coverage Index (0-100)",
+              "value": 90.89768274266685,
               "weight": 1,
-              "source": "World Bank",
+              "source": "WHO GHO",
+              "year": 2019,
+              "pillar": "resilience"
+            },
+            {
+              "key": "WHOSIS_000002",
+              "description": "Healthy life expectancy (HALE) at birth (years)",
+              "value": 81.19511018072157,
+              "weight": 1,
+              "source": "WHO",
               "year": 2019,
               "pillar": "effectiveness"
             }
           ]
         },
-        "transport": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
-        "water": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
-        "waste_management": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
-        "emergency_services": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
         "information_technology": {
           "scores": {
-            "overall": 29.016063160069454,
+            "overall": 22.226125405548164,
+            "autonomy": 8.646249896505593,
             "effectiveness": 37.16257154331548,
             "sustainability": 20.869554776823428
           },
           "pillars": {
             "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
               "scores": {
-                "overall": 20.869554776823428
+                "overall": 8.646249896505593
               }
             },
             "effectiveness": {
               "scores": {
                 "overall": 37.16257154331548
               }
+            },
+            "sustainability": {
+              "scores": {
+                "overall": 20.869554776823428
+              }
             }
           },
           "indicators": [
             {
-              "key": "IT.NET.USER.ZS",
-              "description": "Individuals using the Internet (% of population)",
-              "value": 74.12140575079873,
+              "key": "BX.GSR.CCIS.ZS",
+              "description": "ICT service exports (% of service exports, BoP)",
+              "value": 4.196363020882168,
               "weight": 1,
               "source": "World Bank",
               "year": 2019,
-              "pillar": "effectiveness"
+              "pillar": "autonomy"
+            },
+            {
+              "key": "GB.XPD.RSDV.GD.ZS",
+              "description": "Research and development expenditure (% of GDP)",
+              "value": 20.869554776823428,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2019,
+              "pillar": "sustainability"
             },
             {
               "key": "IT.NET.SECR.P6",
@@ -549,26 +884,128 @@
               "pillar": "effectiveness"
             },
             {
-              "key": "GB.XPD.RSDV.GD.ZS",
-              "description": "Research and development expenditure (% of GDP)",
-              "value": 20.869554776823428,
+              "key": "IT.NET.USER.ZS",
+              "description": "Individuals using the Internet (% of population)",
+              "value": 74.12140575079873,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2019,
+              "pillar": "effectiveness"
+            },
+            {
+              "key": "TX.VAL.TECH.MF.ZS",
+              "description": "High-technology exports (% of manufactured exports)",
+              "value": 13.096136772129018,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2019,
+              "pillar": "autonomy"
+            }
+          ]
+        },
+        "transport": {
+          "scores": {
+            "overall": 87.96226299771376,
+            "autonomy": 87.96226299771376
+          },
+          "pillars": {
+            "autonomy": {
+              "scores": {
+                "overall": 87.96226299771376
+              }
+            }
+          },
+          "indicators": [
+            {
+              "key": "EG.USE.PCAP.KG.OE",
+              "description": "Energy use (kg of oil equivalent per capita)",
+              "value": 87.96226299771376,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2019,
+              "pillar": "autonomy"
+            }
+          ]
+        },
+        "water": {
+          "scores": {
+            "overall": 73.93524403746602,
+            "autonomy": 1.147364369966166,
+            "effectiveness": 96.14837,
+            "resilience": 98.97597754862237,
+            "sustainability": 99.46926423127555
+          },
+          "pillars": {
+            "autonomy": {
+              "scores": {
+                "overall": 1.147364369966166
+              }
+            },
+            "effectiveness": {
+              "scores": {
+                "overall": 96.14837
+              }
+            },
+            "resilience": {
+              "scores": {
+                "overall": 98.97597754862237
+              }
+            },
+            "sustainability": {
+              "scores": {
+                "overall": 99.46926423127555
+              }
+            }
+          },
+          "indicators": [
+            {
+              "key": "ER.H2O.FWST.ZS",
+              "description": "Level of water stress: freshwater withdrawal as a proportion of available freshwater resources (%)",
+              "value": 99.46926423127555,
               "weight": 1,
               "source": "World Bank",
               "year": 2019,
               "pillar": "sustainability"
+            },
+            {
+              "key": "ER.H2O.INTR.PC",
+              "description": "Renewable internal freshwater resources per capita (cubic meters)",
+              "value": 1.147364369966166,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2019,
+              "pillar": "autonomy"
+            },
+            {
+              "key": "WSH_SANITATION_SAFELY_MANAGED",
+              "description": "Population with access to safely managed sanitation services (%)",
+              "value": 96.14837,
+              "weight": 1,
+              "source": "WHO",
+              "year": 2019,
+              "pillar": "effectiveness"
+            },
+            {
+              "key": "WSH_WATER_SAFELY_MANAGED",
+              "description": "Population with access to safely managed drinking water (%)",
+              "value": 98.97597754862237,
+              "weight": 1,
+              "source": "WHO",
+              "year": 2019,
+              "pillar": "resilience"
             }
           ]
         }
       }
     },
     {
-      "year": 2020,
       "scores": {
-        "overall": 47.981206509717595,
-        "autonomy": 28.36112603701455,
-        "resilience": 49.68412909014796,
-        "sustainability": 24.81419354888694,
-        "effectiveness": 38.475166742770476
+        "overall": 48.76784904922292,
+        "autonomy": 1.1498291670218315,
+        "resilience": 98.92491513889881,
+        "sustainability": 99.46889644679709,
+        "effectiveness": 91.34298,
+        "context": 0.13128090838288967
       },
       "industries": {
         "communications": {
@@ -593,9 +1030,6 @@
               "scores": {
                 "overall": 52.52509250861719
               }
-            },
-            "effectiveness": {
-              "scores": {}
             }
           },
           "indicators": [
@@ -630,8 +1064,9 @@
         },
         "defence": {
           "scores": {
-            "overall": 61.42607972730034,
+            "overall": 57.4367690646404,
             "autonomy": 91.76138886927596,
+            "effectiveness": 45.46883707666058,
             "resilience": 0.5312420946116874,
             "sustainability": 91.98560821801337
           },
@@ -639,6 +1074,11 @@
             "autonomy": {
               "scores": {
                 "overall": 91.76138886927596
+              }
+            },
+            "effectiveness": {
+              "scores": {
+                "overall": 45.46883707666058
               }
             },
             "resilience": {
@@ -650,12 +1090,27 @@
               "scores": {
                 "overall": 91.98560821801337
               }
-            },
-            "effectiveness": {
-              "scores": {}
             }
           },
           "indicators": [
+            {
+              "key": "MS.MIL.TOTL.P1",
+              "description": "Armed forces personnel, total",
+              "value": 0.5312420946116874,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2020,
+              "pillar": "resilience"
+            },
+            {
+              "key": "MS.MIL.XPND.CD",
+              "description": "Military expenditure (current USD)",
+              "value": 0.24190204676506707,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2020,
+              "pillar": "effectiveness"
+            },
             {
               "key": "MS.MIL.XPND.GD.ZS",
               "description": "Military expenditure (% of GDP)",
@@ -666,13 +1121,13 @@
               "pillar": "autonomy"
             },
             {
-              "key": "MS.MIL.TOTL.P1",
-              "description": "Armed forces personnel, total",
-              "value": 0.5312420946116874,
+              "key": "MS.MIL.XPND.PC.CD",
+              "description": "Military expenditure per capita (current USD)",
+              "value": 90.69577210655609,
               "weight": 1,
-              "source": "World Bank",
+              "source": "Derived from World Bank",
               "year": 2020,
-              "pillar": "resilience"
+              "pillar": "effectiveness"
             },
             {
               "key": "MS.MIL.XPND.ZS",
@@ -699,6 +1154,11 @@
                 "overall": 22.99872272470921
               }
             },
+            "effectiveness": {
+              "scores": {
+                "overall": 100.0
+              }
+            },
             "resilience": {
               "scores": {
                 "overall": 84.65019336185144
@@ -708,22 +1168,17 @@
               "scores": {
                 "overall": 20.87227414330218
               }
-            },
-            "effectiveness": {
-              "scores": {
-                "overall": 100.0
-              }
             }
           },
           "indicators": [
             {
-              "key": "EG.IMP.CONS.ZS",
-              "description": "Energy imports, net (% of energy use)",
-              "value": 22.99872272470921,
+              "key": "EG.ELC.ACCS.ZS",
+              "description": "Access to electricity (% of population)",
+              "value": 100.0,
               "weight": 1,
               "source": "World Bank",
               "year": 2020,
-              "pillar": "autonomy"
+              "pillar": "effectiveness"
             },
             {
               "key": "EG.ELC.LOSS.ZS",
@@ -744,13 +1199,13 @@
               "pillar": "sustainability"
             },
             {
-              "key": "EG.ELC.ACCS.ZS",
-              "description": "Access to electricity (% of population)",
-              "value": 100.0,
+              "key": "EG.IMP.CONS.ZS",
+              "description": "Energy imports, net (% of energy use)",
+              "value": 22.99872272470921,
               "weight": 1,
               "source": "World Bank",
               "year": 2020,
-              "pillar": "effectiveness"
+              "pillar": "autonomy"
             }
           ]
         },
@@ -767,30 +1222,18 @@
                 "overall": 28.36112603701455
               }
             },
-            "resilience": {
-              "scores": {
-                "overall": 49.68412909014796
-              }
-            },
-            "sustainability": {
-              "scores": {}
-            },
             "effectiveness": {
               "scores": {
                 "overall": 12.973644151669323
               }
+            },
+            "resilience": {
+              "scores": {
+                "overall": 49.68412909014796
+              }
             }
           },
           "indicators": [
-            {
-              "key": "FS.AST.PRVT.GD.ZS",
-              "description": "Domestic credit to private sector (% of GDP)",
-              "value": 28.36112603701455,
-              "weight": 1,
-              "source": "World Bank",
-              "year": 2020,
-              "pillar": "autonomy"
-            },
             {
               "key": "FB.AST.NPER.ZS",
               "description": "Bank nonperforming loans to total gross loans (%)",
@@ -808,52 +1251,85 @@
               "source": "World Bank",
               "year": 2020,
               "pillar": "effectiveness"
+            },
+            {
+              "key": "FS.AST.PRVT.GD.ZS",
+              "description": "Domestic credit to private sector (% of GDP)",
+              "value": 28.36112603701455,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2020,
+              "pillar": "autonomy"
             }
           ]
         },
-        "food_and_agriculture": {
-          "scores": {},
+        "general": {
+          "scores": {
+            "overall": 0.13128090838288967,
+            "context": 0.13128090838288967
+          },
           "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
+            "context": {
+              "scores": {
+                "overall": 0.13128090838288967
+              }
             }
           },
-          "indicators": []
+          "indicators": [
+            {
+              "key": "SP.POP.TOTL",
+              "description": "Population, total",
+              "value": 0.13128090838288967,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2020,
+              "pillar": "context"
+            }
+          ]
         },
         "healthcare": {
           "scores": {
-            "overall": 56.691191626591895,
-            "effectiveness": 100.0,
+            "overall": 56.74219527994118,
+            "autonomy": 64.74789915966387,
+            "effectiveness": 92.09630342697588,
             "sustainability": 13.382383253183791
           },
           "pillars": {
             "autonomy": {
-              "scores": {}
+              "scores": {
+                "overall": 64.74789915966387
+              }
             },
-            "resilience": {
-              "scores": {}
+            "effectiveness": {
+              "scores": {
+                "overall": 92.09630342697588
+              }
             },
             "sustainability": {
               "scores": {
                 "overall": 13.382383253183791
               }
-            },
-            "effectiveness": {
-              "scores": {
-                "overall": 100.0
-              }
             }
           },
           "indicators": [
+            {
+              "key": "HWF_0001",
+              "description": "Physicians per 1,000 population",
+              "value": 64.74789915966387,
+              "weight": 1,
+              "source": "WHO",
+              "year": 2020,
+              "pillar": "autonomy"
+            },
+            {
+              "key": "SH.IMM.IDPT",
+              "description": "Immunization, DPT (% of children ages 12-23 months)",
+              "value": 100.0,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2020,
+              "pillar": "effectiveness"
+            },
             {
               "key": "SH.XPD.CHEX.PC.CD",
               "description": "Current health expenditure per capita (current US$)",
@@ -864,121 +1340,58 @@
               "pillar": "sustainability"
             },
             {
-              "key": "SH.IMM.IDPT",
-              "description": "Immunization, DPT (% of children ages 12-23 months)",
-              "value": 100.0,
+              "key": "WHOSIS_000002",
+              "description": "Healthy life expectancy (HALE) at birth (years)",
+              "value": 84.19260685395174,
               "weight": 1,
-              "source": "World Bank",
+              "source": "WHO",
               "year": 2020,
               "pillar": "effectiveness"
             }
           ]
         },
-        "transport": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
-        "water": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
-        "waste_management": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
-        "emergency_services": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
         "information_technology": {
           "scores": {
-            "overall": 31.64468014582871,
+            "overall": 24.51604465540217,
+            "autonomy": 10.258773674549094,
             "effectiveness": 38.475166742770476,
             "sustainability": 24.81419354888694
           },
           "pillars": {
             "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
               "scores": {
-                "overall": 24.81419354888694
+                "overall": 10.258773674549094
               }
             },
             "effectiveness": {
               "scores": {
                 "overall": 38.475166742770476
               }
+            },
+            "sustainability": {
+              "scores": {
+                "overall": 24.81419354888694
+              }
             }
           },
           "indicators": [
             {
-              "key": "IT.NET.USER.ZS",
-              "description": "Individuals using the Internet (% of population)",
-              "value": 76.6773162939297,
+              "key": "BX.GSR.CCIS.ZS",
+              "description": "ICT service exports (% of service exports, BoP)",
+              "value": 6.658361871659473,
               "weight": 1,
               "source": "World Bank",
               "year": 2020,
-              "pillar": "effectiveness"
+              "pillar": "autonomy"
+            },
+            {
+              "key": "GB.XPD.RSDV.GD.ZS",
+              "description": "Research and development expenditure (% of GDP)",
+              "value": 24.81419354888694,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2020,
+              "pillar": "sustainability"
             },
             {
               "key": "IT.NET.SECR.P6",
@@ -990,26 +1403,128 @@
               "pillar": "effectiveness"
             },
             {
-              "key": "GB.XPD.RSDV.GD.ZS",
-              "description": "Research and development expenditure (% of GDP)",
-              "value": 24.81419354888694,
+              "key": "IT.NET.USER.ZS",
+              "description": "Individuals using the Internet (% of population)",
+              "value": 76.6773162939297,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2020,
+              "pillar": "effectiveness"
+            },
+            {
+              "key": "TX.VAL.TECH.MF.ZS",
+              "description": "High-technology exports (% of manufactured exports)",
+              "value": 13.859185477438713,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2020,
+              "pillar": "autonomy"
+            }
+          ]
+        },
+        "transport": {
+          "scores": {
+            "overall": 89.23740878787555,
+            "autonomy": 89.23740878787555
+          },
+          "pillars": {
+            "autonomy": {
+              "scores": {
+                "overall": 89.23740878787555
+              }
+            }
+          },
+          "indicators": [
+            {
+              "key": "EG.USE.PCAP.KG.OE",
+              "description": "Energy use (kg of oil equivalent per capita)",
+              "value": 89.23740878787555,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2020,
+              "pillar": "autonomy"
+            }
+          ]
+        },
+        "water": {
+          "scores": {
+            "overall": 72.72165518817943,
+            "autonomy": 1.1498291670218315,
+            "effectiveness": 91.34298,
+            "resilience": 98.92491513889881,
+            "sustainability": 99.46889644679709
+          },
+          "pillars": {
+            "autonomy": {
+              "scores": {
+                "overall": 1.1498291670218315
+              }
+            },
+            "effectiveness": {
+              "scores": {
+                "overall": 91.34298
+              }
+            },
+            "resilience": {
+              "scores": {
+                "overall": 98.92491513889881
+              }
+            },
+            "sustainability": {
+              "scores": {
+                "overall": 99.46889644679709
+              }
+            }
+          },
+          "indicators": [
+            {
+              "key": "ER.H2O.FWST.ZS",
+              "description": "Level of water stress: freshwater withdrawal as a proportion of available freshwater resources (%)",
+              "value": 99.46889644679709,
               "weight": 1,
               "source": "World Bank",
               "year": 2020,
               "pillar": "sustainability"
+            },
+            {
+              "key": "ER.H2O.INTR.PC",
+              "description": "Renewable internal freshwater resources per capita (cubic meters)",
+              "value": 1.1498291670218315,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2020,
+              "pillar": "autonomy"
+            },
+            {
+              "key": "WSH_SANITATION_SAFELY_MANAGED",
+              "description": "Population with access to safely managed sanitation services (%)",
+              "value": 91.34298,
+              "weight": 1,
+              "source": "WHO",
+              "year": 2020,
+              "pillar": "effectiveness"
+            },
+            {
+              "key": "WSH_WATER_SAFELY_MANAGED",
+              "description": "Population with access to safely managed drinking water (%)",
+              "value": 98.92491513889881,
+              "weight": 1,
+              "source": "WHO",
+              "year": 2020,
+              "pillar": "resilience"
             }
           ]
         }
       }
     },
     {
-      "year": 2021,
       "scores": {
-        "overall": 54.3900136852323,
-        "autonomy": 19.611170623734616,
-        "resilience": 80.72850324950998,
-        "sustainability": 23.91902034541701,
-        "effectiveness": 38.72611423101385
+        "overall": 52.61550553241836,
+        "autonomy": 1.1639057855968375,
+        "resilience": 98.87385272917523,
+        "sustainability": 99.46353730153317,
+        "effectiveness": 97.35089,
+        "context": 0.12969172567271414
       },
       "industries": {
         "communications": {
@@ -1034,9 +1549,6 @@
               "scores": {
                 "overall": 55.34186934073666
               }
-            },
-            "effectiveness": {
-              "scores": {}
             }
           },
           "indicators": [
@@ -1071,8 +1583,9 @@
         },
         "defence": {
           "scores": {
-            "overall": 89.40070624409009,
+            "overall": 74.06844999100713,
             "autonomy": 89.58227145319724,
+            "effectiveness": 43.40393748484121,
             "sustainability": 89.21914103498295
           },
           "pillars": {
@@ -1081,19 +1594,27 @@
                 "overall": 89.58227145319724
               }
             },
-            "resilience": {
-              "scores": {}
+            "effectiveness": {
+              "scores": {
+                "overall": 43.40393748484121
+              }
             },
             "sustainability": {
               "scores": {
                 "overall": 89.21914103498295
               }
-            },
-            "effectiveness": {
-              "scores": {}
             }
           },
           "indicators": [
+            {
+              "key": "MS.MIL.XPND.CD",
+              "description": "Military expenditure (current USD)",
+              "value": 0.34776825743114836,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2021,
+              "pillar": "effectiveness"
+            },
             {
               "key": "MS.MIL.XPND.GD.ZS",
               "description": "Military expenditure (% of GDP)",
@@ -1102,6 +1623,15 @@
               "source": "World Bank",
               "year": 2021,
               "pillar": "autonomy"
+            },
+            {
+              "key": "MS.MIL.XPND.PC.CD",
+              "description": "Military expenditure per capita (current USD)",
+              "value": 86.46010671225127,
+              "weight": 1,
+              "source": "Derived from World Bank",
+              "year": 2021,
+              "pillar": "effectiveness"
             },
             {
               "key": "MS.MIL.XPND.ZS",
@@ -1128,6 +1658,11 @@
                 "overall": 23.45192109783804
               }
             },
+            "effectiveness": {
+              "scores": {
+                "overall": 100.0
+              }
+            },
             "resilience": {
               "scores": {
                 "overall": 85.45741118993979
@@ -1137,22 +1672,17 @@
               "scores": {
                 "overall": 22.326064382139148
               }
-            },
-            "effectiveness": {
-              "scores": {
-                "overall": 100.0
-              }
             }
           },
           "indicators": [
             {
-              "key": "EG.IMP.CONS.ZS",
-              "description": "Energy imports, net (% of energy use)",
-              "value": 23.45192109783804,
+              "key": "EG.ELC.ACCS.ZS",
+              "description": "Access to electricity (% of population)",
+              "value": 100.0,
               "weight": 1,
               "source": "World Bank",
               "year": 2021,
-              "pillar": "autonomy"
+              "pillar": "effectiveness"
             },
             {
               "key": "EG.ELC.LOSS.ZS",
@@ -1173,13 +1703,13 @@
               "pillar": "sustainability"
             },
             {
-              "key": "EG.ELC.ACCS.ZS",
-              "description": "Access to electricity (% of population)",
-              "value": 100.0,
+              "key": "EG.IMP.CONS.ZS",
+              "description": "Energy imports, net (% of energy use)",
+              "value": 23.45192109783804,
               "weight": 1,
               "source": "World Bank",
               "year": 2021,
-              "pillar": "effectiveness"
+              "pillar": "autonomy"
             }
           ]
         },
@@ -1197,6 +1727,11 @@
                 "overall": 19.611170623734616
               }
             },
+            "effectiveness": {
+              "scores": {
+                "overall": 12.029267535165413
+              }
+            },
             "resilience": {
               "scores": {
                 "overall": 80.72850324950998
@@ -1206,23 +1741,9 @@
               "scores": {
                 "overall": 94.56302431772326
               }
-            },
-            "effectiveness": {
-              "scores": {
-                "overall": 12.029267535165413
-              }
             }
           },
           "indicators": [
-            {
-              "key": "FS.AST.PRVT.GD.ZS",
-              "description": "Domestic credit to private sector (% of GDP)",
-              "value": 19.611170623734616,
-              "weight": 1,
-              "source": "World Bank",
-              "year": 2021,
-              "pillar": "autonomy"
-            },
             {
               "key": "FB.AST.NPER.ZS",
               "description": "Bank nonperforming loans to total gross loans (%)",
@@ -1233,15 +1754,6 @@
               "pillar": "resilience"
             },
             {
-              "key": "FX.OWN.TOTL.ZS",
-              "description": "Account ownership at a financial institution or with a mobile-money-service provider (% of population ages 15+)",
-              "value": 94.56302431772326,
-              "weight": 1,
-              "source": "World Bank",
-              "year": 2021,
-              "pillar": "sustainability"
-            },
-            {
               "key": "FB.CBK.BRCH.P5",
               "description": "Commercial bank branches (per 100,000 adults)",
               "value": 12.029267535165413,
@@ -1249,52 +1761,100 @@
               "source": "World Bank",
               "year": 2021,
               "pillar": "effectiveness"
+            },
+            {
+              "key": "FS.AST.PRVT.GD.ZS",
+              "description": "Domestic credit to private sector (% of GDP)",
+              "value": 19.611170623734616,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2021,
+              "pillar": "autonomy"
+            },
+            {
+              "key": "FX.OWN.TOTL.ZS",
+              "description": "Account ownership at a financial institution or with a mobile-money-service provider (% of population ages 15+)",
+              "value": 94.56302431772326,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2021,
+              "pillar": "sustainability"
             }
           ]
         },
-        "food_and_agriculture": {
-          "scores": {},
+        "general": {
+          "scores": {
+            "overall": 0.12969172567271414,
+            "context": 0.12969172567271414
+          },
           "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
+            "context": {
+              "scores": {
+                "overall": 0.12969172567271414
+              }
             }
           },
-          "indicators": []
+          "indicators": [
+            {
+              "key": "SP.POP.TOTL",
+              "description": "Population, total",
+              "value": 0.12969172567271414,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2021,
+              "pillar": "context"
+            }
+          ]
         },
         "healthcare": {
           "scores": {
-            "overall": 57.38185626464517,
-            "effectiveness": 100.0,
+            "overall": 64.23231710058953,
+            "autonomy": 66.63865546218487,
+            "effectiveness": 88.4617216613045,
+            "resilience": 87.06517874957841,
             "sustainability": 14.763712529290341
           },
           "pillars": {
             "autonomy": {
-              "scores": {}
+              "scores": {
+                "overall": 66.63865546218487
+              }
+            },
+            "effectiveness": {
+              "scores": {
+                "overall": 88.4617216613045
+              }
             },
             "resilience": {
-              "scores": {}
+              "scores": {
+                "overall": 87.06517874957841
+              }
             },
             "sustainability": {
               "scores": {
                 "overall": 14.763712529290341
               }
-            },
-            "effectiveness": {
-              "scores": {
-                "overall": 100.0
-              }
             }
           },
           "indicators": [
+            {
+              "key": "HWF_0001",
+              "description": "Physicians per 1,000 population",
+              "value": 66.63865546218487,
+              "weight": 1,
+              "source": "WHO",
+              "year": 2021,
+              "pillar": "autonomy"
+            },
+            {
+              "key": "SH.IMM.IDPT",
+              "description": "Immunization, DPT (% of children ages 12-23 months)",
+              "value": 100.0,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2021,
+              "pillar": "effectiveness"
+            },
             {
               "key": "SH.XPD.CHEX.PC.CD",
               "description": "Current health expenditure per capita (current US$)",
@@ -1305,121 +1865,67 @@
               "pillar": "sustainability"
             },
             {
-              "key": "SH.IMM.IDPT",
-              "description": "Immunization, DPT (% of children ages 12-23 months)",
-              "value": 100.0,
+              "key": "UHC_INDEX_REPORTED",
+              "description": "UHC Service Coverage Index (0-100)",
+              "value": 87.06517874957841,
               "weight": 1,
-              "source": "World Bank",
+              "source": "WHO GHO",
+              "year": 2021,
+              "pillar": "resilience"
+            },
+            {
+              "key": "WHOSIS_000002",
+              "description": "Healthy life expectancy (HALE) at birth (years)",
+              "value": 76.92344332260897,
+              "weight": 1,
+              "source": "WHO",
               "year": 2021,
               "pillar": "effectiveness"
             }
           ]
         },
-        "transport": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
-        "water": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
-        "waste_management": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
-        "emergency_services": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
         "information_technology": {
           "scores": {
-            "overall": 31.32256728821543,
+            "overall": 23.906335167956573,
+            "autonomy": 9.073870927438858,
             "effectiveness": 38.72611423101385,
             "sustainability": 23.91902034541701
           },
           "pillars": {
             "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
               "scores": {
-                "overall": 23.91902034541701
+                "overall": 9.073870927438858
               }
             },
             "effectiveness": {
               "scores": {
                 "overall": 38.72611423101385
               }
+            },
+            "sustainability": {
+              "scores": {
+                "overall": 23.91902034541701
+              }
             }
           },
           "indicators": [
             {
-              "key": "IT.NET.USER.ZS",
-              "description": "Individuals using the Internet (% of population)",
-              "value": 77.10330138445156,
+              "key": "BX.GSR.CCIS.ZS",
+              "description": "ICT service exports (% of service exports, BoP)",
+              "value": 5.299871690059397,
               "weight": 1,
               "source": "World Bank",
               "year": 2021,
-              "pillar": "effectiveness"
+              "pillar": "autonomy"
+            },
+            {
+              "key": "GB.XPD.RSDV.GD.ZS",
+              "description": "Research and development expenditure (% of GDP)",
+              "value": 23.91902034541701,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2021,
+              "pillar": "sustainability"
             },
             {
               "key": "IT.NET.SECR.P6",
@@ -1431,26 +1937,128 @@
               "pillar": "effectiveness"
             },
             {
-              "key": "GB.XPD.RSDV.GD.ZS",
-              "description": "Research and development expenditure (% of GDP)",
-              "value": 23.91902034541701,
+              "key": "IT.NET.USER.ZS",
+              "description": "Individuals using the Internet (% of population)",
+              "value": 77.10330138445156,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2021,
+              "pillar": "effectiveness"
+            },
+            {
+              "key": "TX.VAL.TECH.MF.ZS",
+              "description": "High-technology exports (% of manufactured exports)",
+              "value": 12.847870164818318,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2021,
+              "pillar": "autonomy"
+            }
+          ]
+        },
+        "transport": {
+          "scores": {
+            "overall": 88.75475703801993,
+            "autonomy": 88.75475703801993
+          },
+          "pillars": {
+            "autonomy": {
+              "scores": {
+                "overall": 88.75475703801993
+              }
+            }
+          },
+          "indicators": [
+            {
+              "key": "EG.USE.PCAP.KG.OE",
+              "description": "Energy use (kg of oil equivalent per capita)",
+              "value": 88.75475703801993,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2021,
+              "pillar": "autonomy"
+            }
+          ]
+        },
+        "water": {
+          "scores": {
+            "overall": 74.2130464540763,
+            "autonomy": 1.1639057855968375,
+            "effectiveness": 97.35089,
+            "resilience": 98.87385272917523,
+            "sustainability": 99.46353730153317
+          },
+          "pillars": {
+            "autonomy": {
+              "scores": {
+                "overall": 1.1639057855968375
+              }
+            },
+            "effectiveness": {
+              "scores": {
+                "overall": 97.35089
+              }
+            },
+            "resilience": {
+              "scores": {
+                "overall": 98.87385272917523
+              }
+            },
+            "sustainability": {
+              "scores": {
+                "overall": 99.46353730153317
+              }
+            }
+          },
+          "indicators": [
+            {
+              "key": "ER.H2O.FWST.ZS",
+              "description": "Level of water stress: freshwater withdrawal as a proportion of available freshwater resources (%)",
+              "value": 99.46353730153317,
               "weight": 1,
               "source": "World Bank",
               "year": 2021,
               "pillar": "sustainability"
+            },
+            {
+              "key": "ER.H2O.INTR.PC",
+              "description": "Renewable internal freshwater resources per capita (cubic meters)",
+              "value": 1.1639057855968375,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2021,
+              "pillar": "autonomy"
+            },
+            {
+              "key": "WSH_SANITATION_SAFELY_MANAGED",
+              "description": "Population with access to safely managed sanitation services (%)",
+              "value": 97.35089,
+              "weight": 1,
+              "source": "WHO",
+              "year": 2021,
+              "pillar": "effectiveness"
+            },
+            {
+              "key": "WSH_WATER_SAFELY_MANAGED",
+              "description": "Population with access to safely managed drinking water (%)",
+              "value": 98.87385272917523,
+              "weight": 1,
+              "source": "WHO",
+              "year": 2021,
+              "pillar": "resilience"
             }
           ]
         }
       }
     },
     {
-      "year": 2022,
       "scores": {
-        "overall": 55.87192909799373,
-        "autonomy": 18.231348657469855,
-        "resilience": 86.80676801121773,
+        "overall": 55.143916477330094,
+        "autonomy": 88.5345656244384,
+        "resilience": 98.87385272917523,
         "sustainability": 24.388373079538223,
-        "effectiveness": 41.254580442288045
+        "effectiveness": 97.35089,
+        "context": 0.12806652007944735
       },
       "industries": {
         "communications": {
@@ -1475,9 +2083,6 @@
               "scores": {
                 "overall": 56.664250815514784
               }
-            },
-            "effectiveness": {
-              "scores": {}
             }
           },
           "indicators": [
@@ -1512,8 +2117,9 @@
         },
         "defence": {
           "scores": {
-            "overall": 88.38966586821184,
+            "overall": 73.24626707459765,
             "autonomy": 89.1523128320158,
+            "effectiveness": 42.95946948736926,
             "sustainability": 87.62701890440789
           },
           "pillars": {
@@ -1522,19 +2128,27 @@
                 "overall": 89.1523128320158
               }
             },
-            "resilience": {
-              "scores": {}
+            "effectiveness": {
+              "scores": {
+                "overall": 42.95946948736926
+              }
             },
             "sustainability": {
               "scores": {
                 "overall": 87.62701890440789
               }
-            },
-            "effectiveness": {
-              "scores": {}
             }
           },
           "indicators": [
+            {
+              "key": "MS.MIL.XPND.CD",
+              "description": "Military expenditure (current USD)",
+              "value": 0.3664338766372626,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2022,
+              "pillar": "effectiveness"
+            },
             {
               "key": "MS.MIL.XPND.GD.ZS",
               "description": "Military expenditure (% of GDP)",
@@ -1543,6 +2157,15 @@
               "source": "World Bank",
               "year": 2022,
               "pillar": "autonomy"
+            },
+            {
+              "key": "MS.MIL.XPND.PC.CD",
+              "description": "Military expenditure per capita (current USD)",
+              "value": 85.55250509810126,
+              "weight": 1,
+              "source": "Derived from World Bank",
+              "year": 2022,
+              "pillar": "effectiveness"
             },
             {
               "key": "MS.MIL.XPND.ZS",
@@ -1568,29 +2191,26 @@
                 "overall": 22.87771556291044
               }
             },
-            "resilience": {
-              "scores": {
-                "overall": 84.54042972807429
-              }
-            },
-            "sustainability": {
-              "scores": {}
-            },
             "effectiveness": {
               "scores": {
                 "overall": 100.0
+              }
+            },
+            "resilience": {
+              "scores": {
+                "overall": 84.54042972807429
               }
             }
           },
           "indicators": [
             {
-              "key": "EG.IMP.CONS.ZS",
-              "description": "Energy imports, net (% of energy use)",
-              "value": 22.87771556291044,
+              "key": "EG.ELC.ACCS.ZS",
+              "description": "Access to electricity (% of population)",
+              "value": 100.0,
               "weight": 1,
               "source": "World Bank",
               "year": 2022,
-              "pillar": "autonomy"
+              "pillar": "effectiveness"
             },
             {
               "key": "EG.ELC.LOSS.ZS",
@@ -1602,13 +2222,13 @@
               "pillar": "resilience"
             },
             {
-              "key": "EG.ELC.ACCS.ZS",
-              "description": "Access to electricity (% of population)",
-              "value": 100.0,
+              "key": "EG.IMP.CONS.ZS",
+              "description": "Energy imports, net (% of energy use)",
+              "value": 22.87771556291044,
               "weight": 1,
               "source": "World Bank",
               "year": 2022,
-              "pillar": "effectiveness"
+              "pillar": "autonomy"
             }
           ]
         },
@@ -1625,30 +2245,18 @@
                 "overall": 18.231348657469855
               }
             },
-            "resilience": {
-              "scores": {
-                "overall": 86.80676801121773
-              }
-            },
-            "sustainability": {
-              "scores": {}
-            },
             "effectiveness": {
               "scores": {
                 "overall": 11.5268003307642
               }
+            },
+            "resilience": {
+              "scores": {
+                "overall": 86.80676801121773
+              }
             }
           },
           "indicators": [
-            {
-              "key": "FS.AST.PRVT.GD.ZS",
-              "description": "Domestic credit to private sector (% of GDP)",
-              "value": 18.231348657469855,
-              "weight": 1,
-              "source": "World Bank",
-              "year": 2022,
-              "pillar": "autonomy"
-            },
             {
               "key": "FB.AST.NPER.ZS",
               "description": "Bank nonperforming loans to total gross loans (%)",
@@ -1666,60 +2274,75 @@
               "source": "World Bank",
               "year": 2022,
               "pillar": "effectiveness"
+            },
+            {
+              "key": "FS.AST.PRVT.GD.ZS",
+              "description": "Domestic credit to private sector (% of GDP)",
+              "value": 18.231348657469855,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2022,
+              "pillar": "autonomy"
             }
           ]
         },
-        "food_and_agriculture": {
-          "scores": {},
+        "general": {
+          "scores": {
+            "overall": 0.12806652007944735,
+            "context": 0.12806652007944735
+          },
           "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
+            "context": {
+              "scores": {
+                "overall": 0.12806652007944735
+              }
             }
           },
-          "indicators": []
+          "indicators": [
+            {
+              "key": "SP.POP.TOTL",
+              "description": "Population, total",
+              "value": 0.12806652007944735,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2022,
+              "pillar": "context"
+            }
+          ]
         },
         "healthcare": {
           "scores": {
-            "overall": 57.066841519847586,
+            "overall": 60.9927402849404,
+            "autonomy": 68.84453781512605,
             "effectiveness": 100.0,
             "sustainability": 14.133683039695175
           },
           "pillars": {
             "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
               "scores": {
-                "overall": 14.133683039695175
+                "overall": 68.84453781512605
               }
             },
             "effectiveness": {
               "scores": {
                 "overall": 100.0
               }
+            },
+            "sustainability": {
+              "scores": {
+                "overall": 14.133683039695175
+              }
             }
           },
           "indicators": [
             {
-              "key": "SH.XPD.CHEX.PC.CD",
-              "description": "Current health expenditure per capita (current US$)",
-              "value": 14.133683039695175,
+              "key": "HWF_0001",
+              "description": "Physicians per 1,000 population",
+              "value": 68.84453781512605,
               "weight": 1,
-              "source": "World Bank",
+              "source": "WHO",
               "year": 2022,
-              "pillar": "sustainability"
+              "pillar": "autonomy"
             },
             {
               "key": "SH.IMM.IDPT",
@@ -1729,114 +2352,60 @@
               "source": "World Bank",
               "year": 2022,
               "pillar": "effectiveness"
+            },
+            {
+              "key": "SH.XPD.CHEX.PC.CD",
+              "description": "Current health expenditure per capita (current US$)",
+              "value": 14.133683039695175,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2022,
+              "pillar": "sustainability"
             }
           ]
         },
-        "transport": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
-        "water": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
-        "waste_management": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
-        "emergency_services": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
         "information_technology": {
           "scores": {
-            "overall": 32.821476760913136,
+            "overall": 25.07796346523585,
+            "autonomy": 9.590936873881285,
             "effectiveness": 41.254580442288045,
             "sustainability": 24.388373079538223
           },
           "pillars": {
             "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
               "scores": {
-                "overall": 24.388373079538223
+                "overall": 9.590936873881285
               }
             },
             "effectiveness": {
               "scores": {
                 "overall": 41.254580442288045
               }
+            },
+            "sustainability": {
+              "scores": {
+                "overall": 24.388373079538223
+              }
             }
           },
           "indicators": [
             {
-              "key": "IT.NET.USER.ZS",
-              "description": "Individuals using the Internet (% of population)",
-              "value": 82.10862619808307,
+              "key": "BX.GSR.CCIS.ZS",
+              "description": "ICT service exports (% of service exports, BoP)",
+              "value": 4.047824716901965,
               "weight": 1,
               "source": "World Bank",
               "year": 2022,
-              "pillar": "effectiveness"
+              "pillar": "autonomy"
+            },
+            {
+              "key": "GB.XPD.RSDV.GD.ZS",
+              "description": "Research and development expenditure (% of GDP)",
+              "value": 24.388373079538223,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2022,
+              "pillar": "sustainability"
             },
             {
               "key": "IT.NET.SECR.P6",
@@ -1848,26 +2417,128 @@
               "pillar": "effectiveness"
             },
             {
-              "key": "GB.XPD.RSDV.GD.ZS",
-              "description": "Research and development expenditure (% of GDP)",
-              "value": 24.388373079538223,
+              "key": "IT.NET.USER.ZS",
+              "description": "Individuals using the Internet (% of population)",
+              "value": 82.10862619808307,
               "weight": 1,
               "source": "World Bank",
               "year": 2022,
-              "pillar": "sustainability"
+              "pillar": "effectiveness"
+            },
+            {
+              "key": "TX.VAL.TECH.MF.ZS",
+              "description": "High-technology exports (% of manufactured exports)",
+              "value": 15.134049030860606,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2022,
+              "pillar": "autonomy"
+            }
+          ]
+        },
+        "transport": {
+          "scores": {
+            "overall": 81.78424914754008,
+            "autonomy": 88.5345656244384,
+            "effectiveness": 81.81818181818183,
+            "resilience": 75.00000000000001
+          },
+          "pillars": {
+            "autonomy": {
+              "scores": {
+                "overall": 88.5345656244384
+              }
+            },
+            "effectiveness": {
+              "scores": {
+                "overall": 81.81818181818183
+              }
+            },
+            "resilience": {
+              "scores": {
+                "overall": 75.00000000000001
+              }
+            }
+          },
+          "indicators": [
+            {
+              "key": "EG.USE.PCAP.KG.OE",
+              "description": "Energy use (kg of oil equivalent per capita)",
+              "value": 88.5345656244384,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2022,
+              "pillar": "autonomy"
+            },
+            {
+              "key": "LP.LPI.OVRL.XQ",
+              "description": "Logistics performance index: Overall",
+              "value": 75.00000000000001,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2022,
+              "pillar": "resilience"
+            },
+            {
+              "key": "LP.LPI.TIME.XQ",
+              "description": "Logistics performance index: Timeliness of shipments",
+              "value": 81.81818181818183,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2022,
+              "pillar": "effectiveness"
+            }
+          ]
+        },
+        "water": {
+          "scores": {
+            "overall": 98.11237136458762,
+            "effectiveness": 97.35089,
+            "resilience": 98.87385272917523
+          },
+          "pillars": {
+            "effectiveness": {
+              "scores": {
+                "overall": 97.35089
+              }
+            },
+            "resilience": {
+              "scores": {
+                "overall": 98.87385272917523
+              }
+            }
+          },
+          "indicators": [
+            {
+              "key": "WSH_SANITATION_SAFELY_MANAGED",
+              "description": "Population with access to safely managed sanitation services (%)",
+              "value": 97.35089,
+              "weight": 1,
+              "source": "WHO",
+              "year": 2022,
+              "pillar": "effectiveness"
+            },
+            {
+              "key": "WSH_WATER_SAFELY_MANAGED",
+              "description": "Population with access to safely managed drinking water (%)",
+              "value": 98.87385272917523,
+              "weight": 1,
+              "source": "WHO",
+              "year": 2022,
+              "pillar": "resilience"
             }
           ]
         }
       }
     },
     {
-      "year": 2023,
       "scores": {
-        "overall": 65.63599403893167,
-        "autonomy": 17.13585632465941,
+        "overall": 56.42544071080455,
+        "autonomy": 89.07208744352397,
         "resilience": 90.44058341322352,
         "sustainability": 89.44405137595989,
-        "effectiveness": 42.230846572187104
+        "effectiveness": 42.230846572187104,
+        "context": 0.1276821695497992
       },
       "industries": {
         "communications": {
@@ -1892,9 +2563,6 @@
               "scores": {
                 "overall": 57.89329858732113
               }
-            },
-            "effectiveness": {
-              "scores": {}
             }
           },
           "indicators": [
@@ -1929,8 +2597,9 @@
         },
         "defence": {
           "scores": {
-            "overall": 90.37721678056567,
+            "overall": 74.83744413034997,
             "autonomy": 91.31038218517145,
+            "effectiveness": 43.757898829918545,
             "sustainability": 89.44405137595989
           },
           "pillars": {
@@ -1939,19 +2608,27 @@
                 "overall": 91.31038218517145
               }
             },
-            "resilience": {
-              "scores": {}
+            "effectiveness": {
+              "scores": {
+                "overall": 43.757898829918545
+              }
             },
             "sustainability": {
               "scores": {
                 "overall": 89.44405137595989
               }
-            },
-            "effectiveness": {
-              "scores": {}
             }
           },
           "indicators": [
+            {
+              "key": "MS.MIL.XPND.CD",
+              "description": "Military expenditure (current USD)",
+              "value": 0.32387915886777624,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2023,
+              "pillar": "effectiveness"
+            },
             {
               "key": "MS.MIL.XPND.GD.ZS",
               "description": "Military expenditure (% of GDP)",
@@ -1960,6 +2637,15 @@
               "source": "World Bank",
               "year": 2023,
               "pillar": "autonomy"
+            },
+            {
+              "key": "MS.MIL.XPND.PC.CD",
+              "description": "Military expenditure per capita (current USD)",
+              "value": 87.19191850096931,
+              "weight": 1,
+              "source": "Derived from World Bank",
+              "year": 2023,
+              "pillar": "effectiveness"
             },
             {
               "key": "MS.MIL.XPND.ZS",
@@ -1985,29 +2671,26 @@
                 "overall": 23.0564077834496
               }
             },
-            "resilience": {
-              "scores": {
-                "overall": 84.03133128681188
-              }
-            },
-            "sustainability": {
-              "scores": {}
-            },
             "effectiveness": {
               "scores": {
                 "overall": 100.0
+              }
+            },
+            "resilience": {
+              "scores": {
+                "overall": 84.03133128681188
               }
             }
           },
           "indicators": [
             {
-              "key": "EG.IMP.CONS.ZS",
-              "description": "Energy imports, net (% of energy use)",
-              "value": 23.0564077834496,
+              "key": "EG.ELC.ACCS.ZS",
+              "description": "Access to electricity (% of population)",
+              "value": 100.0,
               "weight": 1,
               "source": "World Bank",
               "year": 2023,
-              "pillar": "autonomy"
+              "pillar": "effectiveness"
             },
             {
               "key": "EG.ELC.LOSS.ZS",
@@ -2019,13 +2702,13 @@
               "pillar": "resilience"
             },
             {
-              "key": "EG.ELC.ACCS.ZS",
-              "description": "Access to electricity (% of population)",
-              "value": 100.0,
+              "key": "EG.IMP.CONS.ZS",
+              "description": "Energy imports, net (% of energy use)",
+              "value": 23.0564077834496,
               "weight": 1,
               "source": "World Bank",
               "year": 2023,
-              "pillar": "effectiveness"
+              "pillar": "autonomy"
             }
           ]
         },
@@ -2042,30 +2725,18 @@
                 "overall": 17.13585632465941
               }
             },
-            "resilience": {
-              "scores": {
-                "overall": 90.44058341322352
-              }
-            },
-            "sustainability": {
-              "scores": {}
-            },
             "effectiveness": {
               "scores": {
                 "overall": 11.06459536535666
               }
+            },
+            "resilience": {
+              "scores": {
+                "overall": 90.44058341322352
+              }
             }
           },
           "indicators": [
-            {
-              "key": "FS.AST.PRVT.GD.ZS",
-              "description": "Domestic credit to private sector (% of GDP)",
-              "value": 17.13585632465941,
-              "weight": 1,
-              "source": "World Bank",
-              "year": 2023,
-              "pillar": "autonomy"
-            },
             {
               "key": "FB.AST.NPER.ZS",
               "description": "Bank nonperforming loans to total gross loans (%)",
@@ -2083,26 +2754,41 @@
               "source": "World Bank",
               "year": 2023,
               "pillar": "effectiveness"
+            },
+            {
+              "key": "FS.AST.PRVT.GD.ZS",
+              "description": "Domestic credit to private sector (% of GDP)",
+              "value": 17.13585632465941,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2023,
+              "pillar": "autonomy"
             }
           ]
         },
-        "food_and_agriculture": {
-          "scores": {},
+        "general": {
+          "scores": {
+            "overall": 0.1276821695497992,
+            "context": 0.1276821695497992
+          },
           "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
+            "context": {
+              "scores": {
+                "overall": 0.1276821695497992
+              }
             }
           },
-          "indicators": []
+          "indicators": [
+            {
+              "key": "SP.POP.TOTL",
+              "description": "Population, total",
+              "value": 0.1276821695497992,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2023,
+              "pillar": "context"
+            }
+          ]
         },
         "healthcare": {
           "scores": {
@@ -2110,15 +2796,6 @@
             "effectiveness": 100.0
           },
           "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
             "effectiveness": {
               "scores": {
                 "overall": 100.0
@@ -2137,92 +2814,17 @@
             }
           ]
         },
-        "transport": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
-        "water": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
-        "waste_management": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
-        "emergency_services": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
         "information_technology": {
           "scores": {
-            "overall": 42.230846572187104,
+            "overall": 26.158411062175418,
+            "autonomy": 10.085975552163731,
             "effectiveness": 42.230846572187104
           },
           "pillars": {
             "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
+              "scores": {
+                "overall": 10.085975552163731
+              }
             },
             "effectiveness": {
               "scores": {
@@ -2231,6 +2833,24 @@
             }
           },
           "indicators": [
+            {
+              "key": "BX.GSR.CCIS.ZS",
+              "description": "ICT service exports (% of service exports, BoP)",
+              "value": 4.326039181477977,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2023,
+              "pillar": "autonomy"
+            },
+            {
+              "key": "IT.NET.SECR.P6",
+              "description": "Secure Internet servers (per 1 million people)",
+              "value": 0.43613403894289543,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2023,
+              "pillar": "effectiveness"
+            },
             {
               "key": "IT.NET.USER.ZS",
               "description": "Individuals using the Internet (% of population)",
@@ -2241,80 +2861,50 @@
               "pillar": "effectiveness"
             },
             {
-              "key": "IT.NET.SECR.P6",
-              "description": "Secure Internet servers (per 1 million people)",
-              "value": 0.43613403894289543,
+              "key": "TX.VAL.TECH.MF.ZS",
+              "description": "High-technology exports (% of manufactured exports)",
+              "value": 15.845911922849487,
               "weight": 1,
               "source": "World Bank",
               "year": 2023,
-              "pillar": "effectiveness"
+              "pillar": "autonomy"
+            }
+          ]
+        },
+        "transport": {
+          "scores": {
+            "overall": 89.07208744352397,
+            "autonomy": 89.07208744352397
+          },
+          "pillars": {
+            "autonomy": {
+              "scores": {
+                "overall": 89.07208744352397
+              }
+            }
+          },
+          "indicators": [
+            {
+              "key": "EG.USE.PCAP.KG.OE",
+              "description": "Energy use (kg of oil equivalent per capita)",
+              "value": 89.07208744352397,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2023,
+              "pillar": "autonomy"
             }
           ]
         }
       }
     },
     {
-      "year": 2024,
       "scores": {
-        "overall": 8.680145096891021,
-        "autonomy": 16.879625282393963,
+        "overall": 7.465811890831957,
+        "autonomy": 10.300003784777113,
+        "context": 0.1274760420193114,
         "effectiveness": 0.48066491138807715
       },
       "industries": {
-        "communications": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
-        "defence": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
-        "energy": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
         "finance": {
           "scores": {
             "overall": 16.879625282393963,
@@ -2325,15 +2915,6 @@
               "scores": {
                 "overall": 16.879625282393963
               }
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
             }
           },
           "indicators": [
@@ -2348,128 +2929,41 @@
             }
           ]
         },
-        "food_and_agriculture": {
-          "scores": {},
+        "general": {
+          "scores": {
+            "overall": 0.1274760420193114,
+            "context": 0.1274760420193114
+          },
           "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
+            "context": {
+              "scores": {
+                "overall": 0.1274760420193114
+              }
             }
           },
-          "indicators": []
-        },
-        "healthcare": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
+          "indicators": [
+            {
+              "key": "SP.POP.TOTL",
+              "description": "Population, total",
+              "value": 0.1274760420193114,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2024,
+              "pillar": "context"
             }
-          },
-          "indicators": []
-        },
-        "transport": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
-        "water": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
-        "waste_management": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
-        },
-        "emergency_services": {
-          "scores": {},
-          "pillars": {
-            "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
-            },
-            "effectiveness": {
-              "scores": {}
-            }
-          },
-          "indicators": []
+          ]
         },
         "information_technology": {
           "scores": {
-            "overall": 0.48066491138807715,
+            "overall": 5.390334348082595,
+            "autonomy": 10.300003784777113,
             "effectiveness": 0.48066491138807715
           },
           "pillars": {
             "autonomy": {
-              "scores": {}
-            },
-            "resilience": {
-              "scores": {}
-            },
-            "sustainability": {
-              "scores": {}
+              "scores": {
+                "overall": 10.300003784777113
+              }
             },
             "effectiveness": {
               "scores": {
@@ -2479,6 +2973,15 @@
           },
           "indicators": [
             {
+              "key": "BX.GSR.CCIS.ZS",
+              "description": "ICT service exports (% of service exports, BoP)",
+              "value": 4.900552393080424,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2024,
+              "pillar": "autonomy"
+            },
+            {
               "key": "IT.NET.SECR.P6",
               "description": "Secure Internet servers (per 1 million people)",
               "value": 0.48066491138807715,
@@ -2486,6 +2989,15 @@
               "source": "World Bank",
               "year": 2024,
               "pillar": "effectiveness"
+            },
+            {
+              "key": "TX.VAL.TECH.MF.ZS",
+              "description": "High-technology exports (% of manufactured exports)",
+              "value": 15.699455176473803,
+              "weight": 1,
+              "source": "World Bank",
+              "year": 2024,
+              "pillar": "autonomy"
             }
           ]
         }

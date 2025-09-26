@@ -41,9 +41,31 @@ WORLD_BANK_METRICS = [
     ("SH.IMM.IDPT", "Immunization, DPT (% of children ages 12-23 months)", "Healthcare", "Effectiveness", "POS", "%", "https://data.worldbank.org/indicator/SH.IMM.IDPT"),
     # Transport
     ("IS.ROD.PAVE.ZS", "Paved roads (% of total roads)", "Transport", "Effectiveness", "POS", "% of total roads", "https://data.worldbank.org/indicator/IS.ROD.PAVE.ZS"),
+    ("EG.USE.PCAP.KG.OE", "Energy use (kg of oil equivalent per capita)", "Transport", "Autonomy", "NEG", "kg of oil equivalent per capita", "https://data.worldbank.org/indicator/EG.USE.PCAP.KG.OE"),
+    ("LP.LPI.OVRL.XQ", "Logistics performance index: Overall", "Transport", "Resilience", "POS", "1=low to 5=high", "https://data.worldbank.org/indicator/LP.LPI.OVRL.XQ"),
+    ("EN.CO2.TRAN.ZS", "CO2 emissions from transport (% of total fuel combustion)", "Transport", "Sustainability", "NEG", "%", "https://data.worldbank.org/indicator/EN.CO2.TRAN.ZS"),
+    ("LP.LPI.TIME.XQ", "Logistics performance index: Timeliness of shipments", "Transport", "Effectiveness", "POS", "1=low to 5=high", "https://data.worldbank.org/indicator/LP.LPI.TIME.XQ"),
+    # Waste Management
+    ("EN.WST.RCYC.ZS", "Municipal waste recycled (%)", "Waste Management", "Autonomy", "POS", "%", "https://data.worldbank.org/indicator/EN.WST.RCYC.ZS"),
+    ("EN.WST.COLL.ZS", "Municipal solid waste collection coverage (% of population)", "Waste Management", "Resilience", "POS", "%", "https://data.worldbank.org/indicator/EN.WST.COLL.ZS"),
+    ("EN.WST.MWSG.PC", "Municipal solid waste generation (kg/capita/day)", "Waste Management", "Sustainability", "NEG", "kg/capita/day", "https://data.worldbank.org/indicator/EN.WST.MWSG.PC"),
     # Information Technology
     ("IT.NET.SECR.P6", "Secure Internet servers (per 1 million people)", "Information Technology", "Effectiveness", "POS", "Per 1 million people", "https://data.worldbank.org/indicator/IT.NET.SECR.P6"),
     ("GB.XPD.RSDV.GD.ZS", "Research and development expenditure (% of GDP)", "Information Technology", "Sustainability", "POS", "% of GDP", "https://data.worldbank.org/indicator/GB.XPD.RSDV.GD.ZS"),
+    # Defence (derived)
+    ("MS.MIL.XPND.CD", "Military expenditure (current USD)", "Defence", "Effectiveness", "NEUTRAL", "current USD", "https://data.worldbank.org/indicator/MS.MIL.XPND.CD"),
+    # Emergency Services
+    ("VC.IDP.TOTL.HE", "Internally displaced persons due to disasters (cumulative)", "Emergency Services", "Sustainability", "NEG", "People", "https://data.worldbank.org/indicator/VC.IDP.TOTL.HE"),
+    # Information Technology
+    ("BX.GSR.CCIS.ZS", "ICT service exports (% of service exports, BoP)", "Information Technology", "Autonomy", "POS", "% of service exports", "https://data.worldbank.org/indicator/BX.GSR.CCIS.ZS"),
+    ("TX.VAL.TECH.MF.ZS", "High-technology exports (% of manufactured exports)", "Information Technology", "Autonomy", "POS", "% of manufactured exports", "https://data.worldbank.org/indicator/TX.VAL.TECH.MF.ZS"),
+    # General
+    ("SP.POP.TOTL", "Population, total", "General", "Context", "NEUTRAL", "Total", "https://data.worldbank.org/indicator/SP.POP.TOTL"),
+    # Water (replacing AQUASTAT)
+    ("ER.H2O.INTR.PC", "Renewable internal freshwater resources per capita (cubic meters)", "Water", "Autonomy", "POS", "cubic meters", "https://data.worldbank.org/indicator/ER.H2O.INTR.PC"),
+    ("ER.H2O.FWST.ZS", "Level of water stress: freshwater withdrawal as a proportion of available freshwater resources (%)", "Water", "Sustainability", "NEG", "%", "https://data.worldbank.org/indicator/ER.H2O.FWST.ZS"),
+    # Healthcare (replacement for emergency care)
+    ("SH.MED.BEDS.ZS", "Hospital beds (per 1,000 people)", "Healthcare", "Resilience", "POS", "per 1,000 people", "https://data.worldbank.org/indicator/SH.MED.BEDS.ZS"),
 ]
 
 # ==============================================================================

@@ -153,6 +153,12 @@ COMMENT ON TABLE etl_runs IS 'Tracks the status and metadata of ETL/data refresh
 -- This section can be commented out in production.
 
 -- 1. Populate the metric catalog
+INSERT INTO metrics_catalog (metric_id, name, description, industry, pillar, units, directionality, source, source_url, coverage_notes) VALUES
+('WM.WASTE.CONTROLLED.FACILITIES.PCT', 'Proportion of Waste Managed in Controlled Facilities', 'Percentage of municipal solid waste managed in controlled facilities (e.g., sanitary landfills, recycling plants, composting facilities).', 'Waste Management', 'Autonomy', '%', 'POS', 'World Bank What a Waste Global Database', 'https://data.worldbank.org/', 'Expected to have varying coverage, especially for low-income countries. Specific indicator code to be identified.'),
+('WM.WASTE.SANITARY.DISPOSAL.PCT', 'Proportion of Waste Disposed in Sanitary Landfills or Controlled Dumpsites', 'Percentage of municipal solid waste disposed in sanitary landfills or controlled dumpsites, indicating system robustness.', 'Waste Management', 'Resilience', '%', 'POS', 'World Bank What a Waste Global Database', 'https://data.worldbank.org/', 'Expected to have varying coverage. Specific indicator code to be identified.'),
+('WM.WASTE.DIVERSION.RATE.PCT', 'Waste Diversion Rate (Recycling + Composting Rate)', 'Percentage of municipal solid waste diverted from landfills/incineration through recycling and composting.', 'Waste Management', 'Sustainability', '%', 'POS', 'World Bank What a Waste Global Database / OECD', 'https://data.worldbank.org/', 'Expected to have better coverage for OECD and middle/high-income countries. Specific indicator code to be identified.'),
+('WM.WASTE.COLLECTION.RATE.PCT', 'Municipal Solid Waste Collection Rate', 'Percentage of municipal solid waste generated that is collected.', 'Waste Management', 'Effectiveness', '%', 'POS', 'World Bank What a Waste Global Database', 'https://data.worldbank.org/', 'Expected to have varying coverage. Specific indicator code to be identified.');
+
 INSERT INTO metrics_catalog (metric_id, name, industry, pillar, directionality, source, units) VALUES
 ('WB_IT_NET_USER_P2', 'Individuals using the Internet (% of population)', 'Information Technology', 'Effectiveness', 'POS', 'World Bank', '%'),
 ('WB_EG_ELC_ACCS_ZS', 'Access to electricity (% of population)', 'Energy', 'Effectiveness', 'POS', 'World Bank', '%'),

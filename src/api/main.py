@@ -5,9 +5,16 @@ import pandas as pd
 from pydantic import BaseModel
 
 from src.core.database import get_db
+from fastapi.staticfiles import StaticFiles
 from src.core.models import CountryScore, IndustryScore, PillarScore, MetricNormalized, MetricCatalog
+from src.api.viewer import router as viewer_router
 
 app = FastAPI(title="CIVI API", description="API for Critical Infrastructure Vitals Index data.")
+
+app.include_router(viewer_router)
+
+# Mount the frontend directory to serve static files
+app.mount("/", StaticFiles(directory="frontend/public", html=True), name="static")
 
 # Pydantic Models for API Response
 from pydantic import BaseModel
