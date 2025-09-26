@@ -175,3 +175,19 @@ To build for deployment:
 cd frontend
 npm run build
 ```
+
+### 7. Updating Data and Static JSONs
+
+To ensure data consistency and prevent visualization issues on the frontend, a dedicated script is provided to fetch new data, process it, update the PostgreSQL database, and then generate/update the static JSON files used by the frontend. This process includes validation steps to ensure data integrity.
+
+1.  **Run the Update Script:**
+    ```bash
+    ./update_data.sh
+    ```
+    This script will perform the following actions:
+    *   **ETL Pipeline:** Fetches raw data, populates the catalog, processes data, and aggregates scores into the PostgreSQL database.
+    *   **Database Tests:** Runs `pytest tests/test_etl.py` to validate the data in PostgreSQL. If these tests fail, the process will stop.
+    *   **Generate Static JSONs:** Creates or updates the static JSON files in `frontend/public/civi_modular/` from the processed data in PostgreSQL.
+    *   **Frontend Data Validation:** Performs basic checks (e.g., verifies the existence of key JSON files) to ensure the generated static files are present. (Note: More comprehensive frontend data validation tests can be added to `frontend/package.json` and executed here if needed).
+
+    **Important:** This script ensures that only valid and correctly formatted data is propagated to the static JSON files, preventing potential visualization issues on the frontend.
