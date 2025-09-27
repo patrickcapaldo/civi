@@ -15,7 +15,7 @@ const CaseStudyArticle = ({ headerHeight }) => {
         const fetchArticle = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`/case-studies/articles/${slug}.json`);
+                const response = await fetch(`/case_studies/articles/${slug}.json`);
                 if (!response.ok) {
                     throw new Error(`Article not found: ${response.statusText}`);
                 }

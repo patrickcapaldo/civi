@@ -72,6 +72,10 @@ The Analyse page offers a deeper dive into historical trends and comparative ana
   <img src="assets/img/civi_analyse_01.png" width="600" />
 </p>
 
+### Case Studies
+
+The Case Studies page allows you to explore in-depth articles and insights drawing from CIVI data to understand key trends and country-specific analyses.
+
 ## Methodology
 
 The CIVI score is calculated through a multi-step process:
@@ -286,6 +290,22 @@ To ensure data consistency and prevent visualization issues on the frontend, a d
     *   **Frontend Data Validation:** Performs basic checks (e.g., verifies the existence of key JSON files) to ensure the generated static files are present. (Note: More comprehensive frontend data validation tests can be added to `frontend/package.json` and executed here if needed).
 
     **Important:** This script ensures that only valid and correctly formatted data is propagated to the static JSON files, preventing potential visualization issues on the frontend.
+
+### Managing Case Studies
+
+Case studies are static content served by the frontend. To add, modify, or remove case studies:
+
+1.  **Edit Markdown Files:** Create or edit Markdown files (`.md`) in the `/case_studies` directory. Each file should include YAML frontmatter for metadata (title, author, date, thumbnail, tags, slug).
+2.  **Run the Build Script:** After making any changes to the Markdown files, you must run the following script to regenerate the static JSON files for the frontend:
+    ```bash
+    python3 scripts/build_case_studies.py
+    ```
+    This script will:
+    *   Parse all Markdown files in `/case_studies`.
+    *   Generate `frontend/public/case_studies/index.json` (metadata for all studies).
+    *   Generate `frontend/public/case_studies/articles/{slug}.json` (individual article content).
+
+    **Remember to run this script every time you change a case study Markdown file!**
 
 ## Contributing
 

@@ -7,7 +7,7 @@ from pathlib import Path
 # This script builds static JSON files from the markdown case studies.
 
 CASE_STUDIES_SRC_DIR = Path("case_studies")
-OUTPUT_DIR = Path("frontend/public/case-studies")
+OUTPUT_DIR = Path("frontend/public/case_studies")
 ARTICLES_OUTPUT_DIR = OUTPUT_DIR / "articles"
 
 def build_static_case_studies():

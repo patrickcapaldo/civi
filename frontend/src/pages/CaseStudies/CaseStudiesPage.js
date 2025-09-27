@@ -21,7 +21,7 @@ const CaseStudiesPage = ({ headerHeight }) => {
     useEffect(() => {
         const fetchIndex = async () => {
             try {
-                const response = await fetch(`/case-studies/index.json`);
+                const response = await fetch(`/case_studies/index.json`);
                 if (!response.ok) {
                     throw new Error('Could not fetch case studies index.');
                 }

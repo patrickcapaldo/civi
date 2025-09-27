@@ -17,7 +17,7 @@ const CaseStudyTile = ({ study }) => {
     return (
         <Grid item xs={12} sm={6} md={4}>
             <Card className="case-study-tile">
-                <CardActionArea component={Link} to={`/case-studies/${slug}`}>
+                <CardActionArea component={Link} to={`/case_studies/${slug}`}>
                     <CardMedia
                         component="img"
                         height="140"

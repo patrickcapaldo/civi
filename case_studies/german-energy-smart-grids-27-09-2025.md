@@ -7,7 +7,7 @@ tags:
   countries: ["Germany"]
   industries: ["Energy"]
   pillars: ["Resilience", "Effectiveness"]
-slug: "german-energy-smart-grids"
+slug: "german-energy-smart-grids-27-09-2025"
 ---
 
 ## Introduction
