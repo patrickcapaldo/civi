@@ -1,10 +1,18 @@
-
-import React, { useState } from 'react';
-import { Grid, TextField, FormControl, InputLabel, Select, MenuItem, Box, Autocomplete, InputAdornment, IconButton } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Grid, TextField, FormControl, InputLabel, Select, MenuItem, Box, InputAdornment, IconButton, Paper, Button } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
 const FilterBar = ({ availableTags, filters, onFilterChange }) => {
     const [searchTerm, setSearchTerm] = useState('');
+    const [countrySearchTerm, setCountrySearchTerm] = useState('');
+    const [showCountrySuggestions, setShowCountrySuggestions] = useState(false);
+
+    // Effect to clear country search term if all countries are deselected externally
+    useEffect(() => {
+        if (filters.countries.length === 0) {
+            setCountrySearchTerm('');
+        }
+    }, [filters.countries]);
 
     const handleMultiSelectChange = (name, newValue) => {
         onFilterChange(name, newValue);
@@ -22,6 +30,25 @@ const FilterBar = ({ availableTags, filters, onFilterChange }) => {
             handleSearchSubmit();
         }
     };
+
+    const handleCountryInputChange = (event) => {
+        setCountrySearchTerm(event.target.value);
+        setShowCountrySuggestions(true);
+    };
+
+    const handleCountrySelect = (country) => {
+        // Only add if not already selected
+        if (!filters.countries.includes(country)) {
+            const newCountries = [...filters.countries, country];
+            onFilterChange('countries', newCountries);
+        }
+        setCountrySearchTerm(''); // Clear input after selection
+        setShowCountrySuggestions(false);
+    };
+
+    const filteredCountrySuggestions = availableTags.countries.filter(country =>
+        country.toLowerCase().includes(countrySearchTerm.toLowerCase())
+    );
 
     return (
         <Box sx={{ mb: 4, p: 2, border: '1px solid #444', borderRadius: 1 }}>
@@ -46,25 +73,50 @@ const FilterBar = ({ availableTags, filters, onFilterChange }) => {
                         }}
                     />
                 </Grid>
-                <Grid item xs={12} sm={4} md={2.6}>
-                    <Autocomplete
-                        multiple
-                        options={availableTags.countries || []}
-                        getOptionLabel={(option) => option}
-                        value={filters.countries || []}
-                        onChange={(event, newValue) => {
-                            handleMultiSelectChange('countries', newValue);
-                        }}
-                        renderTags={() => null} // Prevent chips from appearing in the input field
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                variant="outlined"
-                                label="Countries"
-                                placeholder="Countries"
-                            />
-                        )}
+                <Grid item xs={12} sm={4} md={2.6} sx={{ position: 'relative' }}>
+                    <TextField
+                        fullWidth
+                        variant="outlined"
+                        label="Country"
+                        value={countrySearchTerm}
+                        onChange={handleCountryInputChange}
+                        onFocus={() => setShowCountrySuggestions(true)}
+                        onBlur={() => setTimeout(() => setShowCountrySuggestions(false), 100)} // Delay to allow click on suggestion
                     />
+                    {showCountrySuggestions && countrySearchTerm && filteredCountrySuggestions.length > 0 && (
+                        <Paper 
+                            sx={{
+                                position: 'absolute',
+                                top: '100%',
+                                left: 0,
+                                right: 0,
+                                zIndex: 1000,
+                                maxHeight: 200,
+                                overflowY: 'auto',
+                                mt: 0.5,
+                                bgcolor: '#3a3a3a', // Match analyse-input-text background
+                                border: '1px solid #555', // Match analyse-input-text border
+                            }}
+                        >
+                            {filteredCountrySuggestions.map((country) => (
+                                <Button
+                                    key={country}
+                                    onClick={() => handleCountrySelect(country)}
+                                    sx={{
+                                        display: 'block',
+                                        width: '100%',
+                                        textAlign: 'left',
+                                        color: 'white',
+                                        justifyContent: 'flex-start',
+                                        textTransform: 'none',
+                                        '&:hover': { bgcolor: '#555' },
+                                    }}
+                                >
+                                    {country}
+                                </Button>
+                            ))}
+                        </Paper>
+                    )}
                 </Grid>
                 <Grid item xs={12} sm={4} md={2.6}>
                     <FormControl fullWidth>

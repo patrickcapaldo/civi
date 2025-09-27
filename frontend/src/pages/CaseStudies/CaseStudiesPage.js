@@ -137,8 +137,11 @@ const CaseStudiesPage = ({ headerHeight }) => {
 
     return (
         <Container maxWidth="lg" sx={{ mt: 4 }}>
-            <Typography variant="h4" component="h1" gutterBottom>
+            <Typography variant="h3" component="h1" gutterBottom>
                 Case Studies
+            </Typography>
+            <Typography variant="body1" paragraph>
+                Explore in-depth articles and insights drawing from CIVI data to understand key trends and country-specific analyses.
             </Typography>
             <FilterBar 
                 availableTags={availableTags} 

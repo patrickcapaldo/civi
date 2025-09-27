@@ -16,6 +16,22 @@ const theme = createTheme({
   palette: {
     mode: 'dark',
   },
+  typography: {
+    fontFamily: [
+      '-apple-system', 'BlinkMacSystemFont', '\'Segoe UI\'', '\'Roboto\'', '\'Oxygen\'',
+      '\'Ubuntu\'', '\'Cantarell\'', '\'Fira Sans\'', '\'Droid Sans\'', '\'Helvetica Neue\'',
+      'sans-serif',
+    ].join(','),
+    h1: { fontSize: '3.5rem', fontWeight: 500, lineHeight: 1.2 },
+    h2: { fontSize: '2.75rem', fontWeight: 500, lineHeight: 1.3 },
+    h3: { fontSize: '2.25rem', fontWeight: 500, lineHeight: 1.4 },
+    h4: { fontSize: '1.75rem', fontWeight: 500, lineHeight: 1.4 },
+    h5: { fontSize: '1.5rem', fontWeight: 500, lineHeight: 1.3 },
+    h6: { fontSize: '1.25rem', fontWeight: 500, lineHeight: 1.5 },
+    body1: { fontSize: '1rem', lineHeight: 1.6 },
+    body2: { fontSize: '0.875rem', lineHeight: 1.5 },
+    subtitle1: { fontSize: '0.9rem', lineHeight: 1.5, color: 'rgba(255, 255, 255, 0.7)' }
+  },
 });
 
 function App() {
