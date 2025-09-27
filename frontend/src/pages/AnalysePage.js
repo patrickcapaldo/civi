@@ -4,6 +4,7 @@ import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import './AnalysePage.css';
 import { SketchPicker } from 'react-color'; // Import SketchPicker
+import { Typography, Container } from '@mui/material';
 
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
@@ -255,12 +256,14 @@ const AnalysePage = ({ headerHeight }) => {
   }, [countryInfoMap]);
 
   return (
-    <div style={{ paddingTop: `${headerHeight}px`, color: 'white', padding: '20px' }}>
-      <h2>Analyse Page</h2>
-      <p>This page will provide deeper analysis of each country and their critical industries.</p>
+    <Container maxWidth="lg" sx={{ mt: 4 }}>
+      <Typography variant="h3" component="h1" sx={{ mb: 2 }}>Analyse Page</Typography>
+      <Typography variant="body1" paragraph>
+        Compare historical CIVI scores across multiple countries, industries, and pillars with customizable charts.
+      </Typography>
 
       <div className="analyse-section">
-        <h3>Comparison Builder</h3>
+        <Typography variant="h5" component="h2" gutterBottom sx={{ color: '#87CEEB' }}>Comparison Builder</Typography>
         <div>
           <label>Country:</label>
           <input
@@ -360,7 +363,7 @@ const AnalysePage = ({ headerHeight }) => {
       </div>
 
         <div className="analyse-section">
-            <h3>Selections</h3>
+            <Typography variant="h5" component="h2" gutterBottom sx={{ color: '#87CEEB' }}>Selections</Typography>
             <div className="selections-container">
                 {selections.map(selection => (
                     <div key={selection.id} className="selection-card" style={{ borderLeft: `5px solid ${selection.color}` }}>
@@ -414,14 +417,14 @@ const AnalysePage = ({ headerHeight }) => {
         </div>
 
       <div className="analyse-section">
-        <h3>Historical Data & Comparison</h3>
+        <Typography variant="h5" component="h2" gutterBottom sx={{ color: '#87CEEB' }}>Historical Data & Comparison</Typography>
         <div style={{ minHeight: '300px' }}>
           <div style={{ height: '400px', width: '100%' }}>
             <HistoricalChart chartData={getFilteredHistoricalData()} />
           </div>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 

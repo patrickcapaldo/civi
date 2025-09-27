@@ -73,13 +73,13 @@ const HomePage = () => {
                     </Typography>
                     <ul>
                       <li>
-                        <Typography variant="h6" component="h3" gutterBottom>Explore Page</Typography>
+                        <Typography variant="h6" component="h3" gutterBottom>Explore</Typography>
                         <Typography variant="body1" paragraph>
                           The Explore page provides an interactive world map to visualize CIVI data. Users can hover over countries for scores, filter by industry and pillar, and see dynamic updates.
                         </Typography>
                       </li>
                       <li>
-                        <Typography variant="h6" component="h3" gutterBottom>Analyse Page</Typography>
+                        <Typography variant="h6" component="h3" gutterBottom>Analyse</Typography>
                         <Typography variant="body1" paragraph>
                           The Analyse page allows for deeper historical and comparative analysis. Users can compare multiple countries, industries, and pillars over time with customizable line colors and dynamic charting.
                         </Typography>

@@ -44,7 +44,7 @@ CIVI spans the following 11 critical industries:
 
 ## Key Features
 
-### Explore Page
+### Explore
 
 The Explore page serves as the primary entry point for visualizing the CIVI data. It features an interactive world map where users can:
 
@@ -56,7 +56,7 @@ The Explore page serves as the primary entry point for visualizing the CIVI data
   <img src="assets/img/civi_explore_02.png" width="600" />
 </p>
 
-### Analyse Page
+### Analyse
 
 The Analyse page offers a deeper dive into historical trends and comparative analysis. On this page, users can:
 
