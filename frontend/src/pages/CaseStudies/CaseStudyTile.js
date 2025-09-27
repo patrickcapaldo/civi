@@ -28,6 +28,9 @@ const CaseStudyTile = ({ study }) => {
                         <Typography gutterBottom variant="h6" component="div" className="tile-title">
                             {title}
                         </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            {new Date(study.date).toLocaleDateString()}
+                        </Typography>
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mt: 1 }}>
                             {allTags.map(tag => (
                                 <Chip key={tag} label={tag} size="small" />
