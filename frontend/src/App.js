@@ -8,6 +8,8 @@ import NavBar from './components/NavBar';
 import HomePage from './pages/HomePage';
 import ExplorePage from './pages/ExplorePage';
 import AnalysePage from './pages/AnalysePage'; // New import
+import CaseStudiesPage from './pages/CaseStudies/CaseStudiesPage';
+import CaseStudyArticle from './pages/CaseStudies/CaseStudyArticle';
 import { CssBaseline, ThemeProvider, createTheme, AppBar, Toolbar } from '@mui/material';
 
 const theme = createTheme({
@@ -51,6 +53,8 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/explore" element={<ExplorePage headerHeight={headerHeight} />} />
             <Route path="/analyse" element={<AnalysePage headerHeight={headerHeight} />} /> {/* New route */}
+            <Route path="/case-studies" element={<CaseStudiesPage headerHeight={headerHeight} />} />
+            <Route path="/case-studies/:slug" element={<CaseStudyArticle headerHeight={headerHeight} />} />
           </Routes>
         </div>
       </Router>
